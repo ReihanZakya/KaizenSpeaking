@@ -35,6 +35,7 @@ class HomeFragment : Fragment() {
         return root
     }
 
+    //test changed
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

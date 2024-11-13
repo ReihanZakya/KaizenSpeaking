@@ -1,6 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.KaizenSpeaking" parent="Theme.AppCompat.DayNight.NoActionBar">
+    <style name="Theme.KaizenSpeaking" parent="Theme.AppCompat.DayNight.DarkActionBar">
+
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/red</item>
         <item name="colorPrimaryVariant">@color/black</item>
