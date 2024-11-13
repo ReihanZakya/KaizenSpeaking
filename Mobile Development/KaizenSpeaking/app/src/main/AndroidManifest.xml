@@ -20,6 +20,9 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.authentication.SignUpActivity"
             android:exported="true"
             android:theme="@style/SplashTheme">
             <intent-filter>
