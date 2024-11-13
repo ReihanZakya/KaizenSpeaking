@@ -3,4 +3,33 @@
     <string name="title_home">Home</string>
     <string name="title_analyze">Analyze</string>
     <string name="title_history">History</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="input_name">Nama</string>
+    <string name="input_email">Email</string>
+    <string name="input_password">Kata Sandi</string>
+    <string name="input_confirm_password">Ulang Kata Sandi</string>
+    <string name="daftar">DAFTAR</string>
+    <string name="masuk">MASUK</string>
+    <string name="atau">Atau</string>
+    <string name="login_google">Masuk Dengan Google</string>
+
+    <string name="instruction_title">Pastikan hal-hal berikut sebelum merekam : </string>
+    <string name="instruction_desc1">1. Jika berlatih untuk pidato/presentasi, spesifikkan materi atau cakupan yang akan disampaikan. </string>
+    <string name="instruction_desc2">2. Jika berlatih untuk wawancara, tentukan posisi yang dilamar, nama perusahaan, dan suasana (formal/informal). </string>
+    <string name="instruction_desc3">3. Semakin spesifik topik yang dimasukkan, semakin baik hasil analisis yang akan didapatkan. </string>
+    <string name="topics_title">Topik</string>
+    <string name="input_topic">Masukkan topik yang ingin dibahas</string>
+
+    <!--Instruction Slide-->
+    <string name="text_instruction_1">Pastikan Anda berada di ruangan yang senyap untuk mengurangi gangguan suara. </string>
+    <string name="desc_instruction_1">Untuk hasil analisis suara yang akurat, pastikan Anda berada di ruangan yang senyap dan minim gangguan suara. Keheningan lingkungan sekitar akan membantu aplikasi dalam mendeteksi dan menganalisis ucapan dengan lebih jelas, sehingga memberikan hasil yang lebih optimal.</string>
+    <string name="text_instruction_2">Pastikan mikrofon berfungsi baik dan berada pada jarak yang sesuai dari mulut.</string>
+    <string name="desc_instruction_2">Pastikan mikrofon Anda berfungsi dengan baik dan ditempatkan pada jarak yang tepat dari mulut. Posisi mikrofon yang ideal akan membantu menangkap suara dengan jelas, mengurangi distorsi, dan memastikan analisis yang lebih akurat.</string>
+    <string name="text_instruction_3">Siapkan skrip atau poin utama agar pembicaraan terarah.</string>
+    <string name="desc_instruction_3">Siapkan skrip atau poin-poin utama sebelum memulai percakapan. Dengan persiapan yang matang, pembicaraan akan lebih terarah, jelas, dan mudah dianalisis, sehingga aplikasi dapat memberikan hasil yang lebih efektif dan tepat.</string>
+    <string name="text_instruction_4">Pastikan Anda memiliki waktu yang cukup untuk merekam tanpa gangguan.Pastikan Anda memiliki waktu yang cukup untuk merekam tanpa gangguan.</string>
+    <string name="desc_instruction_4">Pastikan Anda memiliki waktu yang cukup untuk merekam tanpa gangguan. Menghindari interupsi akan memastikan proses perekaman berjalan lancar dan hasil analisis suara lebih akurat dan optimal.</string>
+    <string name="text_instruction_5">Posisikan diri dengan nyaman dan sesuai dengan kebutuhan.</string>
+    <string name="desc_instruction_5">Keadaan tubuh yang rileks akan membantu Anda berbicara lebih natural, sehingga perekaman suara menjadi lebih jelas dan analisis dapat dilakukan dengan lebih tepat</string>
 </resources>
