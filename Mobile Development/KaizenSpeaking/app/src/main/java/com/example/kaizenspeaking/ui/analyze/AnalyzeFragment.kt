@@ -28,10 +28,6 @@ class AnalyzeFragment : Fragment() {
         _binding = FragmentAnalyzeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textDashboard
-        analyzeViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
         return root
     }
 
