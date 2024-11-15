@@ -54,4 +54,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     implementation(libs.androidx.core.splashscreen)
+
+//    Chart
+    implementation (libs.mpandroidchart)
 }
