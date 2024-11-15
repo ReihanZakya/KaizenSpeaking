@@ -13,5 +13,6 @@
     <color name="red_onboarding">#c11300</color>
     <color name="yellow_onboarding">#c9a700</color>
     <color name="gray_white">#E7E7E7</color>
+    <color name="blue">#0072FF</color>
     <color name="red_kaizen">#D93337</color>
 </resources>
