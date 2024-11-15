@@ -15,11 +15,21 @@
         android:id="@+id/navigation_analyze"
         android:name="com.example.kaizenspeaking.ui.analyze.AnalyzeFragment"
         android:label="@string/title_analyze"
-        tools:layout="@layout/fragment_analyze" />
+        tools:layout="@layout/fragment_analyze" >
+        <action
+            android:id="@+id/action_navigation_analyze_to_analyzeResultFragment"
+            app:destination="@id/analyzeResultFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_history"
         android:name="com.example.kaizenspeaking.ui.history.HistoryFragment"
         android:label="@string/title_history"
         tools:layout="@layout/fragment_history" />
+
+    <fragment
+        android:id="@+id/analyzeResultFragment"
+        android:name="com.example.kaizenspeaking.ui.analyze.AnalyzeResultFragment"
+        android:label="fragment_analyze_result"
+        tools:layout="@layout/fragment_analyze_result" />
 </navigation>

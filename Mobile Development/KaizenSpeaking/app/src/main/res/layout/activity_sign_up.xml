@@ -153,7 +153,7 @@
                 android:orientation="horizontal"
                 android:gravity="center"
                 android:textAlignment="center"
-                android:background="@drawable/bg_button_border_red"
+                android:background="@drawable/bg_auth_border_red"
                 android:padding="15dp"
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
