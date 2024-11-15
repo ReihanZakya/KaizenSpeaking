@@ -31,4 +31,45 @@
     <string name="desc_instruction_4">Pastikan Anda memiliki waktu yang cukup untuk merekam tanpa gangguan. Menghindari interupsi akan memastikan proses perekaman berjalan lancar dan hasil analisis suara lebih akurat dan optimal.</string>
     <string name="text_instruction_5">Posisikan diri dengan nyaman dan sesuai dengan kebutuhan.</string>
     <string name="desc_instruction_5">Keadaan tubuh yang rileks akan membantu Anda berbicara lebih natural, sehingga perekaman suara menjadi lebih jelas dan analisis dapat dilakukan dengan lebih tepat</string>
+    <string name="account_name"><![CDATA[Sign In >]]></string>
+    <string name="article_title">Artikel</string>
+    <string name="article_description">Ayo baca artikel untuk menambah\nwawasan kamu</string>
+    <string name="account">Account</string>
+    <string name="searchArticle">Cari Artikel...</string>
+    <string name="hallo">Hallo!</string>
+    <string name="article_summary">Lorem Ipsum Dolor Sir Amet</string>
+    <string name="article_title_data">Judul Artikel Judul Artikel Judul Artikel Judul Artikel Judul Artikel Judul Artikel Judul Artikel</string>
+    <string name="article_description_data">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
+
+    <!--    data dummy article-->
+    <string-array name="tempdata_article_title">
+        <item>Cara Mudah Meningkatkan Kepercayaan Diri saat Berada di Depan Umum</item>
+        <item>Metode Public Speaking: Pengertian, Tujuan, Metode, dan Tips</item>
+        <item>Retorik Adalah: Seni Berbicara yang Efektif dan Meyakinkan</item>
+        <item>Public Speaking: Arti, Metode, Manfaat, Tujuan, dan Cara Meningkatkan Skill-nya</item>
+        <item>Pakai Cara Ini Supaya Kamu Pede Ngomong di Depan Umum!</item>
+    </string-array>
+    <integer-array name="tempdata_article_image">
+        <item>@drawable/tempdata_article_image1</item>
+        <item>@drawable/tempdata_article_image2</item>
+        <item>@drawable/tempdata_article_image3</item>
+        <item>@drawable/tempdata_article_image4</item>
+        <item>@drawable/tempdata_article_image5</item>
+    </integer-array>
+    <string-array name="tempdata_article_description">
+        <item>Halo, sahabat pembelajar! Berbicara di depan umum sering kali dianggap sebagai momok yang menakutkan. Faktanya, sebuah survei oleh National Institute of Mental Health menunjukkan bahwa sekitar 73% orang merasa cemas ketika harus tampil di depan orang banyak. </item>
+        <item>Metode Public Speaking – Grameds, pernahkah kamu berbicara di depan umum? Jika pernah, maka itu berarti kamu sedang melakukan public speaking. Wah, keren ya pastinya, bisa berkomunikasi di depan banyak orang.</item>
+        <item>Retorika adalah seni berbicara secara efektif dan meyakinkan untuk mempengaruhi pendengar. Istilah ini berasal dari bahasa Yunani "rhetorike" yang berarti keterampilan berpidato. Dalam pengertian yang lebih luas, retorika mencakup kemampuan menggunakan bahasa lisan maupun tulisan untuk berkomunikasi secara persuasif.</item>
+        <item>Sebelum membahas metode dan cara meningkatkannya, pertama-tama kita perlu mengulas definisi dari soft skill tersebut. Melansir laman ThoughtCo, public speaking adalah sebuah seni berpidato, di mana pembicara berkomunikasi dengan audiensnya melalui presentasi lisan.</item>
+        <item>Pernahkah kamu mempresentasikan sesuatu di depan kelas? Atau pernahkah kamu berpidato untuk sebuah acara? Nah, itu adalah berbicara di depan umum. Berbicara di depan umum merupakan teknik berbicara yang dibutuhkan oleh pembicara agar bisa menarik semua perhatian audiens.</item>
+    </string-array>
+    <string-array name="tempdata_article_url">
+        <item>https://www.kompasiana.com/salwaanur8965/671702aac925c424c2134192/cara-mudah-meningkatkan-kepercayaan-diri-saat-berada-di-depan-umum</item>
+        <item>https://www.gramedia.com/literasi/metode-public-speaking/</item>
+        <item>https://www.liputan6.com/feeds/read/5779700/retorik-adalah-seni-berbicara-yang-efektif-dan-meyakinkan</item>
+        <item>https://glints.com/id/lowongan/kemampuan-public-speaking/</item>
+        <item>https://www.generali.co.id/id/healthyliving/healthy-lifestyle/pakai-cara-ini-supaya-kamu-pede-ngomong-di-depan-umum</item>
+    </string-array>
+    <!--    data dummy article-->
+
 </resources>
