@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        //Test Change2
         installSplashScreen().setKeepOnScreenCondition{ show }
         Handler(Looper.getMainLooper()).postDelayed({
             show = false
