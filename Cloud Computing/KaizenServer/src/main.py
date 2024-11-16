@@ -3,10 +3,10 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from src.user.router import router as user_router
+from src.speech.router import router as speech_router
+
 app = FastAPI()
-
 port = int(os.environ.get("PORT", 8080))
-
 
 origins = [
     "http://localhost",
@@ -22,6 +22,7 @@ app.add_middleware(
 )
 
 app.include_router(user_router, prefix="/user", tags=["user"])
+app.include_router(speech_router, prefix="/speech", tags=["speech"])
 
 @app.get("/")
 def read_root():
