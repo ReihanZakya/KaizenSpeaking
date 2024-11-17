@@ -1,6 +1,10 @@
 package com.example.kaizenspeaking.ui.analyze
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,14 +15,21 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.kaizenspeaking.R
 import com.example.kaizenspeaking.databinding.FragmentAnalyzeBinding
+import com.example.kaizenspeaking.ui.instructions.OnboardingActivity
 
 class AnalyzeFragment : Fragment() {
 
     private var _binding: FragmentAnalyzeBinding? = null
-
     private val binding get() = _binding!!
-
     private var state = 0
+    private val handler = Handler(Looper.getMainLooper())
+    private var hasShownOnboarding = false
+
+    companion object {
+        private const val PREFS_NAME = "OnboardingPrefs"
+        private const val KEY_HAS_SHOWN_ONBOARDING = "hasShownOnboarding"
+        private const val ONBOARDING_DELAY = 5000L // 5 seconds
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,6 +45,13 @@ class AnalyzeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        checkAndShowOnboarding()
+
+//       Lihat Instruksi
+        binding.btnViewIntructions.setOnClickListener {
+            startOnboardingManually()
+        }
+
 
 //        button
         binding.btnMultiFunction.text = getString(R.string.start_record)
@@ -46,6 +64,43 @@ class AnalyzeFragment : Fragment() {
         binding.btnMultiFunction.setOnClickListener {
             handleButtonClick()
         }
+    }
+
+    private fun startOnboardingManually() {
+        val intent = Intent(requireContext(), OnboardingActivity::class.java).apply {
+            putExtra("manual_start", true) // Flag to indicate manual start
+        }
+        startActivity(intent)
+    }
+
+    private fun checkAndShowOnboarding() {
+        // Check if onboarding has been shown before
+        val prefs = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        hasShownOnboarding = prefs.getBoolean(KEY_HAS_SHOWN_ONBOARDING, false)
+
+        if (!hasShownOnboarding) {
+            // Set timer to show onboarding after 5 seconds
+            handler.postDelayed({
+                if (isAdded && !hasShownOnboarding) { // Check if fragment is still attached
+                    showOnboarding()
+                }
+            }, ONBOARDING_DELAY)
+        }
+    }
+
+    private fun showOnboarding() {
+        if (!hasShownOnboarding) {
+            // Mark onboarding as shown
+            requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                .edit()
+                .putBoolean(KEY_HAS_SHOWN_ONBOARDING, true)
+                .apply()
+
+            hasShownOnboarding = true
+        }
+
+        // Show onboarding activity
+        startActivity(Intent(requireContext(), OnboardingActivity::class.java))
     }
 
     private fun handleButtonClick() {

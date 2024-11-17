@@ -15,4 +15,6 @@
     <color name="gray_white">#E7E7E7</color>
     <color name="blue">#0072FF</color>
     <color name="red_kaizen">#D93337</color>
+    <color name="indicator_active">#FFFFFF</color>
+    <color name="indicator_inactive">#B0BEC5</color>
 </resources>
