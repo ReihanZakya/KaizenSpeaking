@@ -21,6 +21,7 @@ import android.os.Environment
 import android.provider.MediaStore
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import android.os.Handler
 
 class AnalyzeFragment : Fragment() {
 
@@ -34,6 +35,13 @@ class AnalyzeFragment : Fragment() {
     private var audioFile: File? = null
 
     private val REQUEST_CODE_RECORD_AUDIO = 1
+
+    // Time
+    private var isRunning = false
+    private var elapsedTime: Long = 0L
+    private var startTime: Long = 0L
+    private lateinit var handler: Handler
+    private lateinit var runnable: Runnable
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -85,6 +93,8 @@ class AnalyzeFragment : Fragment() {
                 binding.btnMultiFunction.text = getString(R.string.start_record)
                 binding.btnMultiFunction.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
                 navigateToAnalysisFragment()
+                elapsedTime = 0L // Reset waktu
+                binding.tvTimer.text = "00:00" // Reset tampilan stopwatch
                 state = 0
             }
         }
@@ -140,6 +150,11 @@ class AnalyzeFragment : Fragment() {
                 }
             }
 
+            // Memulai Stopwatch
+            startTime = System.currentTimeMillis() - elapsedTime
+            isRunning = true
+            startStopwatch()
+
             Toast.makeText(requireContext(), "Recording started", Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
             e.printStackTrace()
@@ -147,6 +162,26 @@ class AnalyzeFragment : Fragment() {
         }
     }
 
+    private fun startStopwatch() {
+        handler = Handler()
+        runnable = object : Runnable {
+            override fun run() {
+                if (isRunning) {
+                    val now = System.currentTimeMillis()
+                    elapsedTime = now - startTime
+                    binding.tvTimer.text = formatTime(elapsedTime)
+                    handler.postDelayed(this, 1000) // Update setiap detik
+                }
+            }
+        }
+        handler.post(runnable)
+    }
+
+    private fun formatTime(ms: Long): String {
+        val seconds = (ms / 1000) % 60
+        val minutes = (ms / (1000 * 60)) % 60
+        return String.format("%02d:%02d", minutes, seconds)
+    }
 
     private fun stopRecording() {
         try {
@@ -171,6 +206,10 @@ class AnalyzeFragment : Fragment() {
                     Toast.LENGTH_LONG
                 ).show()
             }
+            // Menghentikan Stopwatch
+            isRunning = false
+            handler.removeCallbacks(runnable)
+            Toast.makeText(requireContext(), "Recording stopped", Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
             e.printStackTrace()
             Toast.makeText(requireContext(), "Failed to stop recording: ${e.message}", Toast.LENGTH_LONG).show()

@@ -129,11 +129,11 @@
             app:layout_constraintTop_toBottomOf="@+id/name" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/tvTimer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="00.00.10"
+            android:text="00.00"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="@+id/imgMic"
             app:layout_constraintStart_toStartOf="@+id/imgMic"
@@ -148,9 +148,9 @@
             android:text="@string/start_record"
             android:textStyle="bold"
             android:textColor="@color/black"
-            app:layout_constraintEnd_toEndOf="@+id/textView3"
-            app:layout_constraintStart_toStartOf="@+id/textView3"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+            app:layout_constraintEnd_toEndOf="@+id/tvTimer"
+            app:layout_constraintStart_toStartOf="@+id/tvTimer"
+            app:layout_constraintTop_toBottomOf="@+id/tvTimer" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
