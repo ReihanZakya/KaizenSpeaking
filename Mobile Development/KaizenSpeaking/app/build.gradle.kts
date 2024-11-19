@@ -58,7 +58,6 @@ dependencies {
 
     implementation(libs.androidx.core.splashscreen)
 
-//    Chart
     implementation (libs.mpandroidchart)
     implementation (libs.simple.gauge.android)
 }
