@@ -19,6 +19,9 @@
             android:name=".ui.auth.SignUpActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.instructions.OnboardingActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/SplashTheme">
@@ -28,6 +31,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
     </application>
 
 </manifest>
