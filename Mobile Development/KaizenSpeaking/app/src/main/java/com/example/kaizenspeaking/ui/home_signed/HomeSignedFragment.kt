@@ -1,15 +1,13 @@
 package com.example.kaizenspeaking.ui.home_signed
 
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.kaizenspeaking.R
 import com.example.kaizenspeaking.databinding.FragmentHomeSignedBinding
 import com.example.kaizenspeaking.ui.home.Article
 import com.example.kaizenspeaking.ui.home.ArticleAdapter
@@ -24,56 +22,83 @@ class HomeSignedFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var lineChart: LineChart
+    private lateinit var homeSignedViewModel: HomeSignedViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val homeSignedViewModel = ViewModelProvider(this)[HomeSignedViewModel::class.java]
+        homeSignedViewModel = ViewModelProvider(this)[HomeSignedViewModel::class.java]
         _binding = FragmentHomeSignedBinding.inflate(inflater, container, false)
 
         // Initialize the LineChart
         lineChart = binding.lineChart
 
-        // Data for each Exercise
-        val exerciseLabels = arrayOf("Latihan 1", "Latihan 2", "Latihan 3")
-        val dataA = arrayOf(65f, 70f, 80f, 85f, 92f, 94f)
-        val dataB = arrayOf(50f, 52f, 60f, 75f, 85f, 95f)
-        val dataC = arrayOf(70f, 72f, 75f, 79f, 82f, 85f)
-        val dataD = arrayOf(40f, 65f, 75f, 80f, 83f, 90f)
+        // Initialize chart data in ViewModel
+        homeSignedViewModel.initChartData()
 
-        // Create entries for each line
-        val entriesA = ArrayList<Entry>()
-        val entriesB = ArrayList<Entry>()
-        val entriesC = ArrayList<Entry>()
-        val entriesD = ArrayList<Entry>()
+        // Observe LiveData for chart entries
+        homeSignedViewModel.entriesA.observe(viewLifecycleOwner, { entriesA ->
+            val dataSetA = LineDataSet(entriesA, "Kejelasan")
+            dataSetA.color = resources.getColor(android.R.color.holo_blue_light)
 
-        // Populate entries for each data series
-        for (i in exerciseLabels.indices) {
-            entriesA.add(Entry(i.toFloat(), dataA[i]))
-            entriesB.add(Entry(i.toFloat(), dataB[i]))
-            entriesC.add(Entry(i.toFloat(), dataC[i]))
-            entriesD.add(Entry(i.toFloat(), dataD[i]))
-        }
+            // Similarly set up other datasets (B, C, D)
+            homeSignedViewModel.entriesB.observe(viewLifecycleOwner, { entriesB ->
+                val dataSetB = LineDataSet(entriesB, "Diksi")
+                dataSetB.color = resources.getColor(android.R.color.holo_green_light)
 
-        // Create datasets for each category (A, B, C, D)
-        val dataSetA = LineDataSet(entriesA, "Kejelasan")
-        val dataSetB = LineDataSet(entriesB, "Diksi")
-        val dataSetC = LineDataSet(entriesC, "Kelancaran")
-        val dataSetD = LineDataSet(entriesD, "Emosi")
+                homeSignedViewModel.entriesC.observe(viewLifecycleOwner, { entriesC ->
+                    val dataSetC = LineDataSet(entriesC, "Kelancaran")
+                    dataSetC.color = resources.getColor(android.R.color.holo_red_light)
 
-        // Set colors for each line
-        dataSetA.color = resources.getColor(android.R.color.holo_blue_light)
-        dataSetB.color = resources.getColor(android.R.color.holo_green_light)
-        dataSetC.color = resources.getColor(android.R.color.holo_red_light)
-        dataSetD.color = resources.getColor(android.R.color.holo_orange_light)
+                    homeSignedViewModel.entriesD.observe(viewLifecycleOwner, { entriesD ->
+                        val dataSetD = LineDataSet(entriesD, "Emosi")
+                        dataSetD.color = resources.getColor(android.R.color.holo_orange_light)
 
-        // Create LineData object and set it on the chart
-        val lineData = LineData(dataSetA, dataSetB, dataSetC, dataSetD)
-        lineChart.data = lineData
+                        // Create LineData object and set it on the chart
+                        val lineData = LineData(dataSetA, dataSetB, dataSetC, dataSetD)
+                        lineChart.data = lineData
 
-        // Refresh the chart
-        lineChart.invalidate()
+                        // Configure X Axis
+                        val xAxis = lineChart.xAxis
+                        xAxis.position =
+                            com.github.mikephil.charting.components.XAxis.XAxisPosition.BOTTOM
+                        xAxis.granularity = 1f
+                        xAxis.labelCount = entriesA.size
+                        xAxis.valueFormatter =
+                            object : com.github.mikephil.charting.formatter.ValueFormatter() {
+                                override fun getFormattedValue(value: Float): String {
+                                    return "${value.toInt()}"
+                                }
+                            }
+
+                        // Set Y Axis
+                        val leftYAxis = lineChart.axisLeft
+                        val rightYAxis = lineChart.axisRight
+                        leftYAxis.axisMinimum = 0f
+                        leftYAxis.valueFormatter =
+                            object : com.github.mikephil.charting.formatter.ValueFormatter() {
+                                override fun getFormattedValue(value: Float): String {
+                                    return value.toInt().toString()
+                                }
+                            }
+                        rightYAxis.isEnabled = false
+
+                        lineChart.description.text = "Latihan Ke: "
+                        lineChart.setExtraOffsets(0f, 20f, 0f, 0f)
+
+                        // Configure Legend
+                        val legend = lineChart.legend
+                        legend.textSize = 10f
+                        legend.form =
+                            com.github.mikephil.charting.components.Legend.LegendForm.CIRCLE
+                        legend.formSize = 8f
+
+                        lineChart.invalidate() // Refresh chart
+                    })
+                })
+            })
+        })
 
         // Initialize RecyclerView with ArticleAdapter
         val articles = List(homeSignedViewModel.articleTitles.size) { index ->
@@ -85,15 +110,16 @@ class HomeSignedFragment : Fragment() {
             )
         }
 
+        // Mengamati perubahan pada LiveData numberOfExercise
+        homeSignedViewModel.numberOfExercise.observe(viewLifecycleOwner, { newText ->
+            // Update TextView dengan nilai baru
+            binding.numberOfExerciseText.text = newText
+        })
+
         val adapter = ArticleAdapter(requireContext(), articles)
         binding.ArticlesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.ArticlesRecyclerView.adapter = adapter
 
-        // Set onClickListener for accountName
-        binding.accountName.setOnClickListener {
-            val navController = findNavController()
-            navController.navigate(R.id.navigation_home_signed) // Navigasi ke HomeSignedFragment
-        }
         return binding.root
     }
 
