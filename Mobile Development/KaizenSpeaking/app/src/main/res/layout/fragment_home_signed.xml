@@ -6,15 +6,14 @@
     android:layout_height="match_parent"
     android:layout_marginStart="16dp"
     android:layout_marginEnd="16dp"
-    tools:context=".ui.home.HomeFragment">
+    tools:context=".ui.home_signed.HomeSignedFragment">
 
     <TextView
         android:id="@+id/accountName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
         android:layout_marginTop="20dp"
-        android:text="@string/account_name"
+        android:text="@string/greetings_with_name"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -33,66 +32,71 @@
         app:layout_constraintTop_toTopOf="@+id/accountName"
         app:layout_constraintVertical_bias="0.307" />
 
-    <LinearLayout
-        android:id="@+id/opening"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/progress_title"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/accountButton"
-        tools:layout_editor_absoluteX="0dp">
+        android:layout_marginTop="4dp"
+        android:text="@string/progress_title"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/accountButton" />
 
-        <ImageView
-            android:id="@+id/vintage1"
-            android:layout_width="127dp"
-            android:layout_height="190dp"
-            android:contentDescription="@string/hallo"
-            android:src="@drawable/vintage1" />
+    <androidx.cardview.widget.CardView
+        android:id="@+id/progress_chart_layout"
+        android:layout_width="0dp"
+        android:layout_height="280dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progress_title">
 
         <LinearLayout
-            android:id="@+id/cardOpening"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="16dp"> <!-- Set background color to red -->
+            android:layout_height="match_parent"
+            android:gravity="start"
+            android:orientation="vertical">
 
-            <!-- Greeting Message -->
             <TextView
-                android:id="@+id/greetingsCard"
+                android:id="@+id/number_of_exercise_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rounded_rectangle_background"
-                android:gravity="center"
-                android:padding="16dp"
-                android:text="Kamu belum melakukan login nih. Ayo login untuk menyimpan riwayat dan melihat perkembanganmu!"
-                android:textColor="@android:color/white"
-                android:textSize="16sp" />
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/number_of_exercise"
+                android:textColor="?attr/colorPrimary"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/progress_chart_layout" />
 
-            <!-- Button for "Coba Analisis Sekarang" -->
-            <TextView
-                android:id="@+id/greetingsButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:gravity="center"
-                android:text="Coba Analisis Sekarang"
-                android:textColor="@android:color/holo_blue_light"
-                android:textSize="16sp"/>
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/lineChart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="12dp" />
         </LinearLayout>
-    </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
 
     <TextView
         android:id="@+id/ArticleTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="12dp"
         android:text="@string/article_title"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/opening" />
+        app:layout_constraintTop_toBottomOf="@+id/progress_chart_layout" />
 
     <TextView
         android:id="@+id/articleDescription"
