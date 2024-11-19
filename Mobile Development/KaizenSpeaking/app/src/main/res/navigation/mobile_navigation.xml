@@ -32,4 +32,10 @@
         android:name="com.example.kaizenspeaking.ui.analyze.AnalyzeResultFragment"
         android:label="fragment_analyze_result"
         tools:layout="@layout/fragment_analyze_result" />
+
+    <fragment
+        android:id="@+id/navigation_home_signed"
+        android:name="com.example.kaizenspeaking.ui.home_signed.HomeSignedFragment"
+        android:label="HomeSigned"
+        tools:layout="@layout/fragment_home_signed" />
 </navigation>
