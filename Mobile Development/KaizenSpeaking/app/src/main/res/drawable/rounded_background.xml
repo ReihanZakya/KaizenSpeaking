@@ -1,0 +1,8 @@
+<!-- rounded_background.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#FFFFFF"/> <!-- Warna latar belakang -->
+    <corners android:radius="16dp"/> <!-- Radius sudut melengkung -->
+    <stroke
+        android:width="2dp"
+        android:color="#000000"/> <!-- Warna dan lebar garis tepi -->
+</shape>

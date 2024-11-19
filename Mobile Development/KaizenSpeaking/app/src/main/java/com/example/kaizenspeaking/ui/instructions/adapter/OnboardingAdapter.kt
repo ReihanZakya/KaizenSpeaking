@@ -1,16 +1,12 @@
 package com.example.kaizenspeaking.ui.instructions.adapter
 
-
-
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kaizenspeaking.databinding.ItemOnboardingBinding
 import com.example.kaizenspeaking.ui.instructions.data.OnboardingItem
 
-
-class OnboardingAdapter(private val onboardingItems: List<OnboardingItem>) :
+class OnboardingAdapter(val onboardingItems: List<OnboardingItem>) :
     RecyclerView.Adapter<OnboardingAdapter.OnboardingViewHolder>() {
 
     inner class OnboardingViewHolder(private val binding: ItemOnboardingBinding) :
@@ -21,9 +17,7 @@ class OnboardingAdapter(private val onboardingItems: List<OnboardingItem>) :
                 imageOnboarding.setImageResource(onboardingItem.image)
                 textTitle.text = onboardingItem.title
                 textDescription.text = onboardingItem.description
-                containerOnboarding.setBackgroundColor(
-                    ContextCompat.getColor(itemView.context, onboardingItem.backgroundColor)
-                )
+                containerOnboarding.setBackgroundResource(onboardingItem.backgroundImage)
             }
         }
     }

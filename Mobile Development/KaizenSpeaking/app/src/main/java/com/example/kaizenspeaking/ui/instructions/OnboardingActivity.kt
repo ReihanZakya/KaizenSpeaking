@@ -4,16 +4,23 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.example.kaizenspeaking.R
-import com.example.kaizenspeaking.databinding.ActivityOnboardingBinding
 import com.example.kaizenspeaking.ui.instructions.adapter.OnboardingAdapter
+import com.example.kaizenspeaking.ui.instructions.animation.CubeInScalingTransformation
 import com.example.kaizenspeaking.ui.instructions.data.OnboardingItem
 
+@Suppress("DEPRECATION")
 class OnboardingActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityOnboardingBinding
+    private lateinit var onboardingViewPager: ViewPager2
+    private lateinit var indicatorContainer: LinearLayout
+    private lateinit var buttonBack: TextView
+    private lateinit var buttonNext: ImageView
     private lateinit var adapter: OnboardingAdapter
 
     companion object {
@@ -27,13 +34,11 @@ class OnboardingActivity : AppCompatActivity() {
             context.startActivity(intent)
         }
 
-        // Function to check if onboarding has been shown
         fun hasSeenOnboarding(context: Context): Boolean {
             return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
                 .getBoolean(KEY_HAS_SHOWN_ONBOARDING, false)
         }
 
-        // Function to start onboarding with check
         fun startWithCheck(context: Context) {
             if (!hasSeenOnboarding(context)) {
                 context.startActivity(Intent(context, OnboardingActivity::class.java))
@@ -44,14 +49,17 @@ class OnboardingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Check if onboarding should be shown
         if (hasSeenOnboarding(this) && !isManualStart()) {
             proceedToMainActivity()
             return
         }
 
-        binding = ActivityOnboardingBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_onboarding)
+
+        onboardingViewPager = findViewById(R.id.onboardingViewPager)
+        indicatorContainer = findViewById(R.id.indicatorContainer)
+        buttonBack = findViewById(R.id.buttonBack)
+        buttonNext = findViewById(R.id.buttonNext)
 
         setupOnboardingItems()
         setupNavigationButtons()
@@ -59,7 +67,6 @@ class OnboardingActivity : AppCompatActivity() {
     }
 
     private fun isManualStart(): Boolean {
-        // Check if activity was started manually (from button click)
         return intent.getBooleanExtra("manual_start", false)
     }
 
@@ -68,64 +75,65 @@ class OnboardingActivity : AppCompatActivity() {
             listOf(
                 OnboardingItem(
                     R.drawable.img_instructions_1,
-                    "Pastikan Anda berada di ruangan yang senyap untuk mengurangi gangguan suara. ",
-                    "Untuk hasil analisis suara yang akurat, pastikan Anda berada di ruangan yang senyap dan minim gangguan suara. Keheningan lingkungan sekitar akan membantu aplikasi dalam mendeteksi dan menganalisis ucapan dengan lebih jelas, sehingga memberikan hasil yang lebih optimal.",
-                    R.color.red_onboarding,
+                    getString(R.string.text_instruction_1),
+                    getString(R.string.desc_instruction_1),
+                    R.drawable.background_instructions_1,
+                    R.drawable.btn_next_yellow
                 ),
                 OnboardingItem(
                     R.drawable.img_instructions_2,
-                    "Persiapkan topik pembicaraan Anda",
-                    "Sebelum memulai rekaman, siapkan topik yang ingin Anda bicarakan. Hal ini akan membantu Anda berbicara dengan lebih lancar dan terstruktur.",
-                    R.color.yellow_onboarding,
+                    getString(R.string.text_instruction_2),
+                    getString(R.string.desc_instruction_2),
+                    R.drawable.background_instruction_2,
+                    R.drawable.btn_next_red
                 ),
                 OnboardingItem(
                     R.drawable.img_instructions_3,
-                    "Mulai rekaman dengan suara yang jelas",
-                    "Bicaralah dengan suara yang jelas dan tempo yang sesuai. Hindari berbicara terlalu cepat atau terlalu lambat.",
-                    R.color.red_onboarding,
+                    getString(R.string.text_instruction_3),
+                    getString(R.string.desc_instruction_3),
+                    R.drawable.background_instruction_3,
+                    R.drawable.btn_next_yellow
                 ),
                 OnboardingItem(
                     R.drawable.img_instructions_4,
-                    "Tunggu hasil analisis",
-                    "Setelah selesai merekam, tunggu beberapa saat untuk sistem menganalisis rekaman Anda. Hasil analisis akan menunjukkan berbagai aspek dari cara berbicara Anda.",
-                    R.color.yellow_onboarding,
+                    getString(R.string.text_instruction_4),
+                    getString(R.string.desc_instruction_4),
+                    R.drawable.background_instruction_4,
+                    R.drawable.btn_next_red
                 ),
                 OnboardingItem(
                     R.drawable.img_instructions_5,
-                    "Perhatikan hasil analisis",
-                    "Pelajari hasil analisis dengan baik untuk mengetahui area mana yang perlu ditingkatkan dalam kemampuan berbicara Anda.",
-                    R.color.red_onboarding,
+                    getString(R.string.text_instruction_5),
+                    getString(R.string.desc_instruction_5),
+                    R.drawable.background_instruction_5,
+                    R.drawable.btn_finish
                 )
             )
         )
-        binding.onboardingViewPager.adapter = adapter
+        onboardingViewPager.adapter = adapter
+        onboardingViewPager.setPageTransformer(CubeInScalingTransformation())
     }
 
     private fun setupNavigationButtons() {
-        // Setup back button
-        binding.buttonBack.setOnClickListener {
-            if (binding.onboardingViewPager.currentItem == 0) {
+        buttonBack.setOnClickListener {
+            if (onboardingViewPager.currentItem == 0) {
                 finish()
             } else {
-                binding.onboardingViewPager.currentItem -= 1
+                onboardingViewPager.currentItem -= 1
             }
         }
 
-        // Setup next button
-        binding.buttonNext.setOnClickListener {
-            if (binding.onboardingViewPager.currentItem == adapter.itemCount - 1) {
+        buttonNext.setOnClickListener {
+            if (onboardingViewPager.currentItem == adapter.itemCount - 1) {
                 completeOnboarding()
             } else {
-                binding.onboardingViewPager.currentItem += 1
+                onboardingViewPager.currentItem += 1
             }
         }
-
-        // Add skip button if needed
-
     }
 
     private fun setupPageChangeCallbacks() {
-        binding.onboardingViewPager.registerOnPageChangeCallback(
+        onboardingViewPager.registerOnPageChangeCallback(
             object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
@@ -137,7 +145,7 @@ class OnboardingActivity : AppCompatActivity() {
     }
 
     private fun updateIndicators(position: Int) {
-        binding.indicatorContainer.removeAllViews()
+        indicatorContainer.removeAllViews()
 
         val indicators = Array(adapter.itemCount) { index ->
             androidx.appcompat.widget.AppCompatImageView(this).apply {
@@ -151,28 +159,22 @@ class OnboardingActivity : AppCompatActivity() {
         }
 
         indicators.forEach { indicator ->
-            binding.indicatorContainer.addView(indicator)
+            indicatorContainer.addView(indicator)
         }
     }
 
     private fun updateNavigationButtons(position: Int) {
-        binding.buttonBack.visibility = View.VISIBLE
-
-        // Update next button appearance based on position
-        binding.buttonNext.setImageResource(
+        buttonBack.visibility = View.VISIBLE
+        buttonNext.setImageResource(
             if (position == adapter.itemCount - 1) {
-                R.drawable.btn_next // Ganti dengan icon finish jika ada
+                R.drawable.btn_finish
             } else {
-                R.drawable.btn_next
+                adapter.onboardingItems[position].nextButtonImage
             }
         )
-
-        // Show/hide skip button based on position
-
     }
 
     private fun completeOnboarding() {
-        // Mark onboarding as completed
         getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
             .edit()
             .putBoolean(KEY_HAS_SHOWN_ONBOARDING, true)
@@ -182,6 +184,7 @@ class OnboardingActivity : AppCompatActivity() {
     }
 
     private fun proceedToMainActivity() {
+
         finish()
     }
 }
