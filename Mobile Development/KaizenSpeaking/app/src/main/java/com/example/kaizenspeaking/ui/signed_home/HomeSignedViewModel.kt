@@ -1,13 +1,11 @@
-package com.example.kaizenspeaking.ui.home_signed
+package com.example.kaizenspeaking.ui.signed_home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import com.example.kaizenspeaking.R
 import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineDataSet
 
 class HomeSignedViewModel(application: Application) : AndroidViewModel(application) {
     private val context = application.applicationContext

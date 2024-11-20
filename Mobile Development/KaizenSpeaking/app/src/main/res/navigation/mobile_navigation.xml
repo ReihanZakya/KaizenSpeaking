@@ -53,7 +53,7 @@
 
     <fragment
         android:id="@+id/navigation_home_signed"
-        android:name="com.example.kaizenspeaking.ui.home_signed.HomeSignedFragment"
+        android:name="com.example.kaizenspeaking.ui.signed_home.HomeSignedFragment"
         android:label="HomeSigned"
         tools:layout="@layout/fragment_home_signed" />
 </navigation>
