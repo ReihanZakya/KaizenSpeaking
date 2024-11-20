@@ -3,6 +3,7 @@ package com.example.kaizenspeaking
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -11,6 +12,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.kaizenspeaking.databinding.ActivityMainBinding
+import com.example.kaizenspeaking.helper.DeviceIdHelper
+import com.example.kaizenspeaking.helper.SharedPreferencesHelper
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,6 +22,17 @@ class MainActivity : AppCompatActivity() {
     private var show = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Cek dan buat Device ID
+        val deviceIdKey = "device_id"
+        var deviceId = SharedPreferencesHelper.getFromSharedPreferences(this, deviceIdKey)
+        if (deviceId == null) {
+            deviceId = DeviceIdHelper.getUniqueDeviceId(this)
+            SharedPreferencesHelper.saveToSharedPreferences(this, deviceIdKey, deviceId)
+            Log.d("DeviceID", "Generated new Device ID: $deviceId")
+        } else {
+            Log.d("DeviceID", "Existing Device ID: $deviceId")
+        }
 
         //Test Change2
         installSplashScreen().setKeepOnScreenCondition{ show }
