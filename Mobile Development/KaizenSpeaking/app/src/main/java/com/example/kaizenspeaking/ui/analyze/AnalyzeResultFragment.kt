@@ -17,6 +17,7 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 
+@Suppress("DEPRECATION")
 class AnalyzeResultFragment : Fragment() {
 
     private lateinit var barChart: BarChart

@@ -4,15 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.kaizenspeaking.R
 import com.example.kaizenspeaking.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
+
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
@@ -21,11 +19,9 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        (requireActivity() as AppCompatActivity).supportActionBar?.hide()
         val homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        // Initialize RecyclerView with ArticleAdapter
         val articles = List(homeViewModel.articleTitles.size) { index ->
             Article(
                 title = homeViewModel.articleTitles[index],
@@ -39,11 +35,6 @@ class HomeFragment : Fragment() {
         binding.ArticlesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.ArticlesRecyclerView.adapter = adapter
 
-        // Set onClickListener for accountName
-        binding.accountName.setOnClickListener {
-            val navController = findNavController()
-            navController.navigate(R.id.navigation_home_signed) // Navigasi ke HomeSignedFragment
-        }
         return binding.root
     }
 

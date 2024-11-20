@@ -15,4 +15,5 @@
         android:id="@+id/navigation_history"
         android:icon="@drawable/ic_history_24"
         android:title="@string/title_history" />
+
 </menu>
