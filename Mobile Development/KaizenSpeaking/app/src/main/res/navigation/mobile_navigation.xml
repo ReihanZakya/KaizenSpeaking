@@ -12,6 +12,12 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
+        android:id="@+id/navigation_home_signed"
+        android:name="com.example.kaizenspeaking.ui.home_signed.HomeSignedFragment"
+        android:label="HomeSigned"
+        tools:layout="@layout/fragment_home_signed" />
+
+    <fragment
         android:id="@+id/navigation_analyze"
         android:name="com.example.kaizenspeaking.ui.analyze.AnalyzeFragment"
         android:label="@string/title_analyze"
@@ -51,9 +57,4 @@
             app:argType="string" />
     </fragment>
 
-    <fragment
-        android:id="@+id/navigation_home_signed"
-        android:name="com.example.kaizenspeaking.ui.home_signed.HomeSignedFragment"
-        android:label="HomeSigned"
-        tools:layout="@layout/fragment_home_signed" />
 </navigation>

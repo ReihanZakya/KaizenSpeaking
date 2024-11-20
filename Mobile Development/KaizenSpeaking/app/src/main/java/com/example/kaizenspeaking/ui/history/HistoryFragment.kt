@@ -12,10 +12,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kaizenspeaking.R
 import com.example.kaizenspeaking.databinding.FragmentHistoryBinding
 import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 
 @Suppress("DEPRECATION")
 class HistoryFragment : Fragment() {
@@ -26,6 +30,7 @@ class HistoryFragment : Fragment() {
     private val viewModel: HistoryViewModel by viewModels()
     private val trainingAdapter = TrainingSessionAdapter()
     private lateinit var barChart: BarChart
+    private lateinit var lineChart: LineChart
 
 
     override fun onCreateView(
@@ -44,37 +49,46 @@ class HistoryFragment : Fragment() {
         setupObservers()
         setupClickListeners()
 
-        barChart = binding.barchart
-        barChart.getAxisRight().setDrawLabels(false)
+        lineChart = binding.lineChart
 
-        // Data for the chart
-        val entries = ArrayList<BarEntry>()
-        entries.add(BarEntry(0f, 25f)) // Data point 1
-        entries.add(BarEntry(1f, 50f)) // Data point 2
-        entries.add(BarEntry(2f, 100f)) // Data point 3
-        entries.add(BarEntry(3f, 75f)) // Data point 4
+        // Data for each Exercise
+        val exerciseLabels = arrayOf("Latihan 1", "Latihan 2", "Latihan 3")
+        val dataA = arrayOf(65f, 70f, 80f, 85f, 92f, 94f)
+        val dataB = arrayOf(50f, 52f, 60f, 75f, 85f, 95f)
+        val dataC = arrayOf(70f, 72f, 75f, 79f, 82f, 85f)
+        val dataD = arrayOf(40f, 65f, 75f, 80f, 83f, 90f)
 
+        // Create entries for each line
+        val entriesA = ArrayList<Entry>()
+        val entriesB = ArrayList<Entry>()
+        val entriesC = ArrayList<Entry>()
+        val entriesD = ArrayList<Entry>()
 
-        // Create BarDataSet
-        val barDataSet = BarDataSet(entries, "Bar Chart Example")
+        // Populate entries for each data series
+        for (i in exerciseLabels.indices) {
+            entriesA.add(Entry(i.toFloat(), dataA[i]))
+            entriesB.add(Entry(i.toFloat(), dataB[i]))
+            entriesC.add(Entry(i.toFloat(), dataC[i]))
+            entriesD.add(Entry(i.toFloat(), dataD[i]))
+        }
 
-        // Set different colors for each bar
-        val colors = arrayListOf(
-            resources.getColor(android.R.color.holo_blue_light),
-            resources.getColor(android.R.color.holo_green_light),
-            resources.getColor(android.R.color.holo_orange_light),
-            resources.getColor(android.R.color.holo_red_light)
-        )
-        barDataSet.colors = colors
+        // Create datasets for each category (A, B, C, D)
+        val dataSetA = LineDataSet(entriesA, "Kejelasan")
+        val dataSetB = LineDataSet(entriesB, "Diksi")
+        val dataSetC = LineDataSet(entriesC, "Kelancaran")
+        val dataSetD = LineDataSet(entriesD, "Emosi")
 
-        // Create BarData
-        val barData = BarData(barDataSet)
+        // Set colors for each line
+        dataSetA.color = resources.getColor(android.R.color.holo_blue_light)
+        dataSetB.color = resources.getColor(android.R.color.holo_green_light)
+        dataSetC.color = resources.getColor(android.R.color.holo_red_light)
+        dataSetD.color = resources.getColor(android.R.color.holo_orange_light)
 
-        // Set data to the chart
-        barChart.data = barData
+        val lineData = LineData(dataSetA, dataSetB, dataSetC, dataSetD)
+        lineChart.data = lineData
 
-        // Refresh chart to render the new data
-        barChart.invalidate()
+        // Refresh the chart
+        lineChart.invalidate()
 
     }
 

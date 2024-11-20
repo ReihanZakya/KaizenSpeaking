@@ -1,7 +1,6 @@
 package com.example.kaizenspeaking.ui.home_signed
 
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,6 @@ import com.example.kaizenspeaking.databinding.FragmentHomeSignedBinding
 import com.example.kaizenspeaking.ui.home.Article
 import com.example.kaizenspeaking.ui.home.ArticleAdapter
 import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 
