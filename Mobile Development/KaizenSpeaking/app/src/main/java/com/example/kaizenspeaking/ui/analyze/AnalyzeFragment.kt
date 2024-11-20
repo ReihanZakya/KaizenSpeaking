@@ -25,6 +25,7 @@ import android.provider.MediaStore
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import android.os.Handler
+import android.util.Log
 import com.example.kaizenspeaking.ui.instructions.OnboardingActivity
 
 class AnalyzeFragment : Fragment() {
@@ -136,6 +137,10 @@ class AnalyzeFragment : Fragment() {
                 binding.btnMultiFunction.setBackgroundResource(R.drawable.btn_red)
                 binding.imgMic.setImageResource(R.drawable.mic_on)
                 startRecording()
+                // Memulai Stopwatch
+                startTime = System.currentTimeMillis() - elapsedTime
+                isRunning = true
+                startStopwatch()
                 state = 1
             }
             1 -> {
@@ -160,7 +165,17 @@ class AnalyzeFragment : Fragment() {
     }
 
     private fun startRecording() {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(Manifest.permission.RECORD_AUDIO),
+                REQUEST_CODE_RECORD_AUDIO
+            )
+            return
+        }
+
         try {
+            mediaRecorder?.release()
             mediaRecorder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 MediaRecorder(requireContext())
             } else {
@@ -209,14 +224,12 @@ class AnalyzeFragment : Fragment() {
                 }
             }
 
-            // Memulai Stopwatch
-            startTime = System.currentTimeMillis() - elapsedTime
-            isRunning = true
-            startStopwatch()
+
 
             Toast.makeText(requireContext(), "Recording started", Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
             e.printStackTrace()
+            Log.e("MediaRecorder", "Error starting recording: ${e.message}")
             Toast.makeText(requireContext(), "Failed to start recording: ${e.message}", Toast.LENGTH_LONG).show()
         }
     }
@@ -229,11 +242,11 @@ class AnalyzeFragment : Fragment() {
                     val now = System.currentTimeMillis()
                     elapsedTime = now - startTime
                     binding.tvTimer.text = formatTime(elapsedTime)
-                    handler.postDelayed(this, 1000) // Update setiap detik
+                    handlerTimer.postDelayed(this, 1000) // Update setiap detik
                 }
             }
         }
-        handler.post(runnable)
+        handlerTimer.post(runnable)
     }
 
     private fun formatTime(ms: Long): String {
@@ -267,24 +280,12 @@ class AnalyzeFragment : Fragment() {
             }
             // Menghentikan Stopwatch
             isRunning = false
-            handler.removeCallbacks(runnable)
+            handlerTimer.removeCallbacks(runnable)
             Toast.makeText(requireContext(), "Recording stopped", Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
             e.printStackTrace()
+            Log.e("MediaRecorder", "Failed to stop recording: ${e.message}")
             Toast.makeText(requireContext(), "Failed to stop recording: ${e.message}", Toast.LENGTH_LONG).show()
-        }
-    }
-
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        if (requestCode == REQUEST_CODE_RECORD_AUDIO && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(requireContext(), "Permission granted", Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(requireContext(), "Permission denied", Toast.LENGTH_SHORT).show()
         }
     }
 
