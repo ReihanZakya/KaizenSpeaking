@@ -1,4 +1,4 @@
-package com.example.kaizenspeaking.ui.signed_home
+package com.example.kaizenspeaking.ui.home_signed
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

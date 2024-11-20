@@ -1,4 +1,4 @@
-package com.example.kaizenspeaking.ui.signed_home
+package com.example.kaizenspeaking.ui.home_signed
 
 import android.os.Bundle
 import android.view.LayoutInflater
