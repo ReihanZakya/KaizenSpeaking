@@ -15,6 +15,7 @@ import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.utils.ColorTemplate
 
 
+@Suppress("DEPRECATION")
 class AnalyzeResultFragment : Fragment() {
 
     private var _binding: FragmentAnalyzeResultBinding? = null

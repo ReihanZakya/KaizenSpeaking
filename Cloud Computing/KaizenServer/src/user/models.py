@@ -1,6 +1,7 @@
 import uuid
 from sqlalchemy import Column, String, CheckConstraint
 from sqlalchemy.dialects.postgresql import UUID as PGUUID
+from sqlalchemy.orm import relationship
 from src.database import Base
 
 class User(Base):
@@ -18,3 +19,5 @@ class User(Base):
     __table_args__ = (
         CheckConstraint("role IN ('admin', 'user')", name="check_user_role"),
     )
+
+    speech_histories = relationship("UsersSpeechHistory", back_populates="user", cascade="all, delete-orphan")

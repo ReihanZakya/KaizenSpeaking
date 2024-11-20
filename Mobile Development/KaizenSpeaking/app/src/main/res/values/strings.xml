@@ -29,14 +29,62 @@
     <string name="analyze">Analisis</string>
 
     <!--Instruction Slide-->
-    <string name="text_instruction_1">Pastikan Anda berada di ruangan yang senyap untuk mengurangi gangguan suara. </string>
-    <string name="desc_instruction_1">Untuk hasil analisis suara yang akurat, pastikan Anda berada di ruangan yang senyap dan minim gangguan suara. Keheningan lingkungan sekitar akan membantu aplikasi dalam mendeteksi dan menganalisis ucapan dengan lebih jelas, sehingga memberikan hasil yang lebih optimal.</string>
-    <string name="text_instruction_2">Pastikan mikrofon berfungsi baik dan berada pada jarak yang sesuai dari mulut.</string>
-    <string name="desc_instruction_2">Pastikan mikrofon Anda berfungsi dengan baik dan ditempatkan pada jarak yang tepat dari mulut. Posisi mikrofon yang ideal akan membantu menangkap suara dengan jelas, mengurangi distorsi, dan memastikan analisis yang lebih akurat.</string>
+    <string name="text_instruction_1">Berada di ruangan senyap untuk mengurangi gangguan suara. </string>
+    <string name="desc_instruction_1">Untuk analisis suara yang akurat, berada di ruangan senyap agar aplikasi mendeteksi dan menganalisis ucapan lebih jelas.</string>
+    <string name="text_instruction_2">Pastikan mikrofon berfungsi dan berada dekat mulut.</string>
+    <string name="desc_instruction_2">Pastikan mikrofon berfungsi baik dan ditempatkan dekat mulut untuk menangkap suara dengan jelas dan mengurangi distorsi.</string>
     <string name="text_instruction_3">Siapkan skrip atau poin utama agar pembicaraan terarah.</string>
-    <string name="desc_instruction_3">Siapkan skrip atau poin-poin utama sebelum memulai percakapan. Dengan persiapan yang matang, pembicaraan akan lebih terarah, jelas, dan mudah dianalisis, sehingga aplikasi dapat memberikan hasil yang lebih efektif dan tepat.</string>
-    <string name="text_instruction_4">Pastikan Anda memiliki waktu yang cukup untuk merekam tanpa gangguan.Pastikan Anda memiliki waktu yang cukup untuk merekam tanpa gangguan.</string>
-    <string name="desc_instruction_4">Pastikan Anda memiliki waktu yang cukup untuk merekam tanpa gangguan. Menghindari interupsi akan memastikan proses perekaman berjalan lancar dan hasil analisis suara lebih akurat dan optimal.</string>
-    <string name="text_instruction_5">Posisikan diri dengan nyaman dan sesuai dengan kebutuhan.</string>
-    <string name="desc_instruction_5">Keadaan tubuh yang rileks akan membantu Anda berbicara lebih natural, sehingga perekaman suara menjadi lebih jelas dan analisis dapat dilakukan dengan lebih tepat</string>
+    <string name="desc_instruction_3">Siapkan skrip atau poin-poin utama sebelum percakapan agar terarah, jelas, dan mudah dianalisis untuk hasil lebih efektif.</string>
+    <string name="text_instruction_4">Pastikan anda memiliki waktu yang cukup untuk merekam tanpa gangguan.</string>
+    <string name="desc_instruction_4">Siapkan waktu cukup untuk merekam tanpa interupsi agar hasil analisis suara akurat dan <optimal class=""></optimal></string>
+    <string name="text_instruction_5">Posisikan diri dengan rileks dan nyaman</string>
+    <string name="desc_instruction_5">Siapkan skrip atau poin-poin utama sebelum percakapan agar terarah, jelas, dan mudah dianalisis untuk hasil lebih efektif.></string>
+    <string name="account_name"><![CDATA[Sign In >]]></string>
+    <string name="article_title">Artikel</string>
+    <string name="article_description">Ayo baca artikel untuk menambah\nwawasan kamu</string>
+    <string name="account">Account</string>
+    <string name="searchArticle">Cari Artikel...</string>
+    <string name="hallo">Hallo!</string>
+    <string name="article_summary">Lorem Ipsum Dolor Sir Amet</string>
+    <string name="article_title_data">Judul Artikel Judul Artikel Judul Artikel Judul Artikel Judul Artikel Judul Artikel Judul Artikel</string>
+    <string name="article_description_data">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
+    <string name="play">Play</string>
+    <string name="riwayat_latihan">Riwayat Latihan</string>
+    <string name="progres_latihan">Progres Latihan</string>
+
+    <!--    data dummy article-->
+    <string-array name="tempdata_article_title">
+        <item>Cara Mudah Meningkatkan Kepercayaan Diri saat Berada di Depan Umum</item>
+        <item>Metode Public Speaking: Pengertian, Tujuan, Metode, dan Tips</item>
+        <item>Retorik Adalah: Seni Berbicara yang Efektif dan Meyakinkan</item>
+        <item>Public Speaking: Arti, Metode, Manfaat, Tujuan, dan Cara Meningkatkan Skill-nya</item>
+        <item>Pakai Cara Ini Supaya Kamu Pede Ngomong di Depan Umum!</item>
+    </string-array>
+    <integer-array name="tempdata_article_image">
+        <item>@drawable/tempdata_article_image1</item>
+        <item>@drawable/tempdata_article_image2</item>
+        <item>@drawable/tempdata_article_image3</item>
+        <item>@drawable/tempdata_article_image4</item>
+        <item>@drawable/tempdata_article_image5</item>
+    </integer-array>
+    <string-array name="tempdata_article_description">
+        <item>Halo, sahabat pembelajar! Berbicara di depan umum sering kali dianggap sebagai momok yang menakutkan. Faktanya, sebuah survei oleh National Institute of Mental Health menunjukkan bahwa sekitar 73% orang merasa cemas ketika harus tampil di depan orang banyak. </item>
+        <item>Metode Public Speaking – Grameds, pernahkah kamu berbicara di depan umum? Jika pernah, maka itu berarti kamu sedang melakukan public speaking. Wah, keren ya pastinya, bisa berkomunikasi di depan banyak orang.</item>
+        <item>Retorika adalah seni berbicara secara efektif dan meyakinkan untuk mempengaruhi pendengar. Istilah ini berasal dari bahasa Yunani "rhetorike" yang berarti keterampilan berpidato. Dalam pengertian yang lebih luas, retorika mencakup kemampuan menggunakan bahasa lisan maupun tulisan untuk berkomunikasi secara persuasif.</item>
+        <item>Sebelum membahas metode dan cara meningkatkannya, pertama-tama kita perlu mengulas definisi dari soft skill tersebut. Melansir laman ThoughtCo, public speaking adalah sebuah seni berpidato, di mana pembicara berkomunikasi dengan audiensnya melalui presentasi lisan.</item>
+        <item>Pernahkah kamu mempresentasikan sesuatu di depan kelas? Atau pernahkah kamu berpidato untuk sebuah acara? Nah, itu adalah berbicara di depan umum. Berbicara di depan umum merupakan teknik berbicara yang dibutuhkan oleh pembicara agar bisa menarik semua perhatian audiens.</item>
+    </string-array>
+    <string-array name="tempdata_article_url">
+        <item>https://www.kompasiana.com/salwaanur8965/671702aac925c424c2134192/cara-mudah-meningkatkan-kepercayaan-diri-saat-berada-di-depan-umum</item>
+        <item>https://www.gramedia.com/literasi/metode-public-speaking/</item>
+        <item>https://www.liputan6.com/feeds/read/5779700/retorik-adalah-seni-berbicara-yang-efektif-dan-meyakinkan</item>
+        <item>https://glints.com/id/lowongan/kemampuan-public-speaking/</item>
+        <item>https://www.generali.co.id/id/healthyliving/healthy-lifestyle/pakai-cara-ini-supaya-kamu-pede-ngomong-di-depan-umum</item>
+    </string-array>
+    <!--    data dummy article-->
+
+<!--History Page -->
+    <string name="hasil_analisis">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum. Cras venenatis euismod malesuada. Integer lacinia, nunc at aliquet sagittis, nunc dui varius libero, at pulvinar odio velit sit amet lectus. Nullam euismod, felis sit amet interdum scelerisque, lacus nisi egestas risus, sit amet vestibulum nisi sapien eu libero. Aliquam erat volutpat. Integer ut dolor quis risus vehicula vehicula ut sit amet eros. Nam suscipit eros a sapien viverra, a facilisis ipsum ultrices.Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Quisque at semper sem. Fusce mollis, nunc eu suscipit ultricies, velit nulla venenatis metus, in tincidunt tortor sapien id augue. Nunc fringilla dui non libero suscipit, non vehicula metus pretium. Cras ac volutpat elit. Vestibulum efficitur felis vel velit convallis, non pharetra sem aliquet. Suspendisse potenti. Vivamus sed laoreet nunc.Curabitr dapibus vulputate arcu, nec rhoncus nulla vestibulum nec. Etiam congue dui non odio fermentum, a consectetur tortor aliquam. Fusce at venenatis arcu. Aenean ultricies efficitur lacus, non tristique urna. Nam gravida bibendum arcu, eget luctus odio volutpat ut. Proin porttitor nulla in arcu fermentum, a cursus dolor consequat. Nunc suscipit tellus vel neque auctor imperdiet. Integer at dolor non elit luctus molestie. Mauris ut turpis bibendum, dapibus neque id, porttitor magna. Nullam aliquet tristique justo, in sagittis lorem viverra vel. Vivamus fermentum, quam a porttitor efficitur, sapien leo lacinia nunc, at luctus nunc sem eget felis. Fusce et nisl at odio dictum venenatis et et justo.Donec ut bibendum urna. Suspendisse non urna sed felis aliquam pretium. Nulla facilisi. Curabitur mollis purus eu facilisis cursus. Aliquam erat volutpat. Nullam condimentum, arcu eget luctus fermentum, risus ante bibendum massa, vel volutpat velit sapien non dolor. Aliquam sed bibendum ipsum. Quisque scelerisque vehicula velit, ut rhoncus dui eleifend non. Nam ornare, ex sed consectetur aliquet, enim urna vehicula libero, sed varius nisl lorem in ex. Integer ut turpis ut odio efficitur ultricies. Maecenas sagittis varius est, sed bibendum urna cursus in. Etiam id ultrices turpis. Sed et tortor sit amet nulla gravida ultricies.Aenean nec vestibulum mauris. Sed sit amet velit euismod, vehicula tortor a, feugiat erat. Cras lobortis mauris magna, vel gravida odio sollicitudin eu. Integer et augue eget nulla vehicula sollicitudin et ac nulla. Etiam ornare lacus vitae urna bibendum, nec eleifend metus convallis. Morbi nec ante at libero facilisis venenatis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Sed nec tempor urna, id porttitor arcu. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Ut ultricies tincidunt arcu nec venenatis. Suspendisse volutpat quam id risus bibendum, sit amet luctus erat consequat. Donec ac velit ac ligula facilisis vestibulum.Morbi dapibus odio vitae metus tempor, id blandit ex ornare. Nunc maximus, justo sit amet viverra laoreet, magna nisl fermentum mauris, eget efficitur orci urna at est. Integer eu enim et lectus volutpat tempus eget eget augue. Sed ac neque a ipsum scelerisque dignissim non a augue. Sed nec enim quis nunc posuere sodales. Nam egestas nibh non mi volutpat interdum. Aliquam erat volutpat.Duis sollicitudin est nisl, ut ultricies nisl fermentum vel. Cras ornare hendrerit lectus, vitae dignissim magna. Donec dapibus dui ac ligula cursus, ut tincidunt orci aliquet. Vivamus a leo posuere, accumsan lacus vel, euismod ex. Pellentesque et urna sit amet velit facilisis bibendum. Proin nec ligula nec libero pharetra rhoncus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nulla facilisi. Suspendisse potenti. Fusce nec varius libero. Nulla facilisi. Nullam ultrices eros a orci fermentum, id scelerisque ante auctor. Vivamus convallis augue a odio finibus, nec pulvinar ante vulputate.Ut ut vulputate mi. Integer finibus scelerisque sagittis. In varius libero vitae ultrices tempus. Vivamus at dolor nec turpis tincidunt euismod. Fusce bibendum neque nec efficitur convallis. Pellentesque id tincidunt nisi. Duis fermentum augue id risus varius, et bibendum dui aliquet. Aenean condimentum placerat risus, ut ultricies magna gravida eget. Ut in sem felis.Nullam fermentum nulla nec lectus lacinia, non posuere magna pharetra. Curabitur sit amet dui id nulla hendrerit gravida at vitae sapien. Etiam dictum vitae ex a egestas. Donec ut dui scelerisque, congue sem vel, hendrerit ligula. Mauris fermentum nulla id dolor hendrerit, quis porta erat auctor. Fusce eu nisl elit. Nulla facilisi. In sed venenatis augue. Fusce non magna a ante facilisis fringilla. Aliquam erat volutpat. Aliquam erat volutpat. Nulla facilisi. Proin vestibulum, lectus nec cursus rhoncus, eros dui sollicitudin urna, at dignissim nunc lectus et magna. Praesent dapibus vulputate nisi, eget faucibus velit sollicitudin ut.Nam mollis augue et purus efficitur, vel blandit erat vehicula. Fusce dapibus ullamcorper malesuada. Nulla auctor, leo sed maximus fermentum, justo ligula fermentum lacus, non fringilla mauris nunc sit amet nunc. Integer ac sapien lectus. Aliquam erat volutpat. Suspendisse tempus interdum ipsum, eu ullamcorper risus. Phasellus euismod mi a ex viverra, ac fermentum eros tincidunt. Suspendisse potenti. Suspendisse auctor velit vel libero feugiat bibendum. Vivamus in libero sed elit egestas rutrum.
+</string>
+    <string name="tvPageAnalisis">Hasil Analisis</string>
 </resources>

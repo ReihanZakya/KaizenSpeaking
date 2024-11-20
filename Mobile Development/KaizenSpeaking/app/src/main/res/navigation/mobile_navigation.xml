@@ -25,11 +25,31 @@
         android:id="@+id/navigation_history"
         android:name="com.example.kaizenspeaking.ui.history.HistoryFragment"
         android:label="@string/title_history"
-        tools:layout="@layout/fragment_history" />
+        tools:layout="@layout/fragment_history">
+        <action
+            android:id="@+id/action_navigation_history_to_trainingDetailFragment"
+            app:destination="@id/trainingDetailFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/analyzeResultFragment"
         android:name="com.example.kaizenspeaking.ui.analyze.AnalyzeResultFragment"
         android:label="fragment_analyze_result"
         tools:layout="@layout/fragment_analyze_result" />
+
+    <fragment
+        android:id="@+id/trainingDetailFragment"
+        android:name="com.example.kaizenspeaking.ui.history.detail.TrainingDetailFragment"
+        android:label="Training Detail"
+        tools:layout="@layout/fragment_training_detail">
+        <!-- Add arguments that will be passed to the fragment -->
+        <argument
+            android:name="sessionId"
+            app:argType="string" />
+        <argument
+            android:name="sessionTitle"
+            app:argType="string" />
+    </fragment>
+
+
 </navigation>
