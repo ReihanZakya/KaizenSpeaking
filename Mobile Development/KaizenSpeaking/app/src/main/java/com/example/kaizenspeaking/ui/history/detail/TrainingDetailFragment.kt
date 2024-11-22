@@ -45,31 +45,43 @@ class TrainingDetailFragment : Fragment() {
 
         // Konfigurasi BarChart
         barChart.axisRight.setDrawLabels(false)
+        barChart.axisLeft.axisMinimum = 0f // Set minimum value for Y axis
+        barChart.axisLeft.axisMaximum = 100f // Set maximum value for Y axis
 
-        // Data for the chart
-        val entries = ArrayList<BarEntry>()
-        entries.add(BarEntry(0f, 25f)) // Data point 1
-        entries.add(BarEntry(1f, 50f)) // Data point 2
-        entries.add(BarEntry(2f, 100f)) // Data point 3
-        entries.add(BarEntry(3f, 75f)) // Data point 4
+        // Data for the chart (representing 4 categories: Kejelasan, Diksi, Kelancaran, Emosi)
+        val entriesKejelasan = ArrayList<BarEntry>()
+        val entriesDiksi = ArrayList<BarEntry>()
+        val entriesKelancaran = ArrayList<BarEntry>()
+        val entriesEmosi = ArrayList<BarEntry>()
 
-        // Create BarDataSet
-        val barDataSet = BarDataSet(entries, "Bar Chart Example")
+        // Example data for each category
+        entriesKejelasan.add(BarEntry(0f, 50f))
+        entriesDiksi.add(BarEntry(1f, 30f))
+        entriesKelancaran.add(BarEntry(2f, 90f))
+        entriesEmosi.add(BarEntry(3f, 75f))
 
-        // Set different colors for each bar
-        val colors = arrayListOf(
-            resources.getColor(android.R.color.holo_blue_light),
-            resources.getColor(android.R.color.holo_green_light),
-            resources.getColor(android.R.color.holo_orange_light),
-            resources.getColor(android.R.color.holo_red_light)
-        )
-        barDataSet.colors = colors
+        // Create BarDataSets for each category
+        val barDataSetKejelasan = BarDataSet(entriesKejelasan, "Kejelasan")
+        val barDataSetDiksi = BarDataSet(entriesDiksi, "Diksi")
+        val barDataSetKelancaran = BarDataSet(entriesKelancaran, "Kelancaran")
+        val barDataSetEmosi = BarDataSet(entriesEmosi, "Emosi")
+
+        // Set colors for each category
+        barDataSetKejelasan.color = resources.getColor(android.R.color.holo_blue_light)
+        barDataSetDiksi.color = resources.getColor(android.R.color.holo_green_light)
+        barDataSetKelancaran.color = resources.getColor(android.R.color.holo_red_light)
+        barDataSetEmosi.color = resources.getColor(android.R.color.holo_orange_light)
 
         // Create BarData
-        val barData = BarData(barDataSet)
+        val barData = BarData(barDataSetKejelasan, barDataSetDiksi, barDataSetKelancaran, barDataSetEmosi)
 
         // Set data to the chart
         barChart.data = barData
+
+        // Disable X axis labels
+        barChart.xAxis.setDrawLabels(false)
+
+        barChart.description.text = " "
 
         // Refresh chart to render the new data
         barChart.invalidate()

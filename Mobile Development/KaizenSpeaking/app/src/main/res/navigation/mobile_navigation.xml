@@ -9,7 +9,11 @@
         android:id="@+id/navigation_home"
         android:name="com.example.kaizenspeaking.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_navigation_home_to_signInFragment"
+            app:destination="@+id/SignInFragment"/>
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_home_signed"
@@ -57,4 +61,27 @@
             app:argType="string" />
     </fragment>
 
+    <fragment
+        android:id="@+id/SignInFragment"
+        android:name="com.example.kaizenspeaking.ui.auth.SignInFragment"
+        tools:layout="@layout/fragment_sign_in">
+
+        <action
+            android:id="@+id/nav_to_signUpFragment"
+            app:destination="@+id/SignUpFragment">
+
+        </action>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/SignUpFragment"
+        android:name="com.example.kaizenspeaking.ui.auth.SignUpFragment"
+        tools:layout="@layout/fragment_sign_up">
+        <action
+            android:id="@+id/nav_to_signInFragment"
+            app:destination="@+id/SignInFragment">
+
+        </action>
+    </fragment>
 </navigation>

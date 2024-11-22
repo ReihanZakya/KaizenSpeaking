@@ -4,28 +4,58 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.kaizenspeaking.ui.history.data.TrainingSession
+import com.github.mikephil.charting.data.Entry
 
 class HistoryViewModel : ViewModel() {
 
-    private val _trainingSessions = MutableLiveData<List<TrainingSession>>()
-    val trainingSessions: LiveData<List<TrainingSession>> = _trainingSessions
+    // Data untuk chart
+    private val _entriesA = MutableLiveData<List<Entry>>()
+    val entriesA: LiveData<List<Entry>> get() = _entriesA
 
-    private val _totalTrainings = MutableLiveData<Int>()
-    val totalTrainings: LiveData<Int> = _totalTrainings
+    private val _entriesB = MutableLiveData<List<Entry>>()
+    val entriesB: LiveData<List<Entry>> get() = _entriesB
 
-    init {
-        // In a real app, this would load from a repository
-        loadTrainingSessions()
+    private val _entriesC = MutableLiveData<List<Entry>>()
+    val entriesC: LiveData<List<Entry>> get() = _entriesC
+
+    private val _entriesD = MutableLiveData<List<Entry>>()
+    val entriesD: LiveData<List<Entry>> get() = _entriesD
+
+    // Method to initialize data
+    fun initChartData() {
+        val dataA = arrayOf(65f, 70f, 80f, 85f, 92f, 94f)
+        val dataB = arrayOf(50f, 52f, 60f, 75f, 85f, 95f)
+        val dataC = arrayOf(70f, 72f, 75f, 79f, 82f, 85f)
+        val dataD = arrayOf(40f, 65f, 75f, 80f, 83f, 90f)
+
+        val entriesA = ArrayList<Entry>()
+        val entriesB = ArrayList<Entry>()
+        val entriesC = ArrayList<Entry>()
+        val entriesD = ArrayList<Entry>()
+
+        for (i in dataA.indices) {
+            entriesA.add(Entry((i + 1).toFloat(), dataA[i]))
+            entriesB.add(Entry((i + 1).toFloat(), dataB[i]))
+            entriesC.add(Entry((i + 1).toFloat(), dataC[i]))
+            entriesD.add(Entry((i + 1).toFloat(), dataD[i]))
+        }
+
+        _entriesA.value = entriesA
+        _entriesB.value = entriesB
+        _entriesC.value = entriesC
+        _entriesD.value = entriesD
+
+        // Update the number of exercises based on the length of dataA
+        _numberOfExercise.value = "Banyak Latihan: ${dataA.size}"
     }
 
-    private fun loadTrainingSessions() {
-        // Dummy data for demonstration
-        val sessions = listOf(
-            TrainingSession("1", "Pidato Senin 1", "30 Oct 2024 10:25:14"),
-            TrainingSession("2", "Pidato Senin 2", "1 Nov 2024 15:30:22"),
-            TrainingSession("3", "Pidato Senin 3", "2 Nov 2024 00:25:14")
-        )
-        _trainingSessions.value = sessions
-        _totalTrainings.value = sessions.size
+    // LiveData untuk mengubah jumlah latihan
+    private val _numberOfExercise = MutableLiveData<String>()
+    val numberOfExercise: LiveData<String> get() = _numberOfExercise
+
+    // Initialize number of exercises based on the number of articles
+    init {
+        // Inisialisasi nilai jumlah latihan
+        _numberOfExercise.value = "Banyak Latihan: 0"  // Nilai default
     }
 }

@@ -44,7 +44,18 @@ class HomeFragment : Fragment() {
             val navController = findNavController()
             navController.navigate(R.id.navigation_home_signed) // Navigasi ke HomeSignedFragment
         }
+
+        binding.accountButton.setOnClickListener {
+            navigateToAuthentication()
+        }
+
+
         return binding.root
+    }
+
+    private fun navigateToAuthentication() {
+        val navController = findNavController()
+        navController.navigate(R.id.action_navigation_home_to_signInFragment)
     }
 
     override fun onDestroyView() {
