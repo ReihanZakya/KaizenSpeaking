@@ -13,6 +13,7 @@ def create_user(db: Session, user: schemas.UserCreate):
     hashed_password = utils.hash_password(user.password)
     db_user = models.User(
         username=user.username,
+        email=user.email,
         hashed_password=hashed_password,
         full_name=user.full_name,
         nickname=user.nickname,
@@ -24,8 +25,8 @@ def create_user(db: Session, user: schemas.UserCreate):
     db.refresh(db_user)
     return db_user
 
-def authenticate_user(db: Session, username: str, password: str):
-    user = db.query(models.User).filter(models.User.username == username).first()
+def authenticate_user(db: Session, email: str, password: str):
+    user = db.query(models.User).filter(models.User.email == email).first()
     if not user:
         raise DataNotFoundError("User not found")
 

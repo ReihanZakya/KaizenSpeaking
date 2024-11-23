@@ -1,7 +1,6 @@
 # src/user/router.py
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-
 from src.middleware import JWTBearer
 from src.user import schemas, service
 from src.dependencies import get_db
@@ -25,7 +24,7 @@ def register_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 @router.post("/login")
 def login_user(user: schemas.UserLogin, db: Session = Depends(get_db)):
     try:
-        token_data = service.authenticate_user(db, user.username, user.password)
+        token_data = service.authenticate_user(db, user.email, user.password)
         return success_get(data=token_data, message="Login successful")
     except (AuthenticationError, DataNotFoundError) as e:
         raise e
