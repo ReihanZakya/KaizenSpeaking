@@ -68,7 +68,7 @@
                 android:padding="16dp"
                 android:text="Kamu belum melakukan login nih. Ayo login untuk menyimpan riwayat dan melihat perkembanganmu!"
                 android:textColor="@android:color/white"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
             <!-- Button for "Coba Analisis Sekarang" -->
             <TextView
@@ -79,7 +79,7 @@
                 android:gravity="center"
                 android:text="Coba Analisis Sekarang"
                 android:textColor="@android:color/holo_blue_light"
-                android:textSize="16sp"/>
+                android:textSize="12sp"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -101,6 +101,7 @@
         android:layout_marginTop="8dp"
         android:text="@string/article_description"
         android:textColor="@color/black"
+        android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ArticleTitle" />
 
@@ -123,7 +124,7 @@
             android:layout_margin="2dp"
             android:iconifiedByDefault="false"
             android:queryBackground="@android:color/transparent"
-            android:queryHint="@string/searchArticle" />
+            android:queryHint="@string/searchArticle"/>
     </androidx.cardview.widget.CardView>
 
     <androidx.core.widget.NestedScrollView
