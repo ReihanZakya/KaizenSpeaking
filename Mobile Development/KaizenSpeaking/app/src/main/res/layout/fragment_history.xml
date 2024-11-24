@@ -1,29 +1,38 @@
 <!-- fragment_history.xml -->
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto">
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
 
-    <data>
-        <!-- Declare any variables or LiveData here -->
-    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="16dp"
         tools:context=".ui.history.HistoryFragment">
+
+        <Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:navigationIcon="@drawable/btn_back"
+            android:gravity="center"
+            android:title="@string/riwayat_latihan"
+            android:titleTextColor="@color/black"
+            android:background="@color/cardview_light_background"/>
 
         <!-- Top section with graph -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="280dp"
             android:padding="16dp"
-            card_view:cardCornerRadius="20dp">
+            card_view:cardCornerRadius="20dp"
+            android:layout_margin="16dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:padding="16dp">
 
@@ -31,22 +40,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/progres_latihan"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textSize="14sp"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/totalTrainingTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Total Latihan: 8"
-                    android:textSize="16sp"
-                    android:layout_marginTop="8dp" />
+                    android:textSize="10sp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"/>
 
                 <!-- Placeholder for the graph -->
                 <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/lineChart"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"/>
+                    android:layout_height="match_parent"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -56,21 +66,21 @@
             android:layout_height="wrap_content"
             card_view:cardCornerRadius="20dp"
             android:padding="16dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp">
+            android:layout_marginBottom="20dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp"
-            android:layout_marginTop="20dp">
+            android:padding="16dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/riwayat_latihan"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 android:layout_gravity="center"
                 android:textStyle="bold"
                 android:background="@color/cardview_light_background"/>
@@ -92,4 +102,4 @@
         </LinearLayout>
         </androidx.cardview.widget.CardView>
     </LinearLayout>
-</layout>
+</androidx.constraintlayout.widget.ConstraintLayout>
