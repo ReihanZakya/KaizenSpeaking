@@ -135,6 +135,11 @@ class HistoryFragment : Fragment() {
             TrainingSession("2", "Second Training", "2024-03-22"),
             TrainingSession("3", "Third Training", "2024-03-23")
         )
+        // Mengamati perubahan pada LiveData numberOfExercise
+        historyViewModel.numberOfExercise.observe(viewLifecycleOwner, { newText ->
+            // Update TextView dengan nilai baru
+            binding.numberOfExerciseText.text = newText
+        })
 
         trainingAdapter.submitList(sampleSessions)
     }

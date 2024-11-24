@@ -44,10 +44,10 @@
                     android:textStyle="bold"/>
 
                 <TextView
-                    android:id="@+id/totalTrainingTextView"
+                    android:id="@+id/number_of_exercise_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Total Latihan: 8"
+                    android:text="@string/number_of_exercise"
                     android:textSize="10sp"
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="4dp"/>
