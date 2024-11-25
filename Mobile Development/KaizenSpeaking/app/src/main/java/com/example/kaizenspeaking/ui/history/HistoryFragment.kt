@@ -16,6 +16,8 @@ import com.example.kaizenspeaking.ui.history.data.remote.retrofit.ApiConfig
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.example.kaizenspeaking.ui.history.data.Authenticator.TOKEN
+import com.example.kaizenspeaking.ui.history.data.Authenticator.USER_ID
 
 @Suppress("DEPRECATION")
 class HistoryFragment : Fragment() {
@@ -61,16 +63,7 @@ class HistoryFragment : Fragment() {
                 binding.contentLayout.visibility = View.VISIBLE
             }
         })
-
-        //    TODO: CONNECT TO REAL DATA
-        //    Empty Data
-//        val token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJrb3NvbmciLCJ1c2VyX2lkIjoiOTI1ZjQyNGUtZTk2My00N2Y1LWE4OGMtNmQ4OTNkZjU4YWI4Iiwicm9sZSI6InVzZXIiLCJleHAiOjE3MzUxNDY5MzN9.50SgQfLldCPsfn1mefNgupjC7nZngb8gOspkzxeOMoE"
-//        val userId = "925f424e-e963-47f5-a88c-6d893df58ab8"
-
-        //    There is Data
-        val token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhYmNkIiwidXNlcl9pZCI6IjkzZDVmNjBhLTEwNmUtNDNkMC04NmJiLTY2YmY5MTA2ZjJkMiIsInJvbGUiOiJ1c2VyIiwiZXhwIjoxNzM1MTQ2OTM1fQ.3CFbHeL17mv_-nfzkwWZyY7_eeRdEaSs3gO6r1lT7W4"
-        val userId = "93d5f60a-106e-43d0-86bb-66bf9106f2d2"
-        historyViewModel.getAllHistory(token, userId)
+        historyViewModel.getAllHistory(TOKEN, USER_ID)
     }
 
     private fun setupRecyclerView() {
