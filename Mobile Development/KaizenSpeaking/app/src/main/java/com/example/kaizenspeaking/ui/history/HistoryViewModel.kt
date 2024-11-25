@@ -53,6 +53,9 @@ class HistoryViewModel(private val repository: Repository) : ViewModel() {
     }
 
     private fun processChartData(dataItems: List<DataItem>) {
+        // Urutkan data berdasarkan tanggal secara ascending
+        val sortedDataItems = dataItems.sortedBy { it.createdAt }
+
         val entriesA = ArrayList<Entry>()
         val entriesB = ArrayList<Entry>()
         val entriesC = ArrayList<Entry>()
