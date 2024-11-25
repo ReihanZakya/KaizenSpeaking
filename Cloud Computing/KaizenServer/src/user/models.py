@@ -1,8 +1,7 @@
-import uuid
 from sqlalchemy import Column, String, CheckConstraint
 from sqlalchemy.dialects.postgresql import UUID as PGUUID
-from sqlalchemy.orm import relationship
 from src.database import Base
+import uuid
 
 class User(Base):
     __tablename__ = "users"
@@ -10,6 +9,7 @@ class User(Base):
     id = Column(PGUUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True, index=True)
     email = Column(String, unique=True, nullable=True)
     username = Column(String, unique=True, index=True, nullable=False)
+    device_id = Column(String, unique=True, nullable=True, index=True)
     hashed_password = Column(String, nullable=False)
     full_name = Column(String, nullable=False)
     nickname = Column(String, nullable=True)
@@ -19,5 +19,3 @@ class User(Base):
     __table_args__ = (
         CheckConstraint("role IN ('admin', 'user')", name="check_user_role"),
     )
-
-    speech_histories = relationship("UsersSpeechHistory", back_populates="user", cascade="all, delete-orphan")
