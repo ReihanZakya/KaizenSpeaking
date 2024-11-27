@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:navigationIcon="@drawable/btn_back"
-            android:title="Detail Latithan"
+            android:title="Detail Latihan"
             android:titleTextColor="@color/black"
             android:background="@color/cardview_light_background"/>
 

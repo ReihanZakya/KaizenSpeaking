@@ -153,4 +153,5 @@ class TrainingDetailFragment : Fragment() {
             scrollView.smoothScrollTo(0, cardViewAnalisis.top)
         }, 3000)
     }
+    
 }
