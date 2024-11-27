@@ -17,34 +17,28 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:orientation="horizontal"
-        android:padding="16dp">
+        android:padding="8dp">
 
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btn_play"
-            android:layout_width="56dp"
-            android:layout_height="wrap_content"
+        <ImageButton
+            android:id="@+id/playButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_gravity="center"
+            android:background="@drawable/bg_button"
             android:contentDescription="@string/play"
             android:src="@drawable/play_icon"
-            android:visibility="visible"
-            card_view:fabSize="mini"
-            tools:backgroundTint="?attr/colorSecondaryVariant"
-            tools:elevation="0dp"
-            tools:tint="?attr/colorPrimary" />
+            android:visibility="visible" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btn_pause"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageButton
+            android:id="@+id/pauseButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_gravity="center"
+            android:background="@drawable/bg_button"
             android:contentDescription="@string/pause"
             android:src="@drawable/pause_icon"
-            android:visibility="gone"
-            card_view:fabSize="mini"
-            tools:backgroundTint="?attr/colorSecondaryVariant"
-            tools:elevation="0dp"
-            tools:tint="?attr/colorPrimary" />
+            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -76,19 +70,19 @@
                 android:orientation="horizontal">
 
                 <SeekBar
-                    android:id="@+id/seek_bar"
+                    android:id="@+id/seekBar"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:thumbTint="?colorPrimary"
-                    android:progressTint="?attr/colorPrimary" />
+                    android:progressTint="?attr/colorPrimary"
+                    android:thumbTint="?colorPrimary" />
 
                 <TextView
                     android:id="@+id/durationTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="11sp"
-                    android:text="@string/duration_item" />
+                    android:text="@string/duration_item"
+                    android:textSize="11sp" />
             </LinearLayout>
 
         </LinearLayout>

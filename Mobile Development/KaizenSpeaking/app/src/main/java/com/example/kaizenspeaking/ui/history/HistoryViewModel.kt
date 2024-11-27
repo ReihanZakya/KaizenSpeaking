@@ -36,6 +36,9 @@ class HistoryViewModel(private val repository: Repository) : ViewModel() {
     private val _numberOfExercise = MutableLiveData<String>()
     val numberOfExercise: LiveData<String> get() = _numberOfExercise
 
+    private val _trainingSessions = MutableLiveData<List<TrainingSession>>()
+    val trainingSessions: LiveData<List<TrainingSession>> get() = _trainingSessions
+
     init {
         _numberOfExercise.value = "Banyak Latihan: 0"  // Nilai default
     }
@@ -47,6 +50,15 @@ class HistoryViewModel(private val repository: Repository) : ViewModel() {
             _history.value = result
             if (result is Result.Success) {
                 processChartData(result.data)
+                val sessions = result.data.map { dataItem ->
+                    TrainingSession(
+                        id = dataItem.id,
+                        title = dataItem.topic,
+                        date = dataItem.createdAt,
+                        audioUrl = dataItem.audioFileUrl
+                    )
+                }
+                _trainingSessions.value = sessions
             }
             _isLoading.value = false
         }

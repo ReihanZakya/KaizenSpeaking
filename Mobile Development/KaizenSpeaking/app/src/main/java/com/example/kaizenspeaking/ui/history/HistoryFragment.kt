@@ -76,13 +76,9 @@ class HistoryFragment : Fragment() {
             binding.numberOfExerciseText.text = newText
         })
 
-        // Example data - replace with real data
-        val sampleSessions = listOf(
-            TrainingSession("1", "First Training", "2024-03-21"),
-            TrainingSession("2", "Second Training", "2024-03-22"),
-            TrainingSession("3", "Third Training", "2024-03-23")
-        )
-        trainingAdapter.submitList(sampleSessions)
+        historyViewModel.trainingSessions.observe(viewLifecycleOwner) { sessions ->
+            trainingAdapter.submitList(sessions)
+        }
     }
 
     private fun observeChartData() {
