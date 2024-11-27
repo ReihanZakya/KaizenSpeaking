@@ -1,15 +1,47 @@
 import re
+
+from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from src.user import models, schemas, utils
 from src.exceptions import AuthenticationError, DataNotFoundError, ConflictError
 from uuid import UUID
 from sqlalchemy.exc import DataError
 from src.user.jwt_handler import create_access_token
+import random
+import string
 
 def validate_email_format(email: str):
     email_regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
     if not re.match(email_regex, email):
-        raise ValueError("Invalid email format")
+        raise ValueError("Format email salah")
+
+
+def validate_unique_email_service(email: str, db: Session):
+    """
+    Validate if the email is unique and properly formatted.
+    """
+    if not email:
+        raise HTTPException(
+            status_code=422,
+            detail={"email": "Email wajib diisi"}
+        )
+
+    try:
+        validate_email_format(email)
+    except ValueError as e:
+        raise HTTPException(
+            status_code=422,
+            detail={"email": str(e)}
+        )
+
+    existing_user = db.query(models.User).filter(models.User.email == email).first()
+    if existing_user:
+        raise HTTPException(
+            status_code=422,
+            detail={"email": "Email sudah digunakan"}
+        )
+
+    return {"email": "Email dapat digunakan"}
 
 
 def create_user(db: Session, user: schemas.UserCreate):
@@ -26,18 +58,20 @@ def create_user(db: Session, user: schemas.UserCreate):
         if existing_user_email:
             raise ConflictError("A user with this email already exists")
 
-    existing_user_username = db.query(models.User).filter(models.User.username == user.username).first()
-    if existing_user_username:
-        raise ConflictError("A user with this username already exists")
+    # existing_user_username = db.query(models.User).filter(models.User.username == user.username).first()
+    # if existing_user_username:
+    #     raise ConflictError("A user with this username already exists")
+
+    random_username = ''.join(random.choices(string.ascii_lowercase + string.digits, k=8))
 
     hashed_password = utils.hash_password(user.password)
     db_user = models.User(
-        username=user.username,
+        username=random_username,
         email=user.email,
         hashed_password=hashed_password,
         full_name=user.full_name,
         nickname=user.nickname,
-        phone_number=user.phone_number,
+        phone_number="",
         role=user.role,
         device_id=user.device_id
     )

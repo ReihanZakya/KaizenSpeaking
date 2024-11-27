@@ -1,5 +1,3 @@
-import string
-
 from fastapi.responses import StreamingResponse
 from fastapi import APIRouter, Depends, UploadFile, File, Form, HTTPException
 from sqlalchemy.orm import Session
@@ -16,8 +14,6 @@ from src.speech.service import save_transcription_data, get_speech_histories_by_
 from src.user.models import User
 from src.user.schemas import UserCreate
 from src.user.service import create_user
-import random
-
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
@@ -78,10 +74,8 @@ async def speech_to_text_save(
         if not user:
             logger.info(f"No user found for user_id {user_id}. Creating a new guest user.")
 
-            random_username = ''.join(random.choices(string.ascii_lowercase + string.digits, k=8))
 
             guest_user_data = UserCreate(
-                username=random_username,
                 email=None,
                 password="123456",
                 full_name="Guest",

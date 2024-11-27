@@ -6,8 +6,14 @@ from src.user import schemas, service
 from src.dependencies import get_db
 from src.handler import success_post, success_get
 from src.exceptions import ConflictError, AuthenticationError, DataNotFoundError
+from src.user.service import validate_unique_email_service
 
 router = APIRouter()
+
+@router.post("/validate-unique-email")
+def validate_unique_email(email: str, db: Session = Depends(get_db)):
+    return validate_unique_email_service(email, db)
+
 
 @router.post("/register", response_model=schemas.UserResponse)
 def register_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
