@@ -65,8 +65,8 @@ class TrainingSessionAdapter : RecyclerView.Adapter<TrainingSessionAdapter.Train
                 playButton.setOnClickListener {
                     playAudio(session.audioUrl, position)
                 }
-                pauseButton.setOnClickListener {
-                    pauseAudio()
+                stopButton.setOnClickListener {
+                    stopAudio()
                 }
                 updateSeekBar()
             }
@@ -74,49 +74,66 @@ class TrainingSessionAdapter : RecyclerView.Adapter<TrainingSessionAdapter.Train
 
         private fun playAudio(audioUrl: String, position: Int) {
             if (currentPlayingPosition == position && mediaPlayer?.isPlaying == true) {
-                pauseAudio()
+                stopAudio() // Stop if already playing
                 return
             }
 
             // Stop current playing audio if any
-            mediaPlayer?.release()
+            mediaPlayer?.release() // Release any existing player
             mediaPlayer = null
 
             mediaPlayer = MediaPlayer().apply {
                 setDataSource(audioUrl)
-                prepare()
-                start()
-                setOnCompletionListener {
-                    resetUI()
+                setOnPreparedListener {
+                    start() // Start playing after preparation is complete
+                    updateUIForPlaying()
                 }
+                setOnCompletionListener {
+                    resetUI() // Reset UI once the audio finishes
+                }
+                prepareAsync() // Prepare asynchronously to avoid blocking the UI thread
             }
             currentPlayingPosition = position
-            updateUIForPlaying()
         }
 
-        private fun pauseAudio() {
-            mediaPlayer?.pause()
-            updateUIForPaused()
+        private fun stopAudio() {
+            mediaPlayer?.let {
+                if (it.isPlaying) {
+                    it.stop()
+                }
+                it.release()
+            }
+            mediaPlayer = null
+            resetUI()
         }
+
 
         private fun updateSeekBar() {
             mediaPlayer?.let { player ->
-                val runnable = object : Runnable {
-                    override fun run() {
-                        binding.seekBar.progress = player.currentPosition
-                        binding.durationTextView.text =
-                            formatDuration(player.currentPosition.toLong())
-                        handler.postDelayed(this, 1000)
+                // Check if media player is initialized and playing
+                if (player.isPlaying) {
+                    val runnable = object : Runnable {
+                        override fun run() {
+                            try {
+                                binding.seekBar.progress = player.currentPosition
+                                binding.durationTextView.text = formatDuration(player.currentPosition.toLong())
+                                handler.postDelayed(this, 1000)
+                            } catch (e: IllegalStateException) {
+                                // Handle potential IllegalStateException if MediaPlayer is in invalid state
+                                e.printStackTrace()
+                            }
+                        }
                     }
+                    handler.postDelayed(runnable, 0)
                 }
-                handler.postDelayed(runnable, 0)
             }
         }
+
 
         private fun resetUI() {
             binding.apply {
                 playButton.visibility = View.VISIBLE
-                pauseButton.visibility = View.GONE
+                stopButton.visibility = View.GONE
                 seekBar.progress = 0
                 durationTextView.text = formatDuration(0)
             }
@@ -125,16 +142,9 @@ class TrainingSessionAdapter : RecyclerView.Adapter<TrainingSessionAdapter.Train
         private fun updateUIForPlaying() {
             binding.apply {
                 playButton.visibility = View.GONE
-                pauseButton.visibility = View.VISIBLE
+                stopButton.visibility = View.VISIBLE
                 seekBar.max = mediaPlayer?.duration ?: 0
                 updateSeekBar()
-            }
-        }
-
-        private fun updateUIForPaused() {
-            binding.apply {
-                playButton.visibility = View.VISIBLE
-                pauseButton.visibility = View.GONE
             }
         }
 

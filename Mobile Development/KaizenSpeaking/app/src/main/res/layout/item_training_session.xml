@@ -31,13 +31,13 @@
             android:visibility="visible" />
 
         <ImageButton
-            android:id="@+id/pauseButton"
+            android:id="@+id/stopButton"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
             android:background="@drawable/bg_button"
-            android:contentDescription="@string/pause"
-            android:src="@drawable/pause_icon"
+            android:contentDescription="@string/stop"
+            android:src="@drawable/stop_icon"
             android:visibility="gone" />
 
         <LinearLayout
