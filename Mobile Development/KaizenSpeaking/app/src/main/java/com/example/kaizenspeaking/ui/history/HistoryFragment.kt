@@ -82,8 +82,7 @@ class HistoryFragment : Fragment() {
         // Set the click listener for the adapter
         trainingAdapter.setOnItemClickListener { session ->
             val bundle = Bundle().apply {
-                putString("sessionId", session.id)
-                putString("sessionTitle", session.title)
+                putParcelable("sessionData", session)
             }
             findNavController().navigate(
                 R.id.trainingDetailFragment,

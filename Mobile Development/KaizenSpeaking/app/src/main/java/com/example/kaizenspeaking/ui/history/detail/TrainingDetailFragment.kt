@@ -17,6 +17,7 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.ekn.gruzer.gaugelibrary.Range
 import com.ekn.gruzer.gaugelibrary.HalfGauge
+import com.example.kaizenspeaking.ui.history.data.TrainingSession
 
 class TrainingDetailFragment : Fragment() {
 
@@ -37,6 +38,8 @@ class TrainingDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val trainingSession: TrainingSession? = arguments?.getParcelable("sessionData")
+
         barChart = view.findViewById(R.id.barchart)
         halfGauge = view.findViewById(R.id.gauge_chart)
         scrollView = view.findViewById(R.id.scrollView)
@@ -54,11 +57,11 @@ class TrainingDetailFragment : Fragment() {
         val entriesKelancaran = ArrayList<BarEntry>()
         val entriesEmosi = ArrayList<BarEntry>()
 
-        // Example data for each category
-        entriesKejelasan.add(BarEntry(0f, 50f))
-        entriesDiksi.add(BarEntry(1f, 30f))
-        entriesKelancaran.add(BarEntry(2f, 90f))
-        entriesEmosi.add(BarEntry(3f, 75f))
+
+        entriesKejelasan
+        entriesDiksi
+        entriesKelancaran
+        entriesEmosi
 
         // Create BarDataSets for each category
         val barDataSetKejelasan = BarDataSet(entriesKejelasan, "Kejelasan")
@@ -113,7 +116,7 @@ class TrainingDetailFragment : Fragment() {
         // Set min, max, and current value
         halfGauge.minValue = 0.0
         halfGauge.maxValue = 100.0
-        halfGauge.value = 75.0  // example value
+        halfGauge.value = hitung berdasarkan rata-rata kejelasan, diksi, kelancaran, emosi
 
         // Mengambil arguments
         arguments?.let { args ->

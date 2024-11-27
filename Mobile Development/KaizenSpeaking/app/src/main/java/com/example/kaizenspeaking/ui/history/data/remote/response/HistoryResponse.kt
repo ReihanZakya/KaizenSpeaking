@@ -32,7 +32,7 @@ data class DataItem(
 	val userId: String,
 
 	@field:SerializedName("analize")
-	val analize: Any,
+	val analize: String,
 
 	@field:SerializedName("topic")
 	val topic: String,

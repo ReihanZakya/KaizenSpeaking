@@ -1,5 +1,9 @@
 package com.example.kaizenspeaking.ui.history.data
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class TrainingSession(
     val id: String,
     val title: String,
@@ -10,6 +14,6 @@ data class TrainingSession(
     val diksi: String,
     val kelancaran: String,
     val emosi: String,
-    val analize: Any?
-)
+    val analize: String
+) : Parcelable
 
