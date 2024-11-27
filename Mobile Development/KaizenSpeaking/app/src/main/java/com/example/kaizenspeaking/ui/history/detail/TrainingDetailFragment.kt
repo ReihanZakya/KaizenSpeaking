@@ -26,6 +26,7 @@ class TrainingDetailFragment : Fragment() {
     private lateinit var scrollView: ScrollView
     private lateinit var cardViewAnalisis: View
     private lateinit var titleTextView: TextView
+    private lateinit var analizeTextView: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,17 +52,34 @@ class TrainingDetailFragment : Fragment() {
         barChart.axisLeft.axisMinimum = 0f // Set minimum value for Y axis
         barChart.axisLeft.axisMaximum = 100f // Set maximum value for Y axis
 
+        // Declare the variables outside the let block
+        var kejelasan: Float = 0f
+        var diksi: Float = 0f
+        var kelancaran: Float = 0f
+        var emosi: Float = 0f
+
+        // Assign values inside the let block
+        trainingSession?.let { session ->
+            kejelasan = session.kejelasan.toFloatOrNull() ?: 0f
+            diksi = session.diksi.toFloatOrNull() ?: 0f
+            kelancaran = session.kelancaran.toFloatOrNull() ?: 0f
+            emosi = session.emosi.toFloatOrNull() ?: 0f
+
+            analizeTextView = view.findViewById(R.id.analizeTextView)
+            analizeTextView.text = session.analize
+        }
+
         // Data for the chart (representing 4 categories: Kejelasan, Diksi, Kelancaran, Emosi)
         val entriesKejelasan = ArrayList<BarEntry>()
         val entriesDiksi = ArrayList<BarEntry>()
         val entriesKelancaran = ArrayList<BarEntry>()
         val entriesEmosi = ArrayList<BarEntry>()
 
-
-        entriesKejelasan
-        entriesDiksi
-        entriesKelancaran
-        entriesEmosi
+        // Example data for each category
+        entriesKejelasan.add(BarEntry(0f, kejelasan))
+        entriesDiksi.add(BarEntry(1f, diksi))
+        entriesKelancaran.add(BarEntry(2f, kelancaran))
+        entriesEmosi.add(BarEntry(3f, emosi))
 
         // Create BarDataSets for each category
         val barDataSetKejelasan = BarDataSet(entriesKejelasan, "Kejelasan")
@@ -114,9 +132,12 @@ class TrainingDetailFragment : Fragment() {
         halfGauge.addRange(range3)
 
         // Set min, max, and current value
+        // Calculate average
+        val average: Float = (kejelasan + diksi + kelancaran + emosi) / 4
+
         halfGauge.minValue = 0.0
         halfGauge.maxValue = 100.0
-        halfGauge.value = hitung berdasarkan rata-rata kejelasan, diksi, kelancaran, emosi
+        halfGauge.value = average.toDouble()
 
         // Mengambil arguments
         arguments?.let { args ->
