@@ -1,6 +1,7 @@
 package com.example.kaizenspeaking.ui.history
 
 import android.icu.text.SimpleDateFormat
+import android.icu.util.Calendar
 import android.media.MediaPlayer
 import android.os.Handler
 import android.view.LayoutInflater
@@ -57,15 +58,31 @@ class TrainingSessionAdapter : RecyclerView.Adapter<TrainingSessionAdapter.Train
 
                 val originalFormat =
                     SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS", Locale.getDefault())
-                val desiredFormat = SimpleDateFormat("dd MMM yyyy HH:mm", Locale.getDefault())
+                val desiredFormat = SimpleDateFormat("dd MMM yyyy HH:mm 'WIB'", Locale.getDefault()) // Tambahkan literal WIB
+
                 try {
-                    val date = originalFormat.parse(session.date)
-                    val formattedDate = desiredFormat.format(date)
-                    dateTextView.text = formattedDate
+                    val date = originalFormat.parse(session.date) // Parsing string date
+                    if (date != null) {
+                        // Gunakan Calendar untuk menyesuaikan jam
+                        val calendar = Calendar.getInstance().apply {
+                            time = date
+                            val adjustedHour = (get(Calendar.HOUR_OF_DAY) + 7) % 24 // Penyesuaian jam
+                            set(Calendar.HOUR_OF_DAY, adjustedHour) // Set jam yang sudah diubah
+                        }
+
+                        // Format tanggal dengan desiredFormat
+                        val formattedDate = desiredFormat.format(calendar.time)
+                        dateTextView.text = formattedDate
+                    } else {
+                        // Jika parsing gagal, tampilkan string original
+                        dateTextView.text = session.date
+                    }
                 } catch (e: Exception) {
                     e.printStackTrace()
-                    dateTextView.text = session.date
+                    dateTextView.text = session.date // Jika terjadi error, tampilkan original date
                 }
+
+
                 val dur = session.duration
 
                 val formattedDuration = try {
