@@ -52,7 +52,6 @@ class HistoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
-        setupClickListeners()
         // Observer untuk isLoading
         historyViewModel.isLoading.observe(viewLifecycleOwner, { isLoading ->
             if (isLoading) {
@@ -76,28 +75,35 @@ class HistoryFragment : Fragment() {
             binding.numberOfExerciseText.text = newText
         })
 
-        // Example data - replace with real data
-        val sampleSessions = listOf(
-            TrainingSession("1", "First Training", "2024-03-21"),
-            TrainingSession("2", "Second Training", "2024-03-22"),
-            TrainingSession("3", "Third Training", "2024-03-23")
-        )
-        trainingAdapter.submitList(sampleSessions)
+        historyViewModel.trainingSessions.observe(viewLifecycleOwner) { sessions ->
+            trainingAdapter.submitList(sessions)
+        }
+
+        // Set the click listener for the adapter
+        trainingAdapter.setOnItemClickListener { session ->
+            val bundle = Bundle().apply {
+                putParcelable("sessionData", session)
+            }
+            findNavController().navigate(
+                R.id.trainingDetailFragment,
+                bundle
+            )
+        }
     }
 
     private fun observeChartData() {
         historyViewModel.entriesA.observe(viewLifecycleOwner, { entriesA ->
-            val dataSetA = LineDataSet(entriesA, "Kelancaran").apply {
+            val dataSetA = LineDataSet(entriesA, "Kejelasan").apply {
                 color = resources.getColor(android.R.color.holo_blue_light)
             }
 
             historyViewModel.entriesB.observe(viewLifecycleOwner, { entriesB ->
-                val dataSetB = LineDataSet(entriesB, "Kejelasan").apply {
+                val dataSetB = LineDataSet(entriesB, "Diksi").apply {
                     color = resources.getColor(android.R.color.holo_green_light)
                 }
 
                 historyViewModel.entriesC.observe(viewLifecycleOwner, { entriesC ->
-                    val dataSetC = LineDataSet(entriesC, "Diksi").apply {
+                    val dataSetC = LineDataSet(entriesC, "Kelancaran").apply {
                         color = resources.getColor(android.R.color.holo_red_light)
                     }
 
@@ -125,19 +131,6 @@ class HistoryFragment : Fragment() {
         lineChart.axisRight.isEnabled = false
         lineChart.description.text = "Latihan Ke: "
         lineChart.invalidate()
-    }
-
-    private fun setupClickListeners() {
-        trainingAdapter.setOnItemClickListener { session ->
-            val bundle = Bundle().apply {
-                putString("sessionId", session.id)
-                putString("sessionTitle", session.title)
-            }
-            findNavController().navigate(
-                R.id.trainingDetailFragment,
-                bundle
-            )
-        }
     }
 
     override fun onDestroyView() {

@@ -36,6 +36,9 @@ class HistoryViewModel(private val repository: Repository) : ViewModel() {
     private val _numberOfExercise = MutableLiveData<String>()
     val numberOfExercise: LiveData<String> get() = _numberOfExercise
 
+    private val _trainingSessions = MutableLiveData<List<TrainingSession>>()
+    val trainingSessions: LiveData<List<TrainingSession>> get() = _trainingSessions
+
     init {
         _numberOfExercise.value = "Banyak Latihan: 0"  // Nilai default
     }
@@ -47,6 +50,21 @@ class HistoryViewModel(private val repository: Repository) : ViewModel() {
             _history.value = result
             if (result is Result.Success) {
                 processChartData(result.data)
+                val sessions = result.data.map { dataItem ->
+                    TrainingSession(
+                        id = dataItem.id,
+                        title = dataItem.topic,
+                        date = dataItem.createdAt,
+                        audioUrl = dataItem.audioFileUrl,
+                        duration = dataItem.duration,
+                        kejelasan = dataItem.score.kejelasan,
+                        diksi = dataItem.score.diksi,
+                        kelancaran = dataItem.score.kelancaran,
+                        emosi = dataItem.score.emosi,
+                        analize = dataItem.analize
+                    )
+                }
+                _trainingSessions.value = sessions
             }
             _isLoading.value = false
         }
@@ -61,12 +79,12 @@ class HistoryViewModel(private val repository: Repository) : ViewModel() {
         val entriesC = ArrayList<Entry>()
         val entriesD = ArrayList<Entry>()
 
-        dataItems.forEachIndexed { index, dataItem ->
+        sortedDataItems.forEachIndexed { index, sortedDataItem ->
             val position = (index + 1).toFloat()
-            entriesA.add(Entry(position, dataItem.score.kelancaran.toFloatOrNull() ?: 0f))
-            entriesB.add(Entry(position, dataItem.score.kejelasan.toFloatOrNull() ?: 0f))
-            entriesC.add(Entry(position, dataItem.score.diksi.toFloatOrNull() ?: 0f))
-            entriesD.add(Entry(position, dataItem.score.emosi.toFloatOrNull() ?: 0f))
+            entriesA.add(Entry(position, sortedDataItem.score.kejelasan.toFloatOrNull() ?: 0f))
+            entriesB.add(Entry(position, sortedDataItem.score.diksi.toFloatOrNull() ?: 0f))
+            entriesC.add(Entry(position, sortedDataItem.score.kelancaran.toFloatOrNull() ?: 0f))
+            entriesD.add(Entry(position, sortedDataItem.score.emosi.toFloatOrNull() ?: 0f))
         }
 
         _entriesA.value = entriesA

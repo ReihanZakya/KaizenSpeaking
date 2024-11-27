@@ -93,15 +93,15 @@ class HomeSignedFragment : Fragment() {
 
     private fun observeChartData() {
         historyViewModel.entriesA.observe(viewLifecycleOwner, { entriesA ->
-            val dataSetA = LineDataSet(entriesA, "Kelancaran").apply {
+            val dataSetA = LineDataSet(entriesA, "Kejelasan").apply {
                 color = resources.getColor(android.R.color.holo_blue_light)
             }
             historyViewModel.entriesB.observe(viewLifecycleOwner, { entriesB ->
-                val dataSetB = LineDataSet(entriesB, "Kejelasan").apply {
+                val dataSetB = LineDataSet(entriesB, "Diksi").apply {
                     color = resources.getColor(android.R.color.holo_green_light)
                 }
                 historyViewModel.entriesC.observe(viewLifecycleOwner, { entriesC ->
-                    val dataSetC = LineDataSet(entriesC, "Diksi").apply {
+                    val dataSetC = LineDataSet(entriesC, "Kelancaran").apply {
                         color = resources.getColor(android.R.color.holo_red_light)
                     }
                     historyViewModel.entriesD.observe(viewLifecycleOwner, { entriesD ->
