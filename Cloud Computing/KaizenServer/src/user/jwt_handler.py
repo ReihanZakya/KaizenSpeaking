@@ -4,7 +4,7 @@ from typing import Dict
 
 SECRET_KEY = "simuhamuhimuha"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = 43200
 
 def create_access_token(data: dict) -> str:
     to_encode = data.copy()
