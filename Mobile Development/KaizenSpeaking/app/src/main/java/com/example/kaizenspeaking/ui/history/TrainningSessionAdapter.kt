@@ -50,6 +50,11 @@ class TrainingSessionAdapter : RecyclerView.Adapter<TrainingSessionAdapter.Train
             binding.apply {
                 titleTextView.text = session.title
 
+                // Set click listener for title
+                titleTextView.setOnClickListener {
+                    onItemClickListener?.invoke(session)
+                }
+
                 val originalFormat =
                     SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS", Locale.getDefault())
                 val desiredFormat = SimpleDateFormat("dd MMM yyyy HH:mm", Locale.getDefault())
@@ -61,20 +66,48 @@ class TrainingSessionAdapter : RecyclerView.Adapter<TrainingSessionAdapter.Train
                     e.printStackTrace()
                     dateTextView.text = session.date
                 }
+                val dur = session.duration
+
+                val formattedDuration = try {
+                    // Periksa apakah ada ":" dalam string
+                    val parts = dur.split(":")
+                    val totalSeconds = when (parts.size) {
+                        2 -> {
+                            val minutes = parts[0].toIntOrNull() ?: 0
+                            val seconds = parts[1].toIntOrNull() ?: 0
+                            minutes * 60 + seconds
+                        }
+                        1 -> {
+                            parts[0].toIntOrNull() ?: 0
+                        }
+                        else -> 0
+                    }
+
+                    // Konversi total detik ke format mm:ss
+                    val minutes = totalSeconds / 60
+                    val seconds = totalSeconds % 60
+                    String.format("%02d:%02d", minutes, seconds)
+                } catch (e: Exception) {
+                    "00:00" // Jika terjadi kesalahan, gunakan default
+                }
+
+                durationTextView.text = formattedDuration
+
+
 
                 playButton.setOnClickListener {
-                    playAudio(session.audioUrl, position)
+                    playAudio(session.audioUrl, position, formattedDuration)
                 }
                 stopButton.setOnClickListener {
-                    stopAudio()
+                    stopAudio(formattedDuration)
                 }
                 updateSeekBar()
             }
         }
 
-        private fun playAudio(audioUrl: String, position: Int) {
+        private fun playAudio(audioUrl: String, position: Int, dur: String) {
             if (currentPlayingPosition == position && mediaPlayer?.isPlaying == true) {
-                stopAudio() // Stop if already playing
+                stopAudio(dur) // Stop if already playing
                 return
             }
 
@@ -89,14 +122,14 @@ class TrainingSessionAdapter : RecyclerView.Adapter<TrainingSessionAdapter.Train
                     updateUIForPlaying()
                 }
                 setOnCompletionListener {
-                    resetUI() // Reset UI once the audio finishes
+                    resetUI(dur) // Reset UI once the audio finishes
                 }
                 prepareAsync() // Prepare asynchronously to avoid blocking the UI thread
             }
             currentPlayingPosition = position
         }
 
-        private fun stopAudio() {
+        private fun stopAudio(dur: String) {
             mediaPlayer?.let {
                 if (it.isPlaying) {
                     it.stop()
@@ -104,9 +137,8 @@ class TrainingSessionAdapter : RecyclerView.Adapter<TrainingSessionAdapter.Train
                 it.release()
             }
             mediaPlayer = null
-            resetUI()
+            resetUI(dur)
         }
-
 
         private fun updateSeekBar() {
             mediaPlayer?.let { player ->
@@ -129,13 +161,12 @@ class TrainingSessionAdapter : RecyclerView.Adapter<TrainingSessionAdapter.Train
             }
         }
 
-
-        private fun resetUI() {
+        private fun resetUI(dur: String) {
             binding.apply {
                 playButton.visibility = View.VISIBLE
                 stopButton.visibility = View.GONE
                 seekBar.progress = 0
-                durationTextView.text = formatDuration(0)
+                durationTextView.text = dur
             }
         }
 

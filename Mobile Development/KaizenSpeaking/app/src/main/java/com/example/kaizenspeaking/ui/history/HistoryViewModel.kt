@@ -55,7 +55,13 @@ class HistoryViewModel(private val repository: Repository) : ViewModel() {
                         id = dataItem.id,
                         title = dataItem.topic,
                         date = dataItem.createdAt,
-                        audioUrl = dataItem.audioFileUrl
+                        audioUrl = dataItem.audioFileUrl,
+                        duration = dataItem.duration,
+                        kejelasan = dataItem.score.kejelasan,
+                        diksi = dataItem.score.diksi,
+                        kelancaran = dataItem.score.kelancaran,
+                        emosi = dataItem.score.emosi,
+                        analize = dataItem.analize
                     )
                 }
                 _trainingSessions.value = sessions
@@ -73,12 +79,12 @@ class HistoryViewModel(private val repository: Repository) : ViewModel() {
         val entriesC = ArrayList<Entry>()
         val entriesD = ArrayList<Entry>()
 
-        dataItems.forEachIndexed { index, dataItem ->
+        sortedDataItems.forEachIndexed { index, sortedDataItem ->
             val position = (index + 1).toFloat()
-            entriesA.add(Entry(position, dataItem.score.kelancaran.toFloatOrNull() ?: 0f))
-            entriesB.add(Entry(position, dataItem.score.kejelasan.toFloatOrNull() ?: 0f))
-            entriesC.add(Entry(position, dataItem.score.diksi.toFloatOrNull() ?: 0f))
-            entriesD.add(Entry(position, dataItem.score.emosi.toFloatOrNull() ?: 0f))
+            entriesA.add(Entry(position, sortedDataItem.score.kejelasan.toFloatOrNull() ?: 0f))
+            entriesB.add(Entry(position, sortedDataItem.score.diksi.toFloatOrNull() ?: 0f))
+            entriesC.add(Entry(position, sortedDataItem.score.kelancaran.toFloatOrNull() ?: 0f))
+            entriesD.add(Entry(position, sortedDataItem.score.emosi.toFloatOrNull() ?: 0f))
         }
 
         _entriesA.value = entriesA

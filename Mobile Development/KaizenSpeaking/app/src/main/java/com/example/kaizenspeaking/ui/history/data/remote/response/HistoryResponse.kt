@@ -40,6 +40,9 @@ data class DataItem(
 	@field:SerializedName("created_at")
 	val createdAt: String,
 
+	@field:SerializedName("duration")
+	val duration: String,
+
 	@field:SerializedName("id")
 	val id: String,
 
@@ -48,15 +51,14 @@ data class DataItem(
 )
 
 data class Score(
-
-	@field:SerializedName("kelancaran")
-	val kelancaran: String,
-
 	@field:SerializedName("kejelasan")
 	val kejelasan: String,
 
 	@field:SerializedName("diksi")
 	val diksi: String,
+
+	@field:SerializedName("kelancaran")
+	val kelancaran: String,
 
 	@field:SerializedName("emosi")
 	val emosi: String

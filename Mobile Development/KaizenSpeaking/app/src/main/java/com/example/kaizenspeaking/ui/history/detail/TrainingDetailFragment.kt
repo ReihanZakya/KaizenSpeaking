@@ -88,19 +88,19 @@ class TrainingDetailFragment : Fragment() {
 
         // Konfigurasi HalfGauge
         val range1 = Range().apply {
-            color = Color.parseColor("#ce0000")
+            color = resources.getColor(android.R.color.holo_red_light)
             from = 0.0
             to = 33.3
         }
 
         val range2 = Range().apply {
-            color = Color.parseColor("#E3E500")
+            color = resources.getColor(android.R.color.holo_orange_light)
             from = 33.3
             to = 66.6
         }
 
         val range3 = Range().apply {
-            color = Color.parseColor("#00b20b")
+            color = resources.getColor(android.R.color.holo_green_light)
             from = 66.6
             to = 100.0
         }
