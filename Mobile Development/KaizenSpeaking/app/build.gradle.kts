@@ -60,4 +60,10 @@ dependencies {
 
     implementation (libs.mpandroidchart)
     implementation (libs.simple.gauge.android)
+
+    //Retrofit
+    implementation(libs.glide)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.logging.interceptor)
 }

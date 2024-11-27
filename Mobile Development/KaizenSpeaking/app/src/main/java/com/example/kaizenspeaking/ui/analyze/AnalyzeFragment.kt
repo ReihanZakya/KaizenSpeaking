@@ -26,7 +26,19 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import android.os.Handler
 import android.util.Log
+import androidx.lifecycle.lifecycleScope
+import com.example.kaizenspeaking.data.retrofit.ApiConfig
+import com.example.kaizenspeaking.helper.SharedPreferencesHelper
+import com.example.kaizenspeaking.helper.SharedPreferencesHelper.getFromSharedPreferences
 import com.example.kaizenspeaking.ui.instructions.OnboardingActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 class AnalyzeFragment : Fragment() {
 
@@ -44,6 +56,7 @@ class AnalyzeFragment : Fragment() {
         private const val ONBOARDING_DELAY = 5000L // 5 seconds
     }
 
+    //audio
     private var mediaRecorder: MediaRecorder? = null
     private var audioFile: File? = null
 
@@ -131,20 +144,25 @@ class AnalyzeFragment : Fragment() {
     private fun handleButtonClick() {
         when (state) {
             0 -> {
-                // Tahap 1: Mulai merekam
-                binding.btnMultiFunction.text = getString(R.string.stop)
-                binding.btnMultiFunction.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-                binding.btnMultiFunction.setBackgroundResource(R.drawable.btn_red)
-                binding.imgMic.setImageResource(R.drawable.mic_on)
-                startRecording()
-                // Memulai Stopwatch
-                startTime = System.currentTimeMillis() - elapsedTime
-                isRunning = true
-                startStopwatch()
-                state = 1
+                val fileName = binding.etTopic.text.toString()
+                if (fileName.isNotEmpty()) {
+                    binding.btnMultiFunction.text = getString(R.string.stop)
+                    binding.btnMultiFunction.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+                    binding.btnMultiFunction.setBackgroundResource(R.drawable.btn_red)
+                    binding.imgMic.setImageResource(R.drawable.mic_on)
+                    startRecording(fileName)
+                    // Memulai Stopwatch
+                    startTime = System.currentTimeMillis() - elapsedTime
+                    isRunning = true
+                    startStopwatch()
+                    state = 1
+                }else{
+                    Toast.makeText(requireContext(), "Mohom masukkan topic terlebih dahulu", Toast.LENGTH_SHORT).show()
+                    state = 0
+                }
+
             }
             1 -> {
-                // Tahap 2: Stop merekam
                 binding.btnMultiFunction.text = getString(R.string.analyze)
                 binding.btnMultiFunction.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
                 binding.btnMultiFunction.setBackgroundResource(R.drawable.btn_gray)
@@ -153,18 +171,19 @@ class AnalyzeFragment : Fragment() {
                 state = 2
             }
             2 -> {
-                // Tahap 3: Pindah ke fragment analisis
                 binding.btnMultiFunction.text = getString(R.string.start_record)
                 binding.btnMultiFunction.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
                 navigateToAnalysisFragment()
+                sendDataToApi()
                 elapsedTime = 0L // Reset waktu
-                binding.tvTimer.text = "00:00" // Reset tampilan stopwatch
+                binding.tvTimer.text = "00:00"
                 state = 0
             }
         }
     }
 
-    private fun startRecording() {
+    private fun startRecording(fileName : String) {
+
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(
                 requireActivity(),
@@ -185,7 +204,7 @@ class AnalyzeFragment : Fragment() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 val resolver = requireContext().contentResolver
                 val contentValues = ContentValues().apply {
-                    put(MediaStore.Audio.Media.DISPLAY_NAME, "kaizenSpeaking.mp3")
+                    put(MediaStore.Audio.Media.DISPLAY_NAME, "$fileName.mp3")
                     put(MediaStore.Audio.Media.MIME_TYPE, "audio/mpeg")
                     put(MediaStore.Audio.Media.RELATIVE_PATH, Environment.DIRECTORY_MUSIC)
                 }
@@ -211,7 +230,7 @@ class AnalyzeFragment : Fragment() {
                 // Android 9 ke bawah: gunakan External Storage Public Directory
                 audioFile = File(
                     Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC),
-                    "audio.mp3"
+                    "$fileName.mp3"
                 )
 
                 mediaRecorder?.apply {
@@ -289,6 +308,63 @@ class AnalyzeFragment : Fragment() {
         }
     }
 
+    private fun sendDataToApi() {
+        val topic = binding.etTopic.text.toString()
+        val userId = SharedPreferencesHelper.getFromSharedPreferences(requireContext(), "device_id") ?: return
+        val audioFilePath = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            "${requireContext().getExternalFilesDir(Environment.DIRECTORY_MUSIC)}/$topic.mp3"
+        } else {
+            audioFile?.absolutePath ?: ""
+        }
+
+        if (!File(audioFilePath).exists()) {
+            Toast.makeText(requireContext(), "Audio file not found!", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Prepare request body
+        val topicPart = RequestBody.create("text/plain".toMediaTypeOrNull(), topic)
+        val userIdPart = RequestBody.create("text/plain".toMediaTypeOrNull(), userId)
+
+        val file = File(audioFilePath)
+        val filePart = MultipartBody.Part.createFormData(
+            "file",
+            file.name,
+            file.asRequestBody("audio/mpeg".toMediaTypeOrNull())
+        )
+
+        lifecycleScope.launch {
+            try {
+                val response = ApiConfig.instance.uploadRecording(topicPart, filePart, userIdPart)
+                if (response.isSuccessful) {
+                    val analyzeResponse = response.body()
+                    if (analyzeResponse != null) {
+                        val score = analyzeResponse.score
+                        val words = analyzeResponse.words.joinToString(" ")
+
+                        // Menampilkan hasil analisis
+                        val resultMessage = """
+                        Kejelasan: ${score.kejelasan}%
+                        Diksi: ${score.diksi}%
+                        Kelancaran: ${score.kelancaran}%
+                        Emosi: ${score.emosi}%
+                        
+                        Words: $words
+                    """.trimIndent()
+
+                        Toast.makeText(requireContext(), resultMessage, Toast.LENGTH_LONG).show()
+                    }
+                } else {
+                    Log.e("API_ERROR", response.errorBody()?.string() ?: "Unknown error")
+                    Toast.makeText(requireContext(), "Upload Failed: ${response.code()}", Toast.LENGTH_LONG).show()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.e("API_ERROR", "Error uploading data: ${e.message}")
+                Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
 
     private fun navigateToAnalysisFragment() {
         // Logika untuk berpindah ke fragment analisis
