@@ -1,42 +1,63 @@
 <!-- item_training_session.xml -->
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_marginTop="6dp"
     android:layout_marginBottom="6dp"
-    card_view:cardCornerRadius="20dp"
-    card_view:cardBackgroundColor="@color/white">
-
+    card_view:cardBackgroundColor="@color/white"
+    card_view:cardCornerRadius="20dp">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:orientation="horizontal"
-        android:padding="16dp"
-        android:layout_marginTop="8dp">
+        android:padding="16dp">
 
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_play"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@string/play"
             android:src="@drawable/play_icon"
-            android:contentDescription="@string/play" />
+            android:visibility="visible"
+            card_view:fabSize="mini"
+            tools:backgroundTint="?attr/colorSecondaryVariant"
+            tools:elevation="0dp"
+            tools:tint="?attr/colorPrimary" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_pause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@string/pause"
+            android:src="@drawable/pause_icon"
+            android:visibility="gone"
+            card_view:fabSize="mini"
+            tools:backgroundTint="?attr/colorSecondaryVariant"
+            tools:elevation="0dp"
+            tools:tint="?attr/colorPrimary" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:layout_marginStart="8dp">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/titleTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Pidato Senin 3"
+                android:text="@string/topic_item"
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
@@ -44,9 +65,32 @@
                 android:id="@+id/dateTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2 Nov 2024 00:25:14"
-                android:textSize="10sp"
-                android:textColor="@android:color/darker_gray" />
+                android:text="@string/date_item"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="11sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <SeekBar
+                    android:id="@+id/seek_bar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:thumbTint="?colorPrimary"
+                    android:progressTint="?attr/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/durationTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="11sp"
+                    android:text="@string/duration_item" />
+            </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

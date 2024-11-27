@@ -55,7 +55,7 @@
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="4dp"
                     android:text="@string/number_of_exercise"
-                    android:textSize="10sp" />
+                    android:textSize="11sp" />
 
                 <!-- Placeholder for the graph -->
                 <com.github.mikephil.charting.charts.LineChart
