@@ -1,5 +1,6 @@
 package com.example.kaizenspeaking.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kaizenspeaking.R
 import com.example.kaizenspeaking.databinding.FragmentHomeBinding
+import com.example.kaizenspeaking.ui.auth.SignInActivity
+import com.example.kaizenspeaking.ui.instructions.OnboardingActivity
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -54,8 +57,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun navigateToAuthentication() {
-        val navController = findNavController()
-        navController.navigate(R.id.action_navigation_home_to_signInFragment)
+        val intent = Intent(requireContext(), SignInActivity::class.java)
+        startActivity(intent)
     }
 
     override fun onDestroyView() {

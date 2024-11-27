@@ -17,6 +17,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:focusable="true"
+            android:elevation="100dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="#80000000"
+            android:id="@+id/progressBar">
+
+            <ProgressBar
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_centerInParent="true"
+                android:elevation="100dp"
+                android:indeterminate="true"/>
+
+        </RelativeLayout>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -49,7 +71,7 @@
                     android:orientation="horizontal">
 
                     <Button
-                        android:id="@+id/btnMasuk"
+                        android:id="@+id/btnSignIn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -73,35 +95,61 @@
 
             </androidx.cardview.widget.CardView>
 
-            <EditText
-                android:id="@+id/etEmail"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/etEmailTil"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:ems="10"
                 android:hint="@string/input_email"
-                android:textColorHint="@color/gray"
                 android:inputType="textEmailAddress"
+                android:textColorHint="@color/gray"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardView" />
+                app:layout_constraintTop_toBottomOf="@+id/cardView"
+                tools:ignore="TouchTargetSizeCheck">
 
-            <EditText
-                android:id="@+id/etPassword"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:inputType="text"
+                    android:paddingVertical="12dp"
+                    android:textSize="12sp"
+                    android:textColor="@color/gray"
+                    tools:layout_editor_absoluteX="26dp"
+                    tools:layout_editor_absoluteY="191dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/etPasswordTil"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:ems="10"
                 android:hint="@string/input_password"
-                android:textColorHint="@color/gray"
                 android:inputType="textPassword"
+                android:textColorHint="@color/gray"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etEmail" />
+                app:layout_constraintTop_toBottomOf="@+id/etEmailTil"
+                tools:ignore="TouchTargetSizeCheck">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:inputType="text"
+                    android:paddingVertical="12dp"
+                    android:textSize="12sp"
+                    android:textColor="@color/gray"
+                    tools:layout_editor_absoluteX="26dp"
+                    tools:layout_editor_absoluteY="191dp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/btnMasuk"
                 android:layout_width="220dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
@@ -110,7 +158,7 @@
                 android:background="@drawable/bg_auth_red"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etPassword" />
+                app:layout_constraintTop_toBottomOf="@+id/etPasswordTil" />
 
             <TextView
                 android:id="@+id/textView2"
@@ -120,9 +168,10 @@
                 android:text="@string/atau"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/button" />
+                app:layout_constraintTop_toBottomOf="@+id/btnMasuk" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/btnGoogle"
                 android:layout_width="220dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -165,5 +214,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
