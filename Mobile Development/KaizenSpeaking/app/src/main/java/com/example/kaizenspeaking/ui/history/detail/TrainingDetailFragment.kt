@@ -1,6 +1,8 @@
 package com.example.kaizenspeaking.ui.history.detail
 
 import android.graphics.Color
+import android.icu.text.SimpleDateFormat
+import android.icu.util.Calendar
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -18,6 +20,7 @@ import com.github.mikephil.charting.data.BarEntry
 import com.ekn.gruzer.gaugelibrary.Range
 import com.ekn.gruzer.gaugelibrary.HalfGauge
 import com.example.kaizenspeaking.ui.history.data.TrainingSession
+import java.util.Locale
 
 class TrainingDetailFragment : Fragment() {
 
@@ -27,6 +30,8 @@ class TrainingDetailFragment : Fragment() {
     private lateinit var cardViewAnalisis: View
     private lateinit var titleTextView: TextView
     private lateinit var analizeTextView: TextView
+    private lateinit var dateTextView: TextView
+    private lateinit var durationTextView: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,7 +50,6 @@ class TrainingDetailFragment : Fragment() {
         halfGauge = view.findViewById(R.id.gauge_chart)
         scrollView = view.findViewById(R.id.scrollView)
         cardViewAnalisis = view.findViewById(R.id.cardViewAnalasis)
-        titleTextView = view.findViewById(R.id.titleTextView)
 
         // Konfigurasi BarChart
         barChart.axisRight.setDrawLabels(false)
@@ -67,6 +71,44 @@ class TrainingDetailFragment : Fragment() {
 
             analizeTextView = view.findViewById(R.id.analizeTextView)
             analizeTextView.text = session.analize
+
+            val formattedTitle = "Topik Pembicaraan: " + session.title
+            titleTextView = view.findViewById(R.id.titleTextView)
+            titleTextView.text = formattedTitle
+
+            val originalFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS", Locale.getDefault())
+            val desiredFormat = SimpleDateFormat("dd MMM yyyy HH:mm 'WIB'", Locale.getDefault()) // Tambahkan literal WIB
+
+            var dateExpected = session.date
+            try {
+                val date = originalFormat.parse(session.date) // Parsing string date
+                if (date != null) {
+                    // Gunakan Calendar untuk menyesuaikan jam
+                    val calendar = Calendar.getInstance().apply {
+                        time = date
+                        val adjustedHour = (get(Calendar.HOUR_OF_DAY) + 7) % 24 // Penyesuaian jam
+                        set(Calendar.HOUR_OF_DAY, adjustedHour) // Set jam yang sudah diubah
+                    }
+
+                    // Format tanggal dengan desiredFormat
+                    val formattedDate = desiredFormat.format(calendar.time)
+                    dateExpected = formattedDate
+                } else {
+                    // Jika parsing gagal, tampilkan string original
+                    dateExpected = session.date
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                dateExpected = session.date // Jika terjadi error, tampilkan original date
+            }
+
+
+            val formattedDate = "Direkam Pada " + dateExpected
+            dateTextView = view.findViewById(R.id.dateTextView)
+            dateTextView.text = formattedDate
+
+            durationTextView = view.findViewById(R.id.durationTextView)
+            durationTextView.text = "Durasi Pembicaraan " + session.duration
         }
 
         // Data for the chart (representing 4 categories: Kejelasan, Diksi, Kelancaran, Emosi)
@@ -139,14 +181,6 @@ class TrainingDetailFragment : Fragment() {
         halfGauge.maxValue = 100.0
         halfGauge.value = average.toDouble()
 
-        // Mengambil arguments
-        arguments?.let { args ->
-            val sessionId = args.getString("sessionId")
-            val sessionTitle = args.getString("sessionTitle")
-
-            // Update UI
-            titleTextView.text = sessionTitle
-        }
 
         // Auto-scroll to "Hasil Analisis" section after 3 seconds
         Handler(Looper.getMainLooper()).postDelayed({
