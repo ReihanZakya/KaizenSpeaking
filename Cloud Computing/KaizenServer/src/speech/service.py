@@ -5,6 +5,24 @@ from src.speech.utils import upload_audio_to_gcs
 from sqlalchemy.orm import Session
 from fastapi import UploadFile, HTTPException
 from uuid import UUID
+from mutagen.wave import WAVE
+from mutagen import File
+from tempfile import NamedTemporaryFile
+import requests
+
+def format_duration(duration_in_seconds):
+    duration_in_seconds = int(duration_in_seconds)
+    hours = duration_in_seconds // 3600
+    minutes = (duration_in_seconds % 3600) // 60
+    seconds = duration_in_seconds % 60
+
+    if hours > 0:
+        return f"{hours}:{minutes}:{seconds}"
+    elif minutes > 0:
+        return f"{minutes}:{seconds}"
+    else:
+        return f" 00:{seconds}"
+
 
 def generate_random_score(seed: int):
     """
@@ -41,6 +59,29 @@ def save_transcription_data(
     db.refresh(history)
     return history
 
+def get_audio_duration_from_url(audio_url: str) -> float:
+    """
+    Download the audio file from the given URL and calculate its duration.
+    Supports multiple audio formats.
+    """
+    try:
+        response = requests.get(audio_url, stream=True)
+        response.raise_for_status()
+        with NamedTemporaryFile(delete=True) as temp_audio:
+            for chunk in response.iter_content(chunk_size=8192):
+                temp_audio.write(chunk)
+            temp_audio.flush()
+
+            # Automatically detect file type with mutagen
+            audio = File(temp_audio.name)
+            if not audio:
+                raise HTTPException(status_code=400, detail="Unsupported audio format")
+
+            return audio.info.length
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to calculate audio duration: {str(e)}")
+
+
 def get_speech_histories_by_user_id(db: Session, user_id: UUID):
     speech_histories = db.query(UsersSpeechHistory).filter(
         UsersSpeechHistory.user_id == user_id
@@ -50,24 +91,25 @@ def get_speech_histories_by_user_id(db: Session, user_id: UUID):
 
     if not speech_histories:
         raise HTTPException(status_code=404, detail="No speech histories found for this user.")
-    response_data = [
-        {
+    response_data = []
+    for speech in speech_histories:
+        duration = get_audio_duration_from_url(speech.audio_file_url)
+        response_data.append({
             "id": str(speech.id),
             "audio_file_url": speech.audio_file_url,
             "user_id": str(speech.user_id),
             "topic": speech.topic,
             "transcribe": speech.transcribe,
             "analize": speech.analize,
-            "score" : {
+            "score": {
                 "kejelasan": str(generate_random_score(id(speech) + 1)),
                 "diksi": str(generate_random_score(id(speech) + 2)),
                 "kelancaran": str(generate_random_score(id(speech) + 3)),
                 "emosi": str(generate_random_score(id(speech) + 4)),
             },
+            "duration": format_duration(duration),
             "created_at": speech.created_at.isoformat() if speech.created_at else None,
             "updated_at": speech.updated_at.isoformat() if speech.updated_at else None,
-        }
-        for speech in speech_histories
-    ]
+        })
 
     return response_data
