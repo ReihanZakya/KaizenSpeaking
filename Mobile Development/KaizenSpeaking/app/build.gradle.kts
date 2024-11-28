@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.okhttp3.okhttp)
     implementation(libs.okhttp3.logging.interceptor)
+    implementation(libs.glide)
 
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

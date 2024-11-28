@@ -27,6 +27,8 @@ retrofit = "2.11.0"
 simpleGaugeAndroid = "0.3.1"
 legacySupportV4 = "1.0.0"
 fragmentKtx = "1.8.5"
+glide = "4.16.0"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -58,6 +60,8 @@ retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit
 simple-gauge-android = { module = "com.github.Gruzer:simple-gauge-android", version.ref = "simpleGaugeAndroid" }
 androidx-legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", version.ref = "legacySupportV4" }
 androidx-fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragmentKtx" }
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
