@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("kotlin-parcelize")
 }
 
 android {
@@ -58,7 +59,12 @@ dependencies {
 
     implementation(libs.androidx.core.splashscreen)
 
-//    Chart
     implementation (libs.mpandroidchart)
     implementation (libs.simple.gauge.android)
+
+    //Retrofit
+    implementation(libs.glide)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.logging.interceptor)
 }
