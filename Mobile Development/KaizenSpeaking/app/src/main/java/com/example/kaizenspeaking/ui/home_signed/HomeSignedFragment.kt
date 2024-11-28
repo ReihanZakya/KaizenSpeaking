@@ -124,6 +124,7 @@ class HomeSignedFragment : Fragment() {
         xAxis.granularity = 1f
 
         lineChart.axisLeft.axisMinimum = 0f
+        lineChart.axisLeft.axisMaximum = 100f
         lineChart.axisRight.isEnabled = false
         lineChart.description.text = "Latihan Ke: "
         lineChart.invalidate()
