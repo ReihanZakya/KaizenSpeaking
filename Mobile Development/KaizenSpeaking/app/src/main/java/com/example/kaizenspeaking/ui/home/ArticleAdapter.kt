@@ -13,7 +13,7 @@ import com.example.kaizenspeaking.R
 
 data class Article(val title: String, val description: String, val image: Int, val url: String)
 
-class ArticleAdapter(private val context: Context, private val articles: List<Article>) :
+class ArticleAdapter(private val context: Context, private var articles: List<Article>) :
     RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder>() {
 
     inner class ArticleViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -28,6 +28,12 @@ class ArticleAdapter(private val context: Context, private val articles: List<Ar
                 context.startActivity(intent)
             }
         }
+    }
+
+    // Tambahkan fungsi updateData
+    fun updateData(newArticles: List<Article>) {
+        articles = newArticles
+        notifyDataSetChanged() // Beritahu RecyclerView bahwa data telah diperbarui
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {

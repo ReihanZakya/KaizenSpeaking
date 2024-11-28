@@ -3,10 +3,15 @@ package com.example.kaizenspeaking.ui.history
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.kaizenspeaking.ui.history.data.TrainingSession
+import com.example.kaizenspeaking.ui.history.data.remote.Repository
+import com.example.kaizenspeaking.ui.history.data.remote.response.DataItem
 import com.github.mikephil.charting.data.Entry
+import kotlinx.coroutines.launch
+import com.example.kaizenspeaking.ui.history.data.Result
 
-class HistoryViewModel : ViewModel() {
+class HistoryViewModel(private val repository: Repository) : ViewModel() {
 
     // Data untuk chart
     private val _entriesA = MutableLiveData<List<Entry>>()
@@ -21,23 +26,65 @@ class HistoryViewModel : ViewModel() {
     private val _entriesD = MutableLiveData<List<Entry>>()
     val entriesD: LiveData<List<Entry>> get() = _entriesD
 
-    // Method to initialize data
-    fun initChartData() {
-        val dataA = arrayOf(65f, 70f, 80f, 85f, 92f, 94f)
-        val dataB = arrayOf(50f, 52f, 60f, 75f, 85f, 95f)
-        val dataC = arrayOf(70f, 72f, 75f, 79f, 82f, 85f)
-        val dataD = arrayOf(40f, 65f, 75f, 80f, 83f, 90f)
+    private val _history = MutableLiveData<Result<List<DataItem>>>()
+    val history: LiveData<Result<List<DataItem>>> = _history
+
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
+
+    // LiveData untuk mengubah jumlah latihan
+    private val _numberOfExercise = MutableLiveData<String>()
+    val numberOfExercise: LiveData<String> get() = _numberOfExercise
+
+    private val _trainingSessions = MutableLiveData<List<TrainingSession>>()
+    val trainingSessions: LiveData<List<TrainingSession>> get() = _trainingSessions
+
+    init {
+        _numberOfExercise.value = "Banyak Latihan: 0"  // Nilai default
+    }
+
+    fun getAllHistory(token: String, userId: String) {
+        _isLoading.value = true
+        viewModelScope.launch {
+            val result = repository.getAllHistory(token, userId)
+            _history.value = result
+            if (result is Result.Success) {
+                processChartData(result.data)
+                val sessions = result.data.map { dataItem ->
+                    TrainingSession(
+                        id = dataItem.id,
+                        title = dataItem.topic,
+                        date = dataItem.createdAt,
+                        audioUrl = dataItem.audioFileUrl,
+                        duration = dataItem.duration,
+                        kejelasan = dataItem.score.kejelasan,
+                        diksi = dataItem.score.diksi,
+                        kelancaran = dataItem.score.kelancaran,
+                        emosi = dataItem.score.emosi,
+                        analize = dataItem.analize
+                    )
+                }
+                _trainingSessions.value = sessions
+            }
+            _isLoading.value = false
+        }
+    }
+
+    private fun processChartData(dataItems: List<DataItem>) {
+        // Urutkan data berdasarkan tanggal secara ascending
+        val sortedDataItems = dataItems.sortedBy { it.createdAt }
 
         val entriesA = ArrayList<Entry>()
         val entriesB = ArrayList<Entry>()
         val entriesC = ArrayList<Entry>()
         val entriesD = ArrayList<Entry>()
 
-        for (i in dataA.indices) {
-            entriesA.add(Entry((i + 1).toFloat(), dataA[i]))
-            entriesB.add(Entry((i + 1).toFloat(), dataB[i]))
-            entriesC.add(Entry((i + 1).toFloat(), dataC[i]))
-            entriesD.add(Entry((i + 1).toFloat(), dataD[i]))
+        sortedDataItems.forEachIndexed { index, sortedDataItem ->
+            val position = (index + 1).toFloat()
+            entriesA.add(Entry(position, sortedDataItem.score.kejelasan.toFloatOrNull() ?: 0f))
+            entriesB.add(Entry(position, sortedDataItem.score.diksi.toFloatOrNull() ?: 0f))
+            entriesC.add(Entry(position, sortedDataItem.score.kelancaran.toFloatOrNull() ?: 0f))
+            entriesD.add(Entry(position, sortedDataItem.score.emosi.toFloatOrNull() ?: 0f))
         }
 
         _entriesA.value = entriesA
@@ -45,17 +92,6 @@ class HistoryViewModel : ViewModel() {
         _entriesC.value = entriesC
         _entriesD.value = entriesD
 
-        // Update the number of exercises based on the length of dataA
-        _numberOfExercise.value = "Banyak Latihan: ${dataA.size}"
-    }
-
-    // LiveData untuk mengubah jumlah latihan
-    private val _numberOfExercise = MutableLiveData<String>()
-    val numberOfExercise: LiveData<String> get() = _numberOfExercise
-
-    // Initialize number of exercises based on the number of articles
-    init {
-        // Inisialisasi nilai jumlah latihan
-        _numberOfExercise.value = "Banyak Latihan: 0"  // Nilai default
+        _numberOfExercise.value = "Banyak Latihan: ${dataItems.size}"
     }
 }

@@ -17,5 +17,7 @@
     <color name="red_kaizen">#D93337</color>
     <color name="indicator_active">#FFFFFF</color>
     <color name="indicator_inactive">#B0BEC5</color>
+    <color name="blue_light">#01313A</color>
+    <color name="red_light">#FFEEEE</color>
     <color name="gray_transparant">#454647</color>
 </resources>

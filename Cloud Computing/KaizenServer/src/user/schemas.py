@@ -1,20 +1,24 @@
 from pydantic import BaseModel, ConfigDict
 from uuid import  UUID
+from typing import Optional
 
 class UserCreate(BaseModel):
-    username: str
+    # username: str
+    email: Optional[str] = None
     password: str
     full_name: str
-    nickname: str = None
-    phone_number: str = None
+    nickname: Optional[str] = None
+    # phone_number: Optional[str] = None
     role: str = "user"
+    device_id: Optional[str] = None
 
 class UserLogin(BaseModel):
-    username: str
+    email: str
     password: str
 
 class UserDetailResponse(BaseModel):
     id: UUID
+    email: str
     username: str
     full_name: str
     nickname: str = None
@@ -28,10 +32,11 @@ class UserDetailResponse(BaseModel):
 
 class UserResponse(BaseModel):
     id: UUID
-    username: str
+    # username: str
+    email: str
     full_name: str
     nickname: str = None
-    phone_number: str = None
+    # phone_number: str = None
 
     class Config:
         model_config = ConfigDict(
