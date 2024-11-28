@@ -9,6 +9,7 @@ from mutagen.wave import WAVE
 from mutagen import File
 from tempfile import NamedTemporaryFile
 import requests
+import json
 
 def format_duration(duration_in_seconds):
     duration_in_seconds = int(duration_in_seconds)
@@ -37,7 +38,8 @@ def save_transcription_data(
     topic: str,
     user_id: str,
     transcription: str,
-    audio_file: UploadFile
+    audio_file: UploadFile,
+    analyze: dict
 ):
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
@@ -52,12 +54,13 @@ def save_transcription_data(
         user_id=user_id,
         topic=topic,
         transcribe=transcription,
-        analize=None
+        analize=json.dumps(analyze)
     )
     db.add(history)
     db.commit()
     db.refresh(history)
     return history
+
 
 def get_audio_duration_from_url(audio_url: str) -> float:
     """
@@ -91,22 +94,45 @@ def get_speech_histories_by_user_id(db: Session, user_id: UUID):
 
     if not speech_histories:
         raise HTTPException(status_code=404, detail="No speech histories found for this user.")
+
     response_data = []
     for speech in speech_histories:
         duration = get_audio_duration_from_url(speech.audio_file_url)
+
+        try:
+            analyze_data = json.loads(speech.analize) if speech.analize else {
+                "score": {
+                    "kejelasan": "0",
+                    "diksi": "0",
+                    "kelancaran": "0",
+                    "emosi": "0"
+                },
+                "analysis_message": ""
+            }
+        except (json.JSONDecodeError, TypeError):
+            analyze_data = {
+                "score": {
+                    "kejelasan": "0",
+                    "diksi": "0",
+                    "kelancaran": "0",
+                    "emosi": "0"
+                },
+                "analysis_message": ""
+            }
+
         response_data.append({
             "id": str(speech.id),
             "audio_file_url": speech.audio_file_url,
             "user_id": str(speech.user_id),
             "topic": speech.topic,
             "transcribe": speech.transcribe,
-            "analize": speech.analize,
-            "score": {
-                "kejelasan": str(generate_random_score(id(speech) + 1)),
-                "diksi": str(generate_random_score(id(speech) + 2)),
-                "kelancaran": str(generate_random_score(id(speech) + 3)),
-                "emosi": str(generate_random_score(id(speech) + 4)),
-            },
+            "score": analyze_data.get("score", {
+                "kejelasan": "0",
+                "diksi": "0",
+                "kelancaran": "0",
+                "emosi": "0"
+            }),
+            "analysis_message": analyze_data.get("analysis_message", ""),
             "duration": format_duration(duration),
             "created_at": speech.created_at.isoformat() if speech.created_at else None,
             "updated_at": speech.updated_at.isoformat() if speech.updated_at else None,
