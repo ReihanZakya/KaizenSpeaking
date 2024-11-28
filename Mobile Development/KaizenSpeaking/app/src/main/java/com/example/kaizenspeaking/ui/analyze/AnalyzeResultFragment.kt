@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,13 +13,24 @@ import androidx.fragment.app.Fragment
 import com.ekn.gruzer.gaugelibrary.HalfGauge
 import com.ekn.gruzer.gaugelibrary.Range
 import com.example.kaizenspeaking.R
+import com.example.kaizenspeaking.databinding.FragmentAnalyzeResultBinding
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.utils.ColorTemplate
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.example.kaizenspeaking.data.response.AnalyzeResponse
+import com.example.kaizenspeaking.data.response.Score
+import com.example.kaizenspeaking.databinding.FragmentAnalyzeBinding
+
 
 @Suppress("DEPRECATION")
 class AnalyzeResultFragment : Fragment() {
+
+    private var _binding: FragmentAnalyzeResultBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var barChart: BarChart
     private lateinit var halfGauge: HalfGauge
@@ -30,16 +42,41 @@ class AnalyzeResultFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_analyze_result, container, false)
+        _binding = FragmentAnalyzeResultBinding.inflate(inflater, container, false)
+        val root: View = binding.root
+        return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as AppCompatActivity).supportActionBar?.hide()
 
-        barChart = view.findViewById(R.id.barchart)
-        halfGauge = view.findViewById(R.id.gauge_chart)
-        scrollView = view.findViewById(R.id.scrollView)
-        cardViewAnalysis = view.findViewById(R.id.cardViewAnalysis)
+        // Ambil data dari arguments
+        val analyzeResponse = arguments?.getParcelable<AnalyzeResponse>("result")
+        Log.d("AnalyzeResultFragment", "Received AnalyzeResponse: $analyzeResponse")
+        if (analyzeResponse != null) {
+            setupBarChart(analyzeResponse.score)
+            setupGaugeChart(analyzeResponse.score)
+            setupAnalyzeWords(analyzeResponse.words)
+            Log.d("AnalyzeResultFragment", "Hasil Analisis: ${analyzeResponse.score}")
+        } else {
+            Toast.makeText(requireContext(), "Data tidak ditemukan", Toast.LENGTH_SHORT).show()
+            Log.e("AnalyzeResultFragment", "Data tidak ditemukan")
+        }
+
+        // Auto-scroll to "Hasil Analisis" section after 3 seconds
+        Handler(Looper.getMainLooper()).postDelayed({
+            scrollView.smoothScrollTo(0, cardViewAnalysis.top)
+        }, 3000)
+    }
+
+    private fun setupBarChart(score: Score?) {
+        if (score == null) return
+
+        barChart = binding.barchart
+        halfGauge = binding.gaugeChart
+        scrollView = binding.scrollView
+        cardViewAnalysis = binding.cardViewAnalysis
 
         barChart.axisRight.setDrawLabels(false)
         barChart.axisLeft.axisMinimum = 0f // Set minimum value for Y axis
@@ -52,10 +89,10 @@ class AnalyzeResultFragment : Fragment() {
         val entriesEmosi = ArrayList<BarEntry>()
 
         // Example data for each category
-        entriesKejelasan.add(BarEntry(0f, 94f))
-        entriesDiksi.add(BarEntry(1f, 95f))
-        entriesKelancaran.add(BarEntry(2f, 85f))
-        entriesEmosi.add(BarEntry(3f, 90f))
+        entriesKejelasan.add(BarEntry(0f, score.kejelasan?.toFloatOrNull() ?: 0f))
+        entriesDiksi.add(BarEntry(1f, score.diksi?.toFloatOrNull() ?: 0f))
+        entriesKelancaran.add(BarEntry(2f, score.kelancaran?.toFloatOrNull() ?: 0f))
+        entriesEmosi.add(BarEntry(3f, score.emosi?.toFloatOrNull() ?: 0f))
 
         // Create BarDataSets for each category
         val barDataSetKejelasan = BarDataSet(entriesKejelasan, "Kejelasan")
@@ -82,6 +119,20 @@ class AnalyzeResultFragment : Fragment() {
 
         // Refresh chart to render the new data
         barChart.invalidate()
+
+    }
+
+    private fun setupGaugeChart(score: Score?) {
+        if (score == null) return
+
+        // Hitung rata-rata dari skor
+        val scores = listOfNotNull(
+            score.kejelasan?.toFloatOrNull(),
+            score.diksi?.toFloatOrNull(),
+            score.kelancaran?.toFloatOrNull(),
+            score.emosi?.toFloatOrNull()
+        )
+        val averageScore = if (scores.isNotEmpty()) scores.average().toFloat() else 0f
 
         // Konfigurasi HalfGauge
         val range1 = Range().apply {
@@ -110,11 +161,22 @@ class AnalyzeResultFragment : Fragment() {
         // Set min, max, and current value for the HalfGauge
         halfGauge.minValue = 0.0
         halfGauge.maxValue = 100.0
-        halfGauge.value = 75.0  // example value
+        halfGauge.value = averageScore.toDouble()  // example value
 
-        // Auto-scroll to "Hasil Analisis" section after 3 seconds
-        Handler(Looper.getMainLooper()).postDelayed({
-            scrollView.smoothScrollTo(0, cardViewAnalysis.top)
-        }, 3000)
+
+    }
+
+    private fun setupAnalyzeWords(words: List<String>) {
+        // Gabungkan kata-kata menjadi satu string dengan pemisah koma
+        val wordsText = words.joinToString(", ")
+
+        // Tampilkan di TextView
+        binding.tvAnalyzeResult.text = wordsText
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+        (activity as AppCompatActivity).supportActionBar?.show()
     }
 }

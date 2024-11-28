@@ -1,13 +1,18 @@
 package com.example.kaizenspeaking.data.response
 
-data class AnalyzeResponse(
-    val score: Score,
-    val words: List<String>
-)
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
+data class AnalyzeResponse(
+    val score: Score?,
+    val words: List<String>
+): Parcelable
+
+@Parcelize
 data class Score(
-    val kejelasan: String,
-    val diksi: String,
-    val kelancaran: String,
-    val emosi: String
-)
+    val kejelasan: String? = "0",
+    val diksi: String? = "0",
+    val kelancaran: String? = "0",
+    val emosi: String? = "0"
+): Parcelable

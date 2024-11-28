@@ -6,7 +6,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiConfig {
-    private const val BASE_URL = "https://kaizen-server-hc5od2n5nq-et.a.run.app/speech/speech-to-text"
+    private const val BASE_URL = "https://kaizen-server-hc5od2n5nq-et.a.run.app/"
 
     private val client = OkHttpClient.Builder()
         .addInterceptor(HttpLoggingInterceptor().apply {
