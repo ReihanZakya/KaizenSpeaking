@@ -71,12 +71,12 @@
                     </LinearLayout>
 
                     <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/switchToDetail"
-                        android:layout_width="72dp"
+                        android:id="@+id/switchToSimple"
+                        android:layout_width="wrap_content"
                         android:layout_height="48dp"
                         android:checked="false"
                         android:longClickable="false"
-                        android:text="@string/detail"
+                        android:text="@string/simple"
                         android:textSize="11sp"
                         tools:theme="@style/BrandedSwitch.control" />
                 </LinearLayout>
