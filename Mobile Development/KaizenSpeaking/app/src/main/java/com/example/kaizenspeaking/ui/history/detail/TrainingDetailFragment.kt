@@ -1,6 +1,8 @@
 package com.example.kaizenspeaking.ui.history.detail
 
 import android.graphics.Color
+import android.icu.text.SimpleDateFormat
+import android.icu.util.Calendar
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -17,6 +19,8 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.ekn.gruzer.gaugelibrary.Range
 import com.ekn.gruzer.gaugelibrary.HalfGauge
+import com.example.kaizenspeaking.ui.history.data.TrainingSession
+import java.util.Locale
 
 class TrainingDetailFragment : Fragment() {
 
@@ -25,6 +29,9 @@ class TrainingDetailFragment : Fragment() {
     private lateinit var scrollView: ScrollView
     private lateinit var cardViewAnalisis: View
     private lateinit var titleTextView: TextView
+    private lateinit var analizeTextView: TextView
+    private lateinit var dateTextView: TextView
+    private lateinit var durationTextView: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,58 +44,126 @@ class TrainingDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val trainingSession: TrainingSession? = arguments?.getParcelable("sessionData")
+
         barChart = view.findViewById(R.id.barchart)
         halfGauge = view.findViewById(R.id.gauge_chart)
         scrollView = view.findViewById(R.id.scrollView)
         cardViewAnalisis = view.findViewById(R.id.cardViewAnalasis)
-        titleTextView = view.findViewById(R.id.titleTextView)
 
         // Konfigurasi BarChart
         barChart.axisRight.setDrawLabels(false)
+        barChart.axisLeft.axisMinimum = 0f // Set minimum value for Y axis
+        barChart.axisLeft.axisMaximum = 100f // Set maximum value for Y axis
 
-        // Data for the chart
-        val entries = ArrayList<BarEntry>()
-        entries.add(BarEntry(0f, 25f)) // Data point 1
-        entries.add(BarEntry(1f, 50f)) // Data point 2
-        entries.add(BarEntry(2f, 100f)) // Data point 3
-        entries.add(BarEntry(3f, 75f)) // Data point 4
+        // Declare the variables outside the let block
+        var kejelasan: Float = 0f
+        var diksi: Float = 0f
+        var kelancaran: Float = 0f
+        var emosi: Float = 0f
 
-        // Create BarDataSet
-        val barDataSet = BarDataSet(entries, "Bar Chart Example")
+        // Assign values inside the let block
+        trainingSession?.let { session ->
+            kejelasan = session.kejelasan.toFloatOrNull() ?: 0f
+            diksi = session.diksi.toFloatOrNull() ?: 0f
+            kelancaran = session.kelancaran.toFloatOrNull() ?: 0f
+            emosi = session.emosi.toFloatOrNull() ?: 0f
 
-        // Set different colors for each bar
-        val colors = arrayListOf(
-            resources.getColor(android.R.color.holo_blue_light),
-            resources.getColor(android.R.color.holo_green_light),
-            resources.getColor(android.R.color.holo_orange_light),
-            resources.getColor(android.R.color.holo_red_light)
-        )
-        barDataSet.colors = colors
+            analizeTextView = view.findViewById(R.id.analizeTextView)
+            analizeTextView.text = session.analize
+
+            val formattedTitle = "Topik Pembicaraan: " + session.title
+            titleTextView = view.findViewById(R.id.titleTextView)
+            titleTextView.text = formattedTitle
+
+            val originalFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS", Locale.getDefault())
+            val desiredFormat = SimpleDateFormat("dd MMM yyyy HH:mm 'WIB'", Locale.getDefault()) // Tambahkan literal WIB
+
+            var dateExpected = session.date
+            try {
+                val date = originalFormat.parse(session.date) // Parsing string date
+                if (date != null) {
+                    // Gunakan Calendar untuk menyesuaikan jam
+                    val calendar = Calendar.getInstance().apply {
+                        time = date
+                        val adjustedHour = (get(Calendar.HOUR_OF_DAY) + 7) % 24 // Penyesuaian jam
+                        set(Calendar.HOUR_OF_DAY, adjustedHour) // Set jam yang sudah diubah
+                    }
+
+                    // Format tanggal dengan desiredFormat
+                    val formattedDate = desiredFormat.format(calendar.time)
+                    dateExpected = formattedDate
+                } else {
+                    // Jika parsing gagal, tampilkan string original
+                    dateExpected = session.date
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                dateExpected = session.date // Jika terjadi error, tampilkan original date
+            }
+
+
+            val formattedDate = "Direkam Pada " + dateExpected
+            dateTextView = view.findViewById(R.id.dateTextView)
+            dateTextView.text = formattedDate
+
+            durationTextView = view.findViewById(R.id.durationTextView)
+            durationTextView.text = "Durasi Pembicaraan " + session.duration
+        }
+
+        // Data for the chart (representing 4 categories: Kejelasan, Diksi, Kelancaran, Emosi)
+        val entriesKejelasan = ArrayList<BarEntry>()
+        val entriesDiksi = ArrayList<BarEntry>()
+        val entriesKelancaran = ArrayList<BarEntry>()
+        val entriesEmosi = ArrayList<BarEntry>()
+
+        // Example data for each category
+        entriesKejelasan.add(BarEntry(0f, kejelasan))
+        entriesDiksi.add(BarEntry(1f, diksi))
+        entriesKelancaran.add(BarEntry(2f, kelancaran))
+        entriesEmosi.add(BarEntry(3f, emosi))
+
+        // Create BarDataSets for each category
+        val barDataSetKejelasan = BarDataSet(entriesKejelasan, "Kejelasan")
+        val barDataSetDiksi = BarDataSet(entriesDiksi, "Diksi")
+        val barDataSetKelancaran = BarDataSet(entriesKelancaran, "Kelancaran")
+        val barDataSetEmosi = BarDataSet(entriesEmosi, "Emosi")
+
+        // Set colors for each category
+        barDataSetKejelasan.color = resources.getColor(android.R.color.holo_blue_light)
+        barDataSetDiksi.color = resources.getColor(android.R.color.holo_green_light)
+        barDataSetKelancaran.color = resources.getColor(android.R.color.holo_red_light)
+        barDataSetEmosi.color = resources.getColor(android.R.color.holo_orange_light)
 
         // Create BarData
-        val barData = BarData(barDataSet)
+        val barData = BarData(barDataSetKejelasan, barDataSetDiksi, barDataSetKelancaran, barDataSetEmosi)
 
         // Set data to the chart
         barChart.data = barData
+
+        // Disable X axis labels
+        barChart.xAxis.setDrawLabels(false)
+
+        barChart.description.text = " "
 
         // Refresh chart to render the new data
         barChart.invalidate()
 
         // Konfigurasi HalfGauge
         val range1 = Range().apply {
-            color = Color.parseColor("#ce0000")
+            color = resources.getColor(android.R.color.holo_red_light)
             from = 0.0
             to = 33.3
         }
 
         val range2 = Range().apply {
-            color = Color.parseColor("#E3E500")
+            color = resources.getColor(android.R.color.holo_orange_light)
             from = 33.3
             to = 66.6
         }
 
         val range3 = Range().apply {
-            color = Color.parseColor("#00b20b")
+            color = resources.getColor(android.R.color.holo_green_light)
             from = 66.6
             to = 100.0
         }
@@ -99,22 +174,18 @@ class TrainingDetailFragment : Fragment() {
         halfGauge.addRange(range3)
 
         // Set min, max, and current value
+        // Calculate average
+        val average: Float = (kejelasan + diksi + kelancaran + emosi) / 4
+
         halfGauge.minValue = 0.0
         halfGauge.maxValue = 100.0
-        halfGauge.value = 75.0  // example value
+        halfGauge.value = average.toDouble()
 
-        // Mengambil arguments
-        arguments?.let { args ->
-            val sessionId = args.getString("sessionId")
-            val sessionTitle = args.getString("sessionTitle")
-
-            // Update UI
-            titleTextView.text = sessionTitle
-        }
 
         // Auto-scroll to "Hasil Analisis" section after 3 seconds
         Handler(Looper.getMainLooper()).postDelayed({
             scrollView.smoothScrollTo(0, cardViewAnalisis.top)
         }, 3000)
     }
+    
 }

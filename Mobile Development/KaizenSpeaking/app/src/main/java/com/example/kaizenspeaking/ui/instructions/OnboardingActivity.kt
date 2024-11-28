@@ -4,23 +4,23 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
+import com.example.kaizenspeaking.MainActivity
 import com.example.kaizenspeaking.R
 import com.example.kaizenspeaking.ui.instructions.adapter.OnboardingAdapter
 import com.example.kaizenspeaking.ui.instructions.animation.CubeInScalingTransformation
 import com.example.kaizenspeaking.ui.instructions.data.OnboardingItem
 
-@Suppress("DEPRECATION")
 class OnboardingActivity : AppCompatActivity() {
 
     private lateinit var onboardingViewPager: ViewPager2
     private lateinit var indicatorContainer: LinearLayout
     private lateinit var buttonBack: TextView
-    private lateinit var buttonNext: ImageView
+    private lateinit var buttonNext: Button
     private lateinit var adapter: OnboardingAdapter
 
     companion object {
@@ -77,36 +77,31 @@ class OnboardingActivity : AppCompatActivity() {
                     R.drawable.img_instructions_1,
                     getString(R.string.text_instruction_1),
                     getString(R.string.desc_instruction_1),
-                    R.drawable.background_instructions_1,
-                    R.drawable.btn_next_yellow
+                    R.drawable.background_instructions_1
                 ),
                 OnboardingItem(
                     R.drawable.img_instructions_2,
                     getString(R.string.text_instruction_2),
                     getString(R.string.desc_instruction_2),
-                    R.drawable.background_instruction_2,
-                    R.drawable.btn_next_red
+                    R.drawable.background_instruction_2
                 ),
                 OnboardingItem(
                     R.drawable.img_instructions_3,
                     getString(R.string.text_instruction_3),
                     getString(R.string.desc_instruction_3),
-                    R.drawable.background_instruction_3,
-                    R.drawable.btn_next_yellow
+                    R.drawable.background_instruction_3
                 ),
                 OnboardingItem(
                     R.drawable.img_instructions_4,
                     getString(R.string.text_instruction_4),
                     getString(R.string.desc_instruction_4),
-                    R.drawable.background_instruction_4,
-                    R.drawable.btn_next_red
+                    R.drawable.background_instruction_4
                 ),
                 OnboardingItem(
                     R.drawable.img_instructions_5,
                     getString(R.string.text_instruction_5),
                     getString(R.string.desc_instruction_5),
-                    R.drawable.background_instruction_5,
-                    R.drawable.btn_finish
+                    R.drawable.background_instruction_5
                 )
             )
         )
@@ -165,11 +160,15 @@ class OnboardingActivity : AppCompatActivity() {
 
     private fun updateNavigationButtons(position: Int) {
         buttonBack.visibility = View.VISIBLE
-        buttonNext.setImageResource(
-            if (position == adapter.itemCount - 1) {
-                R.drawable.btn_finish
-            } else {
-                adapter.onboardingItems[position].nextButtonImage
+        buttonNext.text = if (position == adapter.itemCount - 1) "Selesai" else "Selanjutnya"
+        buttonNext.setBackgroundResource(
+            when (position) {
+                0 -> R.drawable.btn_next_yellow
+                1 -> R.drawable.btn_next_red
+                2 -> R.drawable.btn_next_yellow
+                3 -> R.drawable.btn_next_red
+                adapter.itemCount - 1 -> R.drawable.btn_finish
+                else -> R.drawable.btn_next_yellow
             }
         )
     }
@@ -184,7 +183,7 @@ class OnboardingActivity : AppCompatActivity() {
     }
 
     private fun proceedToMainActivity() {
-
+        startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
 }

@@ -3,29 +3,95 @@ package com.example.kaizenspeaking.ui.history
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.kaizenspeaking.ui.history.data.TrainingSession
+import com.example.kaizenspeaking.ui.history.data.remote.Repository
+import com.example.kaizenspeaking.ui.history.data.remote.response.DataItem
+import com.github.mikephil.charting.data.Entry
+import kotlinx.coroutines.launch
+import com.example.kaizenspeaking.ui.history.data.Result
 
-class HistoryViewModel : ViewModel() {
+class HistoryViewModel(private val repository: Repository) : ViewModel() {
+
+    // Data untuk chart
+    private val _entriesA = MutableLiveData<List<Entry>>()
+    val entriesA: LiveData<List<Entry>> get() = _entriesA
+
+    private val _entriesB = MutableLiveData<List<Entry>>()
+    val entriesB: LiveData<List<Entry>> get() = _entriesB
+
+    private val _entriesC = MutableLiveData<List<Entry>>()
+    val entriesC: LiveData<List<Entry>> get() = _entriesC
+
+    private val _entriesD = MutableLiveData<List<Entry>>()
+    val entriesD: LiveData<List<Entry>> get() = _entriesD
+
+    private val _history = MutableLiveData<Result<List<DataItem>>>()
+    val history: LiveData<Result<List<DataItem>>> = _history
+
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
+
+    // LiveData untuk mengubah jumlah latihan
+    private val _numberOfExercise = MutableLiveData<String>()
+    val numberOfExercise: LiveData<String> get() = _numberOfExercise
 
     private val _trainingSessions = MutableLiveData<List<TrainingSession>>()
-    val trainingSessions: LiveData<List<TrainingSession>> = _trainingSessions
-
-    private val _totalTrainings = MutableLiveData<Int>()
-    val totalTrainings: LiveData<Int> = _totalTrainings
+    val trainingSessions: LiveData<List<TrainingSession>> get() = _trainingSessions
 
     init {
-        // In a real app, this would load from a repository
-        loadTrainingSessions()
+        _numberOfExercise.value = "Banyak Latihan: 0"  // Nilai default
     }
 
-    private fun loadTrainingSessions() {
-        // Dummy data for demonstration
-        val sessions = listOf(
-            TrainingSession("1", "Pidato Senin 1", "30 Oct 2024 10:25:14"),
-            TrainingSession("2", "Pidato Senin 2", "1 Nov 2024 15:30:22"),
-            TrainingSession("3", "Pidato Senin 3", "2 Nov 2024 00:25:14")
-        )
-        _trainingSessions.value = sessions
-        _totalTrainings.value = sessions.size
+    fun getAllHistory(token: String, userId: String) {
+        _isLoading.value = true
+        viewModelScope.launch {
+            val result = repository.getAllHistory(token, userId)
+            _history.value = result
+            if (result is Result.Success) {
+                processChartData(result.data)
+                val sessions = result.data.map { dataItem ->
+                    TrainingSession(
+                        id = dataItem.id,
+                        title = dataItem.topic,
+                        date = dataItem.createdAt,
+                        audioUrl = dataItem.audioFileUrl,
+                        duration = dataItem.duration,
+                        kejelasan = dataItem.score.kejelasan,
+                        diksi = dataItem.score.diksi,
+                        kelancaran = dataItem.score.kelancaran,
+                        emosi = dataItem.score.emosi,
+                        analize = dataItem.analize
+                    )
+                }
+                _trainingSessions.value = sessions
+            }
+            _isLoading.value = false
+        }
+    }
+
+    private fun processChartData(dataItems: List<DataItem>) {
+        // Urutkan data berdasarkan tanggal secara ascending
+        val sortedDataItems = dataItems.sortedBy { it.createdAt }
+
+        val entriesA = ArrayList<Entry>()
+        val entriesB = ArrayList<Entry>()
+        val entriesC = ArrayList<Entry>()
+        val entriesD = ArrayList<Entry>()
+
+        sortedDataItems.forEachIndexed { index, sortedDataItem ->
+            val position = (index + 1).toFloat()
+            entriesA.add(Entry(position, sortedDataItem.score.kejelasan.toFloatOrNull() ?: 0f))
+            entriesB.add(Entry(position, sortedDataItem.score.diksi.toFloatOrNull() ?: 0f))
+            entriesC.add(Entry(position, sortedDataItem.score.kelancaran.toFloatOrNull() ?: 0f))
+            entriesD.add(Entry(position, sortedDataItem.score.emosi.toFloatOrNull() ?: 0f))
+        }
+
+        _entriesA.value = entriesA
+        _entriesB.value = entriesB
+        _entriesC.value = entriesC
+        _entriesD.value = entriesD
+
+        _numberOfExercise.value = "Banyak Latihan: ${dataItems.size}"
     }
 }
