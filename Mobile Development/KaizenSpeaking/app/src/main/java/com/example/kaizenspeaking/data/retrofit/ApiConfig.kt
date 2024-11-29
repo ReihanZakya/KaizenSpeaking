@@ -10,9 +10,9 @@ object ApiConfig {
     private const val BASE_URL = "https://kaizen-server-hc5od2n5nq-et.a.run.app/"
 
     private val client = OkHttpClient.Builder()
-        .connectTimeout(2, TimeUnit.MINUTES)  // Timeout untuk koneksi
-        .readTimeout(2, TimeUnit.MINUTES)     // Timeout untuk membaca data
-        .writeTimeout(2, TimeUnit.MINUTES)    // Timeout untuk menulis data
+        .connectTimeout(5, TimeUnit.MINUTES)  // Timeout untuk koneksi
+        .readTimeout(5, TimeUnit.MINUTES)     // Timeout untuk membaca data
+        .writeTimeout(5, TimeUnit.MINUTES)    // Timeout untuk menulis data
         .addInterceptor(HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         })
