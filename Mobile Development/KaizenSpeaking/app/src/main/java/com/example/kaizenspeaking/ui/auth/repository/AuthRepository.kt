@@ -1,7 +1,6 @@
 package com.example.kaizenspeaking.ui.auth.repository
 
 import com.example.kaizenspeaking.ui.auth.data.LoginBody
-import com.example.kaizenspeaking.ui.auth.data.LoginResponse
 import com.example.kaizenspeaking.ui.auth.data.RegisterBody
 import com.example.kaizenspeaking.ui.auth.data.ValidateEmailBody
 import com.example.kaizenspeaking.ui.auth.utils.APIConsumer
