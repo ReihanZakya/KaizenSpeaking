@@ -11,15 +11,11 @@
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/action_navigation_home_to_signInFragment"
-            app:destination="@+id/SignInFragment"/>
+            android:id="@+id/action_navigation_home_to_signInActivity"
+            app:destination="@+id/SignInActivity"/>
     </fragment>
 
-    <fragment
-        android:id="@+id/navigation_home_signed"
-        android:name="com.example.kaizenspeaking.ui.home_signed.HomeSignedFragment"
-        android:label="HomeSigned"
-        tools:layout="@layout/fragment_home_signed" />
+
 
     <fragment
         android:id="@+id/navigation_analyze"
@@ -48,6 +44,13 @@
         tools:layout="@layout/fragment_analyze_result" />
 
     <fragment
+        android:id="@+id/navigation_home_signed"
+        android:name="com.example.kaizenspeaking.ui.home_signed.HomeSignedFragment"
+        android:label="Home Signed"
+        tools:layout="@layout/fragment_home_signed" />
+
+
+    <fragment
         android:id="@+id/trainingDetailFragment"
         android:name="com.example.kaizenspeaking.ui.history.detail.TrainingDetailFragment"
         android:label="Training Detail"
@@ -61,27 +64,17 @@
             app:argType="string" />
     </fragment>
 
-    <fragment
-        android:id="@+id/SignInFragment"
-        android:name="com.example.kaizenspeaking.ui.auth.SignInFragment"
-        tools:layout="@layout/fragment_sign_in">
+    <activity
+        android:id="@+id/signInActivity"
+        android:name="com.example.kaizenspeaking.ui.auth.SignInActivity"
+        android:label="SignInActivity">
+        <fragment
+            android:id="@+id/homeSignInFragment"
+            android:name="com.example.kaizenspeaking.ui.home_signed.HomeSignedFragment"
+            android:label="HomeSignInFragment" />
+    </activity>
 
-        <action
-            android:id="@+id/nav_to_signUpFragment"
-            app:destination="@+id/SignUpFragment">
 
-        </action>
 
-    </fragment>
 
-    <fragment
-        android:id="@+id/SignUpFragment"
-        android:name="com.example.kaizenspeaking.ui.auth.SignUpFragment"
-        tools:layout="@layout/fragment_sign_up">
-        <action
-            android:id="@+id/nav_to_signInFragment"
-            app:destination="@+id/SignInFragment">
-
-        </action>
-    </fragment>
 </navigation>
