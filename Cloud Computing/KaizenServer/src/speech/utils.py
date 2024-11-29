@@ -4,7 +4,7 @@ from fastapi import UploadFile
 from src.config import gcp_config
 import uuid
 
-def upload_audio_to_gcs(file: UploadFile, bucket_name: str = "kaizen_room"):
+def upload_audio_to_gcs(file: UploadFile, bucket_name: str = "kaizen_audio"):
     if not file:
         return None
 

@@ -1,7 +1,7 @@
 <!-- fragment_training_detail.xml -->
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto">
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <!-- Declare any variables or LiveData here -->
@@ -16,191 +16,187 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/cardview_light_background"
             android:navigationIcon="@drawable/btn_back"
-            android:title="Detail Latithan"
-            android:titleTextColor="@color/black"
-            android:background="@color/cardview_light_background"/>
+            android:title="@string/detail_title"
+            android:titleTextColor="@color/black" />
 
 
-    <ScrollView
-        android:id="@+id/scrollView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="10dp">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        tools:context=".TrainingDetailFragment"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp">
-
-        <!-- Header Section -->
-
-
-        <!-- Video Player Section -->
-
-<androidx.cardview.widget.CardView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    card_view:cardCornerRadius="20dp"
-    android:layout_margin="16dp"
-    android:layout_marginBottom="16dp"
-    android:padding="16dp">
-        <LinearLayout
+        <ScrollView
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="16dp"
-            android:layout_marginTop="8dp">
-
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/play_icon"
-                android:contentDescription="@string/play" />
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp">
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:orientation="vertical"
-                android:layout_marginStart="8dp">
+                tools:context=".TrainingDetailFragment">
 
-                <TextView
-                    android:id="@+id/titleTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Pidato Senin 3"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/dateTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="2 Nov 2024 00:25:14"
-                    android:textSize="10sp"
-                    android:textColor="@android:color/darker_gray" />
-            </LinearLayout>
-        </LinearLayout>
-</androidx.cardview.widget.CardView>
+                <!-- Header Section -->
 
 
-        <!-- Bar Chart Section -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                card_view:cardCornerRadius="20dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp">
-            <!-- Placeholder for bar chart -->
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/barchart"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="16dp"
-                android:layout_marginTop="16dp"/>
-            </androidx.cardview.widget.CardView>
-        </LinearLayout>
-
-        <!-- Gauge Chart Section -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginBottom="8dp">
-
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                card_view:cardCornerRadius="20dp"
-                android:padding="16dp"
-                android:layout_margin="16dp">
-
-                <TextView
+                <!-- Video Player Section -->
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Score"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:textAlignment="center"
-                    android:layout_marginTop="10dp"/>
+                    android:layout_margin="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:padding="16dp"
+                    card_view:cardCornerRadius="20dp">
 
-
-
-                <!-- Placeholder for gauge chart -->
-
-
-                <com.ekn.gruzer.gaugelibrary.HalfGauge
-                    android:id="@+id/gauge_chart"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_marginBottom="16dp" />
-
-            </androidx.cardview.widget.CardView>
-        </LinearLayout>
-
-        <!-- Analysis Result Section -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardViewAnalasis"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            card_view:cardCornerRadius="20dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="16dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="10dp"
-            android:padding="16dp">
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/tvPageAnalisis"
-                    android:textSize="18sp"
-                    android:layout_gravity="center"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="8dp"/>
-
-                <View
-                    android:layout_width="140dp"
-                    android:layout_height="4dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="15dp"
-                    android:background="@android:color/darker_gray" />
-
-                    <TextView
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="@string/hasil_analisis"
-                        android:textSize="14sp"
-                        android:textColor="@android:color/black" />
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="8dp">
 
-        </LinearLayout>
-        </androidx.cardview.widget.CardView>
-    </LinearLayout>
+                        <TextView
+                            android:id="@+id/titleTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/topic_item"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
 
-    </ScrollView>
+                        <TextView
+                            android:id="@+id/dateTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="8dp"
+                            android:text="@string/date_item"
+                            android:textColor="@android:color/darker_gray"
+                            android:textSize="11sp" />
+
+                        <TextView
+                            android:id="@+id/durationTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:text="@string/duration_item"
+                            android:textColor="@android:color/darker_gray"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+
+                <!-- Bar Chart Section -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="vertical">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="8dp"
+                        card_view:cardCornerRadius="20dp">
+                        <!-- Placeholder for bar chart -->
+                        <com.github.mikephil.charting.charts.BarChart
+                            android:id="@+id/barchart"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="16dp" />
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+
+                <!-- Gauge Chart Section -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="vertical">
+
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:padding="16dp"
+                        card_view:cardCornerRadius="20dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/score"
+                            android:textAlignment="center"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+
+                        <!-- Placeholder for gauge chart -->
+
+
+                        <com.ekn.gruzer.gaugelibrary.HalfGauge
+                            android:id="@+id/gauge_chart"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:layout_marginBottom="16dp" />
+
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+
+                <!-- Analysis Result Section -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardViewAnalasis"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="16dp"
+                    card_view:cardCornerRadius="20dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="8dp"
+                            android:text="@string/tvPageAnalisis"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <View
+                            android:layout_width="140dp"
+                            android:layout_height="4dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="0dp"
+                            android:layout_marginBottom="15dp"
+                            android:background="@android:color/darker_gray" />
+
+                        <TextView
+                            android:id="@+id/analizeTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="@string/hasil_analisis"
+                            android:textColor="@android:color/black"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+        </ScrollView>
     </LinearLayout>
 </layout>
