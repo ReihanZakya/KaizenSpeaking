@@ -52,6 +52,7 @@
     <string name="pause">Pause</string>
     <string name="detail_title">Detail Latihan</string>
     <string name="score">Nilai Keseluruhan</string>
+    <string name="score_detail">Detail Nilai</string>
     <string name="topic_item">0. Judul Topik</string>
     <string name="date_item">24 Nov 2024 11.30</string>
     <string name="duration_item">00:00</string>

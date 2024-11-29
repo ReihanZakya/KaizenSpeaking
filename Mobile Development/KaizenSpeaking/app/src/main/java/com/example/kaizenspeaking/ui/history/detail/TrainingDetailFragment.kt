@@ -1,6 +1,7 @@
 package com.example.kaizenspeaking.ui.history.detail
 
 import android.graphics.Color
+import android.graphics.Typeface
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
 import android.os.Bundle
@@ -210,7 +211,6 @@ class TrainingDetailFragment : Fragment() {
         halfGauge.minValue = 0.0
         halfGauge.maxValue = 100.0
         halfGauge.value = average.toDouble()
-
 
         // Auto-scroll to "Hasil Analisis" section after 3 seconds
         Handler(Looper.getMainLooper()).postDelayed({
