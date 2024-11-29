@@ -6,11 +6,14 @@ import android.icu.util.Calendar
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ScrollView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.example.kaizenspeaking.R
 import com.github.mikephil.charting.charts.BarChart
@@ -20,6 +23,9 @@ import com.github.mikephil.charting.data.BarEntry
 import com.ekn.gruzer.gaugelibrary.Range
 import com.ekn.gruzer.gaugelibrary.HalfGauge
 import com.example.kaizenspeaking.ui.history.data.TrainingSession
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import java.util.Locale
 
 class TrainingDetailFragment : Fragment() {
@@ -103,12 +109,27 @@ class TrainingDetailFragment : Fragment() {
             }
 
 
-            val formattedDate = "Direkam Pada " + dateExpected
+            val formattedDate = "Direkam Pada: " + dateExpected
             dateTextView = view.findViewById(R.id.dateTextView)
             dateTextView.text = formattedDate
 
             durationTextView = view.findViewById(R.id.durationTextView)
-            durationTextView.text = "Durasi Pembicaraan " + session.duration
+
+            session.duration?.let { duration ->
+                // Pisahkan menit dan detik menggunakan split(":")
+                val parts = duration.split(":")
+                val minutes = parts.getOrNull(0)?.toIntOrNull() ?: 0
+                val seconds = parts.getOrNull(1)?.toIntOrNull() ?: 0
+
+                // Format teks berdasarkan nilai menit dan detik
+                val formattedDuration = if (minutes > 0) {
+                    "Durasi Pembicaraan: $minutes Menit $seconds Detik"
+                } else {
+                    "Durasi Pembicaraan: $seconds Detik"
+                }
+                // Tampilkan di TextView
+                durationTextView.text = formattedDuration
+            }
         }
 
         // Data for the chart (representing 4 categories: Kejelasan, Diksi, Kelancaran, Emosi)
@@ -186,6 +207,33 @@ class TrainingDetailFragment : Fragment() {
         Handler(Looper.getMainLooper()).postDelayed({
             scrollView.smoothScrollTo(0, cardViewAnalisis.top)
         }, 3000)
+
+        barChart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
+            override fun onValueSelected(e: Entry?, h: Highlight?) {
+                e?.let { entry ->
+                    val (title, description) = when (entry.x.toInt()) {
+                        0 -> getString(R.string.matrix_kejelasan) to getString(R.string.description_matrix_kejelasan)
+                        1 -> getString(R.string.matrix_diksi) to getString(R.string.description_matrix_diksi)
+                        2 -> getString(R.string.matrix_kelancaran) to getString(R.string.description_matrix_kelancaran)
+                        3 -> getString(R.string.matrix_emosi) to getString(R.string.description_matrix_emosi)
+                        else -> "Informasi" to "Deskripsi tidak tersedia"
+                    }
+
+                    // Tampilkan AlertDialog
+                    AlertDialog.Builder(requireContext())
+                        .setTitle(title) // Set judul dialog
+                        .setMessage(Html.fromHtml(description, Html.FROM_HTML_MODE_LEGACY)) // Render HTML pada deskripsi
+                        .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() } // Tombol OK
+                        .show()
+                }
+            }
+
+            override fun onNothingSelected() {
+                // Tidak melakukan apa-apa jika tidak ada yang dipilih
+            }
+        })
+
+
     }
     
 }
