@@ -10,8 +10,8 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface APIConsumer {
-    @POST("user/validate-unique-email")
-    suspend fun validateEmailAddres(@Body body: ValidateEmailBody) : Response<UniqueEmailValidationResponse>
+//    @POST("user/validate-unique-email")
+//    suspend fun validateEmailAddres(@Body body: ValidateEmailBody) : Response<UniqueEmailValidationResponse>
 
     @POST("user/register")
     suspend fun registerUser(@Body body: RegisterBody): Response<AuthResponse>
