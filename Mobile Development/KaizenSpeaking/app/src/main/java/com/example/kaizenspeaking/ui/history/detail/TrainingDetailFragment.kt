@@ -14,6 +14,7 @@ import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.kaizenspeaking.R
 import com.github.mikephil.charting.charts.BarChart
@@ -44,6 +45,7 @@ class TrainingDetailFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        (requireActivity() as AppCompatActivity).supportActionBar?.hide()
         return inflater.inflate(R.layout.fragment_training_detail, container, false)
     }
 
