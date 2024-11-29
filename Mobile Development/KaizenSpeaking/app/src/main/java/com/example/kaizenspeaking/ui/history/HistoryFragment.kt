@@ -71,7 +71,7 @@ class HistoryFragment : Fragment() {
                         historyViewModel.entriesC.observe(viewLifecycleOwner, { entriesC ->
                             historyViewModel.entriesD.observe(viewLifecycleOwner, { entriesD ->
                                 val averageEntries = calculateAverageEntries(entriesA, entriesB, entriesC, entriesD)
-                                val averageDataSet = LineDataSet(averageEntries, "Nilai Rata-Rata").apply {
+                                val averageDataSet = LineDataSet(averageEntries, getString(R.string.score)).apply {
                                     color = resources.getColor(android.R.color.holo_purple)
                                 }
                                 val lineData = LineData(averageDataSet)
