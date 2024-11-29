@@ -330,6 +330,7 @@ class AnalyzeFragment : Fragment() {
                         Toast.makeText(requireContext(), "Gagal memproses respons", Toast.LENGTH_LONG).show()
                     }
                 } else {
+                    Log.e("UploadError", "Error uploading audio: ${response.errorBody()?.string()}")
                     Toast.makeText(requireContext(), "Gagal mengunggah audio", Toast.LENGTH_LONG).show()
                 }
             } catch (e: Exception) {
