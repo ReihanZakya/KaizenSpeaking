@@ -94,23 +94,6 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
             binding.progressBar.isVisible = it
         }
 
-        mViewModel.getIsUniqueEmail().observe(this) {
-            if (validateEmail(shouldUpdateView = false)){
-                if (it) {
-                    binding.etEmailTil.apply {
-                        if (isErrorEnabled) isErrorEnabled = false
-                        setStartIconDrawable(R.drawable.ic_info)
-                        setStartIconTintList(ColorStateList.valueOf(Color.GREEN))
-                    }
-                } else {
-                    binding.etEmailTil.apply {
-                        if (startIconDrawable != null) startIconDrawable = null
-                        isErrorEnabled = true
-                        error = "Email sudah digunakan"
-                    }
-                }
-            }
-        }
 
         mViewModel.getErrorMessage().observe(this) {
             val formErrorKeys = arrayOf("name", "email", "password")
@@ -282,9 +265,7 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
                         }
                     }else{
                         if(validateEmail()){
-                            mViewModel.validateEmailAddress(
-                                ValidateEmailBody(binding.etEmail.text!!.toString())
-                            )
+                            ValidateEmailBody(binding.etEmail.text!!.toString())
                         }
                     }
                 }
