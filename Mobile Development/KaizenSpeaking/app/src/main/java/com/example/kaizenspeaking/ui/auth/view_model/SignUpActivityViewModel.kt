@@ -1,6 +1,7 @@
 package com.example.kaizenspeaking.ui.auth.view_model
 
 import android.app.Application
+import android.provider.Settings
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -48,6 +49,7 @@ class SignUpActivityViewModel(
 
     fun registerUser(body: RegisterBody) {
         viewModelScope.launch {
+
             authRepository.registerUser(body).collect {
                 when (it) {
                     is RequesStatus.Waiting -> {
@@ -55,12 +57,8 @@ class SignUpActivityViewModel(
                     }
                     is RequesStatus.Success -> {
                         isLoading.value = false
-                        user.value = it.data.user
+                        user.value = it.data.data
 
-
-                        val successMessage = HashMap<String, String>()
-                        successMessage["success"] = "Registration successful"
-                        errorMessage.value = successMessage
                     }
                     is RequesStatus.Error -> {
                         isLoading.value = false

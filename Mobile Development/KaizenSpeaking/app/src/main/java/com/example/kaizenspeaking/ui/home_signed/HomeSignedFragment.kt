@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.kaizenspeaking.R
 import com.example.kaizenspeaking.databinding.FragmentHomeSignedBinding
 import com.example.kaizenspeaking.ui.home.Article
 import com.example.kaizenspeaking.ui.home.ArticleAdapter
@@ -26,8 +27,7 @@ class HomeSignedFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        homeSignedViewModel = ViewModelProvider(this)[HomeSignedViewModel::class.java]
-        _binding = FragmentHomeSignedBinding.inflate(inflater, container, false)
+
 
         // Initialize the LineChart
         lineChart = binding.lineChart
@@ -125,4 +125,6 @@ class HomeSignedFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+
 }

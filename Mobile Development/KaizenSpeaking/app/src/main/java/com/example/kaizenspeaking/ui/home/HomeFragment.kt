@@ -44,9 +44,7 @@ class HomeFragment : Fragment() {
 
         // Set onClickListener for accountName
         binding.accountName.setOnClickListener {
-            val navController = findNavController()
-            navController.navigate(R.id.navigation_home_signed) // Navigasi ke HomeSignedFragment
-        }
+            navigateToAuthentication() }
 
         binding.accountButton.setOnClickListener {
             navigateToAuthentication()
@@ -56,7 +54,7 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-    private fun navigateToAuthentication() {
+    private fun     navigateToAuthentication() {
         val intent = Intent(requireContext(), SignInActivity::class.java)
         startActivity(intent)
     }

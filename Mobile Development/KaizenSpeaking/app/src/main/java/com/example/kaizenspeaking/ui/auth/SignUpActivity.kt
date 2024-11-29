@@ -17,9 +17,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
+import com.example.kaizenspeaking.MainActivity
 import com.example.kaizenspeaking.R
 import com.example.kaizenspeaking.databinding.ActivitySignUpBinding
 import com.example.kaizenspeaking.ui.auth.data.RegisterBody
+import com.example.kaizenspeaking.ui.auth.data.User
 import com.example.kaizenspeaking.ui.auth.data.ValidateEmailBody
 import com.example.kaizenspeaking.ui.auth.repository.AuthRepository
 import com.example.kaizenspeaking.ui.auth.utils.APIConsumer
@@ -86,7 +88,7 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
     }
 
     private fun navigateToHome() {
-        val intent = Intent(this, HomeFragment::class.java)
+        val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
     }
@@ -157,10 +159,9 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
 
         }
 
-        mViewModel.getUser().observe(this) { user ->
-            if (user != null) {
-                val intent = Intent(this, HomeFragment::class.java)
-                startActivity(intent)
+        mViewModel.getUser().observe(this) {
+            if (it != null) {
+                startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }
         }
@@ -332,27 +333,10 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
         return false
     }
 
-    @SuppressLint("HardwareIds")
+
     private fun onSubmit() {
         if (validate()) {
-            val email = binding.etEmail.text!!.toString()
-            val name = binding.etName.text!!.toString()
-            val password = binding.etPassword.text!!.toString()
-
-            val deviceId = Settings.Secure.getString(
-                contentResolver,
-                Settings.Secure.ANDROID_ID
-            )
-
-            val registerBody = RegisterBody(
-                email = email,
-                password = password,
-                full_name = name,
-                role = "user",
-                device_id = deviceId
-            )
-
-            mViewModel.registerUser(registerBody)
+           mViewModel.registerUser(RegisterBody(binding.etName.text!!.toString(),binding.etEmail.text!!.toString(),binding.etEmail.text!!.toString(),binding.etPassword.text!!.toString(),"user"))
         }
     }
 

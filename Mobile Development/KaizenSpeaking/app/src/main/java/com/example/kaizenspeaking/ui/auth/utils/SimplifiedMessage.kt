@@ -9,14 +9,14 @@ object SimplifiedMessage {
         val jsonObject = JSONObject(stringMessage)
 
         try {
-            val jsonMessages = JSONObject("detail")
-            jsonMessages.keys().forEachRemaining { messages[it] = jsonMessages.getString(it) }
-
-            // Try multiple possible error message keys
-
+            val jsonMessages = jsonObject.getJSONObject("detail")
+            if (jsonMessages.has("message")) {
+                messages["message"] = jsonMessages.getString("message")
+            } else {
+                messages["message"] = "Unexpected error occurred. Please try again."
+            }
         } catch (e: JSONException) {
-            // If parsing fails, use the entire error body
-            messages["detail"] = jsonObject.getString("detail")
+            messages["message"] = "Unexpected error occurred. Please try again."
         }
 
         return messages

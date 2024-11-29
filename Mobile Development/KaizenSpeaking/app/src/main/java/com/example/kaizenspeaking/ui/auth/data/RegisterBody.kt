@@ -4,8 +4,8 @@ import android.provider.Settings
 
 data class RegisterBody(
     val full_name : String,
+    val nickname : String,
     val email :String,
     val password : String,
-    val role : String = "user",
-    val device_id : String)
+    val role : String = "user")
 

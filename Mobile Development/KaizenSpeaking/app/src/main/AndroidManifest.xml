@@ -25,10 +25,11 @@
             android:exported="false" />
         <activity
             android:name=".ui.auth.SignUpActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".ui.auth.SignInActivity"
-            android:exported="false" />
+            android:exported="true">
+        </activity>
         <activity
             android:name=".ui.instructions.OnboardingActivity"
             android:exported="false" />
@@ -46,6 +47,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
     </application>
 
 </manifest>

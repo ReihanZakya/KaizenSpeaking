@@ -84,7 +84,7 @@
     <!--    data dummy article-->
 
     <!--    Home After Signed-->
-    <string name="greetings_with_name">Halo, Budi Budiono! ></string>
+    <string name="greetings_with_name">"Halo, %1$s></string>
     <string name="progress_title">Progress Kamu</string>
     <string name="number_of_exercise">Banyak latihan: </string>
 
@@ -95,4 +95,7 @@
     <string name="event_analyze_result">Hasil Analisis</string>
     <string name="nilai_keseluruhan">Nilai Keseluruhan</string>
     <string name="selanjutnya">Selanjutnya</string>
+    <string name="button_back">Button Back</string>
+    <string name="logo_kaizen">Logo Kaizen</string>
+    <string name="logo_google">Logo Google</string>
 </resources>

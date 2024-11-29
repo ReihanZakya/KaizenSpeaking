@@ -49,6 +49,7 @@
         android:label="Home Signed"
         tools:layout="@layout/fragment_home_signed" />
 
+
     <fragment
         android:id="@+id/trainingDetailFragment"
         android:name="com.example.kaizenspeaking.ui.history.detail.TrainingDetailFragment"
@@ -62,6 +63,18 @@
             android:name="sessionTitle"
             app:argType="string" />
     </fragment>
+
+    <activity
+        android:id="@+id/signInActivity"
+        android:name="com.example.kaizenspeaking.ui.auth.SignInActivity"
+        android:label="SignInActivity">
+        <fragment
+            android:id="@+id/homeSignInFragment"
+            android:name="com.example.kaizenspeaking.ui.home_signed.HomeSignedFragment"
+            android:label="HomeSignInFragment" />
+    </activity>
+
+
 
 
 </navigation>
