@@ -17,7 +17,6 @@
             android:title="@string/detail_title"
             android:titleTextColor="@color/black" />
 
-
         <ScrollView
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
@@ -161,7 +160,6 @@
                         android:orientation="vertical"
                         android:padding="16dp">
 
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -183,9 +181,9 @@
                             android:id="@+id/analizeTextView"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_marginBottom="20dp"
                             android:text="@string/hasil_analisis"
                             android:textColor="@android:color/black"
-                            android:layout_marginBottom="20dp"
                             android:textSize="14sp" />
 
                     </LinearLayout>
