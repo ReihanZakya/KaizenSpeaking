@@ -11,15 +11,15 @@ import kotlinx.coroutines.flow.flow
 
 
 class AuthRepository (private val consumer: APIConsumer){
-    fun validateEmailAddres(body: ValidateEmailBody) = flow{
-        emit(RequesStatus.Waiting)
-        val response = consumer.validateEmailAddres(body)
-        if (response.isSuccessful){
-            emit((RequesStatus.Success(response.body()!!)))
-        }else
-            emit(RequesStatus.Error(SimplifiedMessage.get(response.errorBody()!!.byteStream().reader().readText())))
-
-    }
+//    fun validateEmailAddres(body: ValidateEmailBody) = flow{
+//        emit(RequesStatus.Waiting)
+//        val response = consumer.validateEmailAddres(body)
+//        if (response.isSuccessful){
+//            emit((RequesStatus.Success(response.body()!!)))
+//        }else
+//            emit(RequesStatus.Error(SimplifiedMessage.get(response.errorBody()!!.byteStream().reader().readText())))
+//
+//    }
 
     fun registerUser(body: RegisterBody)= flow {
         emit(RequesStatus.Waiting)
