@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Html
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -62,10 +63,15 @@ class TrainingDetailFragment : Fragment() {
 
         val trainingSession: TrainingSession? = arguments?.getParcelable("sessionData")
 
+        // Inisialisasi semua properti lateinit
         barChart = view.findViewById(R.id.barchart)
         halfGauge = view.findViewById(R.id.gauge_chart)
         scrollView = view.findViewById(R.id.scrollView)
         cardViewAnalisis = view.findViewById(R.id.cardViewAnalasis)
+        titleTextView = view.findViewById(R.id.titleTextView)
+        analizeTextView = view.findViewById(R.id.analizeTextView)
+        dateTextView = view.findViewById(R.id.dateTextView)
+        durationTextView = view.findViewById(R.id.durationTextView)
 
         // Konfigurasi BarChart
         barChart.axisRight.setDrawLabels(false)
@@ -85,8 +91,9 @@ class TrainingDetailFragment : Fragment() {
             kelancaran = session.kelancaran.toFloatOrNull() ?: 0f
             emosi = session.emosi.toFloatOrNull() ?: 0f
 
-            analizeTextView = view.findViewById(R.id.analizeTextView)
-            analizeTextView.text = session.analize
+            val rawAnalize = session.analize
+            val formattedHtml = convertToHtml(rawAnalize) // Konversi ke HTML
+            analizeTextView.text = Html.fromHtml(formattedHtml, Html.FROM_HTML_MODE_LEGACY) // Render HTML
 
             val formattedTitle = "Topik Pembicaraan: " + session.title
             titleTextView = view.findViewById(R.id.titleTextView)
@@ -244,5 +251,54 @@ class TrainingDetailFragment : Fragment() {
 
 
     }
-    
+    private fun convertToHtml(text: String): String {
+        // Ganti "**{text}**" dengan "<b>{text}</b>"
+        val boldText = text.replace(Regex("\\*\\*(.*?)\\*\\*"), "<b>$1</b>")
+
+        // Simpan elemen daftar sementara untuk diolah ulang
+        val listLines = mutableListOf<String>()
+        val finalText = StringBuilder()
+        var isInList = false
+
+        // Proses baris satu per satu
+        boldText.lines().forEach { line ->
+            when {
+                // Jika baris merupakan elemen daftar
+                line.trim().startsWith("-") -> {
+                    isInList = true
+                    listLines.add("<li>${line.trim().substring(1).trim()}</li>")
+                }
+                // Jika baris kosong, selesaikan daftar jika ada
+                line.isBlank() -> {
+                    if (isInList) {
+                        finalText.append("<ul>${listLines.joinToString("")}</ul>")
+                        listLines.clear()
+                        isInList = false
+                    }
+                    finalText.append("<br>")
+                }
+                // Baris biasa di luar daftar
+                else -> {
+                    if (isInList) {
+                        finalText.append("<ul>${listLines.joinToString("")}</ul>")
+                        listLines.clear()
+                        isInList = false
+                    }
+                    finalText.append(line).append("<br>")
+                }
+            }
+        }
+
+        // Tambahkan elemen daftar yang tersisa
+        if (isInList) {
+            finalText.append("<ul>${listLines.joinToString("")}</ul>")
+        }
+
+        val htmlText = finalText.toString()
+
+        // Log hasil akhir HTML
+        Log.d("HTMLConverter", "Converted HTML: $htmlText")
+        return htmlText
+    }
+
 }
