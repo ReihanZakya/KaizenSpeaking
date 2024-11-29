@@ -1,11 +1,9 @@
 package com.example.kaizenspeaking.ui.auth
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
-import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Patterns
@@ -21,14 +19,12 @@ import com.example.kaizenspeaking.MainActivity
 import com.example.kaizenspeaking.R
 import com.example.kaizenspeaking.databinding.ActivitySignUpBinding
 import com.example.kaizenspeaking.ui.auth.data.RegisterBody
-import com.example.kaizenspeaking.ui.auth.data.User
 import com.example.kaizenspeaking.ui.auth.data.ValidateEmailBody
 import com.example.kaizenspeaking.ui.auth.repository.AuthRepository
-import com.example.kaizenspeaking.ui.auth.utils.APIConsumer
 import com.example.kaizenspeaking.ui.auth.utils.APIService
 import com.example.kaizenspeaking.ui.auth.view_model.SignUpActivityViewModel
 import com.example.kaizenspeaking.ui.auth.view_model.SignUpActivityViewModelFactory
-import com.example.kaizenspeaking.ui.home.HomeFragment
+
 
 class SignUpActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusChangeListener, View.OnKeyListener, TextWatcher {
     private lateinit var binding: ActivitySignUpBinding
@@ -211,6 +207,8 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
             errorMessage = "Password Harus Diisi"
         } else if (value.length < 8) {
             errorMessage = "Password Harus Lebih dari 8 Karakter"
+        }else if (!value.any { it.isUpperCase() }) {
+            errorMessage = "Password Harus Mengandung Minimal 1 Huruf Besar"
         }
 
         if (errorMessage != null && shouldUpdateView) {
