@@ -69,6 +69,28 @@ class HomeSignedFragment : Fragment() {
         historyViewModel.numberOfExercise.observe(viewLifecycleOwner, { newText ->
             binding.numberOfExerciseText.text = newText
         })
+
+        binding.switchToSimple.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                historyViewModel.entriesA.observe(viewLifecycleOwner, { entriesA ->
+                    historyViewModel.entriesB.observe(viewLifecycleOwner, { entriesB ->
+                        historyViewModel.entriesC.observe(viewLifecycleOwner, { entriesC ->
+                            historyViewModel.entriesD.observe(viewLifecycleOwner, { entriesD ->
+                                val averageEntries = calculateAverageEntries(entriesA, entriesB, entriesC, entriesD)
+                                val averageDataSet = LineDataSet(averageEntries, "Nilai Rata-Rata").apply {
+                                    color = resources.getColor(android.R.color.holo_purple)
+                                }
+                                val lineData = LineData(averageDataSet)
+                                setupChart(lineData)
+                            })
+                        })
+                    })
+                })
+            } else {
+                observeChartData() // Kembali ke grafik awal
+            }
+        }
+
     }
 
     private fun setupRecyclerView() {
@@ -116,6 +138,22 @@ class HomeSignedFragment : Fragment() {
         })
     }
 
+    private fun calculateAverageEntries(
+        entriesA: List<com.github.mikephil.charting.data.Entry>,
+        entriesB: List<com.github.mikephil.charting.data.Entry>,
+        entriesC: List<com.github.mikephil.charting.data.Entry>,
+        entriesD: List<com.github.mikephil.charting.data.Entry>
+    ): List<com.github.mikephil.charting.data.Entry> {
+        val averageEntries = mutableListOf<com.github.mikephil.charting.data.Entry>()
+
+        for (i in entriesA.indices) {
+            val avg = (entriesA[i].y + entriesB[i].y + entriesC[i].y + entriesD[i].y) / 4
+            averageEntries.add(com.github.mikephil.charting.data.Entry(entriesA[i].x, avg))
+        }
+        return averageEntries
+    }
+
+
     private fun setupChart(lineData: LineData) {
         lineChart.data = lineData
 
@@ -124,6 +162,7 @@ class HomeSignedFragment : Fragment() {
         xAxis.granularity = 1f
 
         lineChart.axisLeft.axisMinimum = 0f
+        lineChart.axisLeft.axisMaximum = 100f
         lineChart.axisRight.isEnabled = false
         lineChart.description.text = "Latihan Ke: "
         lineChart.invalidate()

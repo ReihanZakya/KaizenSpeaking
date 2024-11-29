@@ -31,7 +31,7 @@ data class DataItem(
 	@field:SerializedName("user_id")
 	val userId: String,
 
-	@field:SerializedName("analize")
+	@field:SerializedName("analysis_message")
 	val analize: String,
 
 	@field:SerializedName("topic")
