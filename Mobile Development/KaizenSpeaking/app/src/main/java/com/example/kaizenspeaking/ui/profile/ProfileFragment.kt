@@ -1,33 +1,21 @@
 package com.example.kaizenspeaking.ui.profile
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AlertDialog
 import com.example.kaizenspeaking.R
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ProfileFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ProfileFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
@@ -38,23 +26,50 @@ class ProfileFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ProfileFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ProfileFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Sembunyikan BottomNavigationView
+        hideBottomNavigation()
+
+        // Tambahkan fungsionalitas tombol kembali
+        val backButton = view.findViewById<ImageView>(R.id.back_btn)
+        backButton.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+
+        // Tambahkan klik listener untuk tvAbout
+        val tvAbout = view.findViewById<TextView>(R.id.tvAbout)
+        tvAbout.setOnClickListener {
+            showAboutDialog()
+        }
+    }
+
+    private fun showAboutDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        val description = getString(R.string.about_kaizen_speaking) // Mengambil teks dari resource string
+        builder.setMessage(Html.fromHtml(description, Html.FROM_HTML_MODE_LEGACY))
+            .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() } // Tombol OK
+            .setCancelable(true) // Membuat dialog dapat ditutup dengan klik di luar
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // Tampilkan kembali BottomNavigationView saat fragment ini dihancurkan
+        showBottomNavigation()
+    }
+
+    private fun hideBottomNavigation() {
+        // Ambil referensi BottomNavigationView dari Activity utama
+        val bottomNav = requireActivity().findViewById<View>(R.id.nav_view)
+        bottomNav?.visibility = View.GONE
+    }
+
+    private fun showBottomNavigation() {
+        // Tampilkan kembali BottomNavigationView
+        val bottomNav = requireActivity().findViewById<View>(R.id.nav_view)
+        bottomNav?.visibility = View.VISIBLE
     }
 }

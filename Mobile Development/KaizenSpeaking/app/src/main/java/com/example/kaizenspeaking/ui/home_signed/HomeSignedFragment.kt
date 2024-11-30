@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.kaizenspeaking.R
 import com.example.kaizenspeaking.databinding.FragmentHomeSignedBinding
 import com.example.kaizenspeaking.ui.history.HistoryViewModel
 import com.example.kaizenspeaking.ui.history.HistoryViewModelFactory
@@ -90,6 +92,13 @@ class HomeSignedFragment : Fragment() {
                 observeChartData() // Kembali ke grafik awal
             }
         }
+
+        // Set onClickListener for profile
+        binding.accountButton.setOnClickListener {
+            val navController = findNavController()
+            navController.navigate(R.id.navigation_profile) // Navigasi ke HomeSignedFragment
+        }
+
 
     }
 

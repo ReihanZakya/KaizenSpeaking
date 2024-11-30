@@ -8,11 +8,13 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kaizenspeaking.R
 import com.example.kaizenspeaking.databinding.FragmentHomeBinding
 import com.example.kaizenspeaking.ui.auth.SignInActivity
+import com.example.kaizenspeaking.ui.home_signed.HomeSignedFragment
 import com.example.kaizenspeaking.ui.instructions.OnboardingActivity
 
 class HomeFragment : Fragment() {
@@ -50,16 +52,27 @@ class HomeFragment : Fragment() {
             navigateToAuthentication()
         }
 
+        // Set onClickListener for profile
+        binding.accountButton.setOnClickListener {
+            val navController = findNavController()
+            navController.navigate(R.id.navigation_home_signed) // Navigasi ke HomeSignedFragment
+        }
+
+        // Set onClickListener for analyzetry
+        binding.greetingsButton.setOnClickListener {
+            val navController = findNavController()
+            val navOptions = NavOptions.Builder()
+                .setLaunchSingleTop(true)
+                .build()
+            navController.navigate(R.id.navigation_analyze, null, navOptions)
+        }
+
+
 
         return binding.root
     }
 
     private fun navigateToAuthentication() {
-        val intent = Intent(requireContext(), SignInActivity::class.java)
-        startActivity(intent)
-    }
-
-    private fun navigateToHomeSigned() {
         val intent = Intent(requireContext(), SignInActivity::class.java)
         startActivity(intent)
     }
