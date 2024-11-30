@@ -54,7 +54,12 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-    private fun     navigateToAuthentication() {
+    private fun navigateToAuthentication() {
+        val intent = Intent(requireContext(), SignInActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun navigateToHomeSigned() {
         val intent = Intent(requireContext(), SignInActivity::class.java)
         startActivity(intent)
     }
