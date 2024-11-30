@@ -248,8 +248,6 @@ class TrainingDetailFragment : Fragment() {
                 // Tidak melakukan apa-apa jika tidak ada yang dipilih
             }
         })
-
-
     }
     private fun convertToHtml(text: String): String {
         // Ganti "**{text}**" dengan "<b>{text}</b>"
@@ -294,11 +292,12 @@ class TrainingDetailFragment : Fragment() {
             finalText.append("<ul>${listLines.joinToString("")}</ul>")
         }
 
-        val htmlText = finalText.toString()
+        // Bungkus seluruh teks dalam div dengan gaya justify
+        val justifiedHtml = "<div style=\"text-align: justify;\">${finalText.toString()}</div>"
 
         // Log hasil akhir HTML
-        Log.d("HTMLConverter", "Converted HTML: $htmlText")
-        return htmlText
+        Log.d("HTMLConverter", "Converted HTML: $justifiedHtml")
+        return justifiedHtml
     }
 
 }
