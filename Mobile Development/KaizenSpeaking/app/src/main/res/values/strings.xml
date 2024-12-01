@@ -90,7 +90,7 @@
     <!--    data dummy article-->
 
     <!--    Home After Signed-->
-    <string name="greetings_with_name">"Halo, %1$s></string>
+    <string name="greetings_with_name">"Halo</string>
     <string name="progress_title">Progress Kamu</string>
     <string name="number_of_exercise">Banyak latihan: </string>
 

@@ -8,5 +8,7 @@ data class User(
     val id :String,
     val email : String,
     val full_name : String,
-    val nick_name : String)
+    val nick_name : String,
+    val access_token : String,
+    val userId : String)
 

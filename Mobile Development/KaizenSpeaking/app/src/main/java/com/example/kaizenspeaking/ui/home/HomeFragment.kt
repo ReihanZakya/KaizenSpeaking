@@ -39,12 +39,9 @@ class HomeFragment : Fragment() {
                 url = homeViewModel.articleUrls[index]
             )
         }
-        val isLoggedIn = UserSession.isLoggedIn(requireContext())
 
-        if (UserSession.isLoggedIn(requireContext())) {
-            binding.homeFragment.visibility = View.GONE
-        } else {
-            binding.homeFragment.visibility = View.VISIBLE }
+
+
 
         val adapter = ArticleAdapter(requireContext(), articles)
         binding.ArticlesRecyclerView.layoutManager = LinearLayoutManager(requireContext())

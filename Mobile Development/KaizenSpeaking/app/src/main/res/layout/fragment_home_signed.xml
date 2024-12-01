@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:layout_marginStart="16dp"
     android:layout_marginEnd="16dp"
+    android:id="@+id/homeFragmentSignIn"
     tools:context=".ui.home_signed.HomeSignedFragment">
 
     <TextView

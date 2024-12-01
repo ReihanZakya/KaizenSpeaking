@@ -14,6 +14,7 @@
         import androidx.core.view.isVisible
         import androidx.lifecycle.ViewModelProvider
         import com.example.kaizenspeaking.MainActivity
+        import com.example.kaizenspeaking.MainActivityLogin
         import com.example.kaizenspeaking.R
         import com.example.kaizenspeaking.databinding.ActivitySignInBinding
         import com.example.kaizenspeaking.ui.auth.data.LoginBody
@@ -104,7 +105,7 @@
 
                 mViewModel.getUser().observe(this) { user->
                     if (user != null) {
-                        navigateToHomeSignedFragment(user)
+                        navigateToHome()
                     }
                 }
             }
@@ -113,7 +114,7 @@
                 // Set login session
                 UserSession.setLoggedIn(this, true)
 
-                val intent = Intent(this, MainActivity::class.java)
+                val intent = Intent(this, MainActivityLogin::class.java)
                 intent.putExtra("USER_NAME", user.full_name)
                 intent.putExtra("EMAIL", user.email)
                 intent.putExtra("id", user.id)
@@ -267,7 +268,6 @@
             private fun submitForm() {
                 if (validate()) {
                     mViewModel.loginUser(LoginBody(binding.etEmail.text!!.toString(),binding.etPassword.text!!.toString()),this)
-                    Toast.makeText(this, "Login Berhasil", Toast.LENGTH_SHORT).show()
                 }
             }
 

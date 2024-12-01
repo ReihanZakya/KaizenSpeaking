@@ -317,7 +317,7 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
     private fun onSubmit() {
         if (validate()) {
            mViewModel.registerUser(RegisterBody(binding.etName.text!!.toString(),binding.etEmail.text!!.toString(),binding.etEmail.text!!.toString(),binding.etPassword.text!!.toString(),"user"))
-            Toast.makeText(this, "Daftar Berhasil", Toast.LENGTH_SHORT).show()
+
         }
     }
 

@@ -7,12 +7,16 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.kaizenspeaking.ui.home.HomeFragment"
+        android:name="com.example.kaizenspeaking.ui.home_signed.HomeSignedFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_navigation_home_to_signInActivity"
             app:destination="@+id/signInActivity" />
+        <action
+            android:id="@+id/action_homeSignedFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+
     </fragment>
 
     <fragment
@@ -46,12 +50,7 @@
         android:name="com.example.kaizenspeaking.ui.home_signed.HomeSignedFragment"
         android:label="Home Signed"
         tools:layout="@layout/fragment_home_signed">
-        <action
-            android:id="@+id/action_homeSignedFragment_to_homeFragment"
-            app:destination="@id/navigation_home" />
-        <action
-            android:id="@+id/action_homeSignedFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
+
     </fragment>
 
     <fragment

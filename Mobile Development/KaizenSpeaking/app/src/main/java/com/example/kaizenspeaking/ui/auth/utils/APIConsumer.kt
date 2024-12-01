@@ -3,6 +3,7 @@ package com.example.kaizenspeaking.ui.auth.utils
 import com.example.kaizenspeaking.ui.auth.data.RegisterBody
 import com.example.kaizenspeaking.ui.auth.data.AuthResponse
 import com.example.kaizenspeaking.ui.auth.data.LoginBody
+import com.example.kaizenspeaking.ui.auth.data.LoginResponse
 import com.example.kaizenspeaking.ui.auth.data.UniqueEmailValidationResponse
 import com.example.kaizenspeaking.ui.auth.data.ValidateEmailBody
 import retrofit2.Response

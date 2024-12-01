@@ -1,9 +1,15 @@
 package com.example.kaizenspeaking.ui.home_signed
 
+import android.app.Dialog
+import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -11,6 +17,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kaizenspeaking.R
 import com.example.kaizenspeaking.databinding.FragmentHomeSignedBinding
+import com.example.kaizenspeaking.ui.auth.SignInActivity
 import com.example.kaizenspeaking.ui.history.HistoryViewModel
 import com.example.kaizenspeaking.ui.history.HistoryViewModelFactory
 import com.example.kaizenspeaking.ui.history.data.Authenticator.TOKEN
@@ -50,14 +57,12 @@ class HomeSignedFragment : Fragment() {
         lineChart = binding.lineChart
         observeChartData()
 
-        if (UserSession.isLoggedIn(requireContext())) {
-            binding.progressChartLayout.visibility = View.GONE
-        } else {
-            binding.progressChartLayout.visibility = View.VISIBLE }
 
         binding.accountButton.setOnClickListener {
-            findNavController().navigate(R.id.action_homeSignedFragment_to_profileFragment)
-        }
+            if (!UserSession.isLoggedIn(requireContext())) {
+                showLoginDialog()
+            } else {
+                findNavController().navigate(R.id.action_homeSignedFragment_to_profileFragment) } }
 
         return binding.root
     }
@@ -66,6 +71,8 @@ class HomeSignedFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
+
+        updateProgressChartVisibility()
 
         // Observer untuk isLoading
         historyViewModel.isLoading.observe(viewLifecycleOwner, { isLoading ->
@@ -178,6 +185,38 @@ class HomeSignedFragment : Fragment() {
         lineChart.axisRight.isEnabled = false
         lineChart.description.text = "Latihan Ke: "
         lineChart.invalidate()
+    }
+
+    private fun showLoginDialog() {
+        val dialog = Dialog(requireContext())
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.dialog_box_login)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val signInButton: Button = dialog.findViewById(R.id.btnSignIn)
+        val googleSignInButton: Button = dialog.findViewById(R.id.btnClose)
+
+        signInButton.setOnClickListener {
+            startActivity(Intent(requireContext(), SignInActivity::class.java))
+            dialog.dismiss()
+        }
+
+        googleSignInButton.setOnClickListener {
+            // TODO: Implement Google Sign-In logic
+            // Use Google Sign-In API to handle authentication
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    private fun updateProgressChartVisibility() {
+        if (UserSession.isLoggedIn(requireContext())) {
+            binding.progressChartLayout.visibility = View.VISIBLE
+        } else {
+            binding.progressChartLayout.visibility = View.GONE
+        }
     }
 
     override fun onDestroyView() {

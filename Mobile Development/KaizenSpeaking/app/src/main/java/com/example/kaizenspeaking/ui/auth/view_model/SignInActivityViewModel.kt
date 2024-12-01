@@ -4,6 +4,8 @@
     import androidx.lifecycle.LiveData
     import androidx.lifecycle.MutableLiveData
     import android.content.Context
+    import android.util.Log
+    import android.widget.Toast
     import androidx.lifecycle.ViewModel
     import androidx.lifecycle.viewModelScope
     import com.example.kaizenspeaking.ui.auth.data.LoginBody
@@ -39,6 +41,12 @@
                             user.value = it.data.data
                             loginSuccess.value = true
                             UserSession.setLoggedIn(context,true)
+                            UserSession.setAccessToken(context, it.data.data.access_token)
+                            UserSession.setUserId(context, it.data.data.userId)
+                            Log.d("SignInActivityViewModel", "User data: ${it.data.data}")
+                            Log.d("SignInActivityViewModel", "AccessToken: ${UserSession.getAccessToken(context)}")
+                            Log.d("SignInActivityViewModel", "UserId: ${UserSession.getUserId(context)}")
+                            showToast(application, "Login Berhasil ")
                         }
                         is RequesStatus.Error -> {
                             isLoading.value = false
@@ -47,8 +55,12 @@
 
                         }
                     }
+
                 }
+
             }
         }
+        private fun showToast(context: Context, message: String) {
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show() }
 
     }

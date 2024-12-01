@@ -1,7 +1,9 @@
     package com.example.kaizenspeaking.ui.auth.view_model
 
     import android.app.Application
+    import android.content.Context
     import android.provider.Settings
+    import android.widget.Toast
     import androidx.lifecycle.LiveData
     import androidx.lifecycle.MutableLiveData
     import androidx.lifecycle.ViewModel
@@ -58,7 +60,7 @@
                         is RequesStatus.Success -> {
                             isLoading.value = false
                             user.value = it.data.data
-
+                            showToast(application, "Daftar berhasil")
                         }
                         is RequesStatus.Error -> {
                             isLoading.value = false
@@ -68,4 +70,6 @@
                 }
             }
         }
+        private fun showToast(context: Context, message: String) {
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show() }
     }

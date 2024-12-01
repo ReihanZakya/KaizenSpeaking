@@ -6,6 +6,8 @@ import android.content.SharedPreferences
 object UserSession {
     private const val PREFERENCE_NAME = "user_session"
     private const val IS_LOGGED_IN = "is_logged_in"
+    private const val ACCESS_TOKEN = "access_token"
+    private const val USER_ID = "user_id"
     private val loginStateListeners = mutableListOf<LoginStateListener>()
 
     interface LoginStateListener {
@@ -25,6 +27,30 @@ object UserSession {
     fun isLoggedIn(context: Context): Boolean {
         val prefs: SharedPreferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
         return prefs.getBoolean(IS_LOGGED_IN, false)
+    }
+
+    fun setAccessToken(context: Context, token: String) {
+        val prefs: SharedPreferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        val editor = prefs.edit()
+        editor.putString(ACCESS_TOKEN, token)
+        editor.apply()
+    }
+
+    fun getAccessToken(context: Context): String? {
+        val prefs: SharedPreferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        return prefs.getString(ACCESS_TOKEN, null)
+    }
+
+    fun setUserId(context: Context, userId: String) {
+        val prefs: SharedPreferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        val editor = prefs.edit()
+        editor.putString(USER_ID, userId)
+        editor.apply()
+    }
+
+    fun getUserId(context: Context): String? {
+        val prefs: SharedPreferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        return prefs.getString(USER_ID, null)
     }
 
     fun addLoginStateListener(listener: LoginStateListener) {

@@ -35,4 +35,5 @@ import com.example.kaizenspeaking.MainActivity
 
                 return binding.root
             }
+
         }
