@@ -8,10 +8,35 @@ object UserSession {
     private const val IS_LOGGED_IN = "is_logged_in"
     private const val ACCESS_TOKEN = "access_token"
     private const val USER_ID = "user_id"
+    private const val USER_EMAIL = "user_email"
+    private const val USER_NAME = "user_name"
+
     private val loginStateListeners = mutableListOf<LoginStateListener>()
 
     interface LoginStateListener {
         fun onLoginStateChanged(isLoggedIn: Boolean)
+    }
+
+    /**
+     * Performs a comprehensive logout by clearing all user-related data
+     * @param context Application context
+     */
+    fun logout(context: Context) {
+        val prefs: SharedPreferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        val editor = prefs.edit()
+
+        // Clear all user-related data
+        editor.remove(IS_LOGGED_IN)
+        editor.remove(ACCESS_TOKEN)
+        editor.remove(USER_ID)
+        editor.remove(USER_EMAIL)
+        editor.remove(USER_NAME)
+
+        // Commit the changes
+        editor.apply()
+
+        // Notify login state listeners
+        loginStateListeners.forEach { it.onLoginStateChanged(false) }
     }
 
     fun setLoggedIn(context: Context, isLoggedIn: Boolean) {
@@ -51,6 +76,31 @@ object UserSession {
     fun getUserId(context: Context): String? {
         val prefs: SharedPreferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
         return prefs.getString(USER_ID, null)
+    }
+
+    // New methods for storing additional user information
+    fun setUserEmail(context: Context, email: String) {
+        val prefs: SharedPreferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        val editor = prefs.edit()
+        editor.putString(USER_EMAIL, email)
+        editor.apply()
+    }
+
+    fun getUserEmail(context: Context): String? {
+        val prefs: SharedPreferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        return prefs.getString(USER_EMAIL, null)
+    }
+
+    fun setUserName(context: Context, name: String) {
+        val prefs: SharedPreferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        val editor = prefs.edit()
+        editor.putString(USER_NAME, name)
+        editor.apply()
+    }
+
+    fun getUserName(context: Context): String? {
+        val prefs: SharedPreferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        return prefs.getString(USER_NAME, null)
     }
 
     fun addLoginStateListener(listener: LoginStateListener) {

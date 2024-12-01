@@ -41,8 +41,6 @@ class HomeFragment : Fragment() {
         }
 
 
-
-
         val adapter = ArticleAdapter(requireContext(), articles)
         binding.ArticlesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.ArticlesRecyclerView.adapter = adapter

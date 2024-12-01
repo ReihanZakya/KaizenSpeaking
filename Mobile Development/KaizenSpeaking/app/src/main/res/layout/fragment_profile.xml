@@ -1,8 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/red"
@@ -16,75 +14,62 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <EditText
-            android:id="@+id/etTopic"
+        <TextView
+            android:id="@+id/tvName"
             android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="112dp"
             android:background="@drawable/custom_input"
             android:drawablePadding="12dp"
-            android:ems="10"
-            android:text=""
-            android:hint="@string/input_name"
-            android:inputType="text"
             android:padding="20dp"
-            android:shadowColor="#0000ff"
             android:textColor="@color/black"
-            android:textColorHint="#AAAAAA"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.491"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="John Doe" />
 
-        <EditText
-            android:id="@+id/email"
+        <TextView
+            android:id="@+id/tvEmail"
             android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:background="@drawable/custom_input"
             android:drawablePadding="12dp"
-            android:ems="10"
-            android:text=""
-            android:hint="@string/input_email"
-            android:inputType="textEmailAddress"
             android:padding="20dp"
-            android:shadowColor="#0000ff"
             android:textColor="@color/black"
-            android:textColorHint="#AAAAAA"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.491"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etTopic" />
+            app:layout_constraintTop_toBottomOf="@+id/tvName"
+            tools:text="johndoe@example.com" />
 
-        <EditText
-            android:id="@+id/password"
+        <TextView
+            android:id="@+id/tvUserId"
             android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:background="@drawable/custom_input"
             android:drawablePadding="12dp"
-            android:ems="10"
-            android:text=""
-            android:hint="@string/input_password"
-            android:inputType="textPassword"
             android:padding="20dp"
-            android:shadowColor="#0000ff"
             android:textColor="@color/black"
-            android:textColorHint="#AAAAAA"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.491"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/email" />
+            app:layout_constraintTop_toBottomOf="@+id/tvEmail"
+            tools:text="User ID: ABC123" />
 
         <LinearLayout
             android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            app:layout_constraintEnd_toEndOf="@+id/password"
-            app:layout_constraintStart_toStartOf="@+id/password"
-            app:layout_constraintTop_toBottomOf="@+id/password">
+            app:layout_constraintEnd_toEndOf="@+id/tvUserId"
+            app:layout_constraintStart_toStartOf="@+id/tvUserId"
+            app:layout_constraintTop_toBottomOf="@+id/tvUserId">
 
             <Button
+                android:id="@+id/editProfileButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
@@ -112,7 +97,6 @@
                 android:textStyle="bold" />
 
         </LinearLayout>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

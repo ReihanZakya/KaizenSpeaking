@@ -10,14 +10,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kaizenspeaking.R
 import com.example.kaizenspeaking.databinding.FragmentHistoryBinding
+import com.example.kaizenspeaking.ui.history.data.Authenticator
 import com.example.kaizenspeaking.ui.history.data.TrainingSession
 import com.example.kaizenspeaking.ui.history.data.remote.Repository
 import com.example.kaizenspeaking.ui.history.data.remote.retrofit.ApiConfig
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import com.example.kaizenspeaking.ui.history.data.Authenticator.TOKEN
-import com.example.kaizenspeaking.ui.history.data.Authenticator.USER_ID
+
 
 @Suppress("DEPRECATION")
 class HistoryFragment : Fragment() {
@@ -62,7 +62,7 @@ class HistoryFragment : Fragment() {
                 binding.contentLayout.visibility = View.VISIBLE
             }
         })
-        historyViewModel.getAllHistory(TOKEN, USER_ID)
+        historyViewModel.getAllHistory(Authenticator.getToken(requireContext()) ?: "", Authenticator.getUserId(requireContext()) ?: "")
 
         binding.switchToSimple.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {

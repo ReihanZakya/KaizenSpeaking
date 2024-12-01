@@ -20,8 +20,7 @@ import com.example.kaizenspeaking.databinding.FragmentHomeSignedBinding
 import com.example.kaizenspeaking.ui.auth.SignInActivity
 import com.example.kaizenspeaking.ui.history.HistoryViewModel
 import com.example.kaizenspeaking.ui.history.HistoryViewModelFactory
-import com.example.kaizenspeaking.ui.history.data.Authenticator.TOKEN
-import com.example.kaizenspeaking.ui.history.data.Authenticator.USER_ID
+import com.example.kaizenspeaking.ui.history.data.Authenticator
 import com.example.kaizenspeaking.ui.history.data.remote.Repository
 import com.example.kaizenspeaking.ui.history.data.remote.retrofit.ApiConfig
 import com.example.kaizenspeaking.ui.home.Article
@@ -84,7 +83,7 @@ class HomeSignedFragment : Fragment() {
                 binding.progressChartLayout.visibility = View.VISIBLE
             }
         })
-        historyViewModel.getAllHistory(TOKEN, USER_ID)
+        historyViewModel.getAllHistory(Authenticator.getToken(requireContext()) ?: "", Authenticator.getUserId(requireContext()) ?: "")
         historyViewModel.numberOfExercise.observe(viewLifecycleOwner, { newText ->
             binding.numberOfExerciseText.text = newText
         })
@@ -211,11 +210,15 @@ class HomeSignedFragment : Fragment() {
         dialog.show()
     }
 
-    private fun updateProgressChartVisibility() {
-        if (UserSession.isLoggedIn(requireContext())) {
+    private fun updateProgressChartVisibility(){
+        if(UserSession.isLoggedIn(requireContext())){
             binding.progressChartLayout.visibility = View.VISIBLE
-        } else {
+            binding.chartHistory.visibility = View.VISIBLE
+            binding.opening.visibility = View.GONE
+        }else{
             binding.progressChartLayout.visibility = View.GONE
+            binding.chartHistory.visibility = View.GONE
+            binding.opening.visibility = View.VISIBLE
         }
     }
 
