@@ -13,7 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kaizenspeaking.R
 import com.example.kaizenspeaking.databinding.FragmentHomeBinding
 import com.example.kaizenspeaking.ui.auth.SignInActivity
+import com.example.kaizenspeaking.ui.home_signed.HomeSignedFragment
 import com.example.kaizenspeaking.ui.instructions.OnboardingActivity
+import com.example.kaizenspeaking.utils.UserSession
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -37,6 +39,12 @@ class HomeFragment : Fragment() {
                 url = homeViewModel.articleUrls[index]
             )
         }
+        val isLoggedIn = UserSession.isLoggedIn(requireContext())
+
+        if (UserSession.isLoggedIn(requireContext())) {
+            binding.homeFragment.visibility = View.GONE
+        } else {
+            binding.homeFragment.visibility = View.VISIBLE }
 
         val adapter = ArticleAdapter(requireContext(), articles)
         binding.ArticlesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -54,7 +62,7 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-    private fun     navigateToAuthentication() {
+    private fun  navigateToAuthentication() {
         val intent = Intent(requireContext(), SignInActivity::class.java)
         startActivity(intent)
     }

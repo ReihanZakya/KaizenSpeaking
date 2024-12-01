@@ -58,6 +58,7 @@
         app:layout_constraintTop_toBottomOf="@+id/progress_title">
 
         <LinearLayout
+            android:id="@+id/chartHistory"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="start"
@@ -193,7 +194,10 @@
                 android:nestedScrollingEnabled="false"
                 tools:listitem="@layout/item_article" />
         </LinearLayout>
+
+
     </androidx.core.widget.NestedScrollView>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

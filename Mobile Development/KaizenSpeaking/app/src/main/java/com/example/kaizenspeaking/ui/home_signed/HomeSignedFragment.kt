@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.kaizenspeaking.R
 import com.example.kaizenspeaking.databinding.FragmentHomeSignedBinding
 import com.example.kaizenspeaking.ui.history.HistoryViewModel
 import com.example.kaizenspeaking.ui.history.HistoryViewModelFactory
@@ -17,6 +19,7 @@ import com.example.kaizenspeaking.ui.history.data.remote.Repository
 import com.example.kaizenspeaking.ui.history.data.remote.retrofit.ApiConfig
 import com.example.kaizenspeaking.ui.home.Article
 import com.example.kaizenspeaking.ui.home.ArticleAdapter
+import com.example.kaizenspeaking.utils.UserSession
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
@@ -46,6 +49,15 @@ class HomeSignedFragment : Fragment() {
 
         lineChart = binding.lineChart
         observeChartData()
+
+        if (UserSession.isLoggedIn(requireContext())) {
+            binding.progressChartLayout.visibility = View.GONE
+        } else {
+            binding.progressChartLayout.visibility = View.VISIBLE }
+
+        binding.accountButton.setOnClickListener {
+            findNavController().navigate(R.id.action_homeSignedFragment_to_profileFragment)
+        }
 
         return binding.root
     }

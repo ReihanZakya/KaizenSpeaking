@@ -13,6 +13,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.example.kaizenspeaking.MainActivity
@@ -140,7 +141,7 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
 
         mViewModel.getUser().observe(this) {
             if (it != null) {
-                startActivity(Intent(this, MainActivity::class.java))
+                startActivity(Intent(this, SignInActivity::class.java))
                 finish()
             }
         }
@@ -316,6 +317,7 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
     private fun onSubmit() {
         if (validate()) {
            mViewModel.registerUser(RegisterBody(binding.etName.text!!.toString(),binding.etEmail.text!!.toString(),binding.etEmail.text!!.toString(),binding.etPassword.text!!.toString(),"user"))
+            Toast.makeText(this, "Daftar Berhasil", Toast.LENGTH_SHORT).show()
         }
     }
 

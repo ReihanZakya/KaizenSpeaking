@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@id/navigation_home">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -12,16 +12,14 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_navigation_home_to_signInActivity"
-            app:destination="@+id/SignInActivity"/>
+            app:destination="@+id/signInActivity" />
     </fragment>
-
-
 
     <fragment
         android:id="@+id/navigation_analyze"
         android:name="com.example.kaizenspeaking.ui.analyze.AnalyzeFragment"
         android:label="@string/title_analyze"
-        tools:layout="@layout/fragment_analyze" >
+        tools:layout="@layout/fragment_analyze">
         <action
             android:id="@+id/action_navigation_analyze_to_analyzeResultFragment"
             app:destination="@id/analyzeResultFragment" />
@@ -40,22 +38,32 @@
     <fragment
         android:id="@+id/analyzeResultFragment"
         android:name="com.example.kaizenspeaking.ui.analyze.AnalyzeResultFragment"
-        android:label="fragment_analyze_result"
+        android:label="Analyze Result"
         tools:layout="@layout/fragment_analyze_result" />
 
     <fragment
         android:id="@+id/navigation_home_signed"
         android:name="com.example.kaizenspeaking.ui.home_signed.HomeSignedFragment"
         android:label="Home Signed"
-        tools:layout="@layout/fragment_home_signed" />
+        tools:layout="@layout/fragment_home_signed">
+        <action
+            android:id="@+id/action_homeSignedFragment_to_homeFragment"
+            app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_homeSignedFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
 
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.kaizenspeaking.ui.profile.ProfileFragment"
+        android:label="Profile Fragment" />
 
     <fragment
         android:id="@+id/trainingDetailFragment"
         android:name="com.example.kaizenspeaking.ui.history.detail.TrainingDetailFragment"
         android:label="Training Detail"
         tools:layout="@layout/fragment_training_detail">
-        <!-- Add arguments that will be passed to the fragment -->
         <argument
             android:name="sessionId"
             app:argType="string" />
@@ -67,14 +75,5 @@
     <activity
         android:id="@+id/signInActivity"
         android:name="com.example.kaizenspeaking.ui.auth.SignInActivity"
-        android:label="SignInActivity">
-        <fragment
-            android:id="@+id/homeSignInFragment"
-            android:name="com.example.kaizenspeaking.ui.home_signed.HomeSignedFragment"
-            android:label="HomeSignInFragment" />
-    </activity>
-
-
-
-
+        android:label="Sign In Activity" />
 </navigation>
