@@ -144,4 +144,5 @@
     <string name="button_back">Button Back</string>
     <string name="logo_kaizen">Logo Kaizen</string>
     <string name="logo_google">Logo Google</string>
+    <string name="alert_analyze_loading">Harap tunggu sebentar, proses memrlukan waktu sekitar 2 menit. Mohon jangan pindah atau keluar dari aplikasi terlebih dahulu</string>
 </resources>

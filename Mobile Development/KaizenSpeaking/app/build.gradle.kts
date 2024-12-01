@@ -82,5 +82,8 @@ dependencies {
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
     implementation ("com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2")
 
+    implementation ("androidx.localbroadcastmanager:localbroadcastmanager:1.1.0")
+
+
 
 }

@@ -16,7 +16,10 @@ import com.example.kaizenspeaking.R
 import com.example.kaizenspeaking.databinding.FragmentAnalyzeBinding
 import java.io.File
 import android.Manifest
+import android.app.AlertDialog
+import android.content.BroadcastReceiver
 import android.content.ContentValues
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.media.MediaRecorder
 import android.os.Build
@@ -27,11 +30,13 @@ import androidx.core.content.ContextCompat
 import android.os.Handler
 import android.util.Log
 import androidx.lifecycle.lifecycleScope
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.kaizenspeaking.data.response.AnalyzeResponse
 import com.example.kaizenspeaking.data.response.Score
 import com.example.kaizenspeaking.data.retrofit.ApiConfig
 import com.example.kaizenspeaking.helper.SharedPreferencesHelper
 import com.example.kaizenspeaking.helper.SharedPreferencesHelper.getFromSharedPreferences
+import com.example.kaizenspeaking.ui.analyze.Service.UploadForegroundService
 import com.example.kaizenspeaking.ui.instructions.OnboardingActivity
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -297,50 +302,94 @@ class AnalyzeFragment : Fragment() {
     }
 
 
+//    private fun sendDataToApi() {
+//        val topic = binding.etTopic.text.toString()
+//        val deviceId = SharedPreferencesHelper.getFromSharedPreferences(requireContext(), "device_id") ?: "unknown_device"
+//
+//        // Pastikan file sementara tersedia
+//        if (tempFile == null || !tempFile!!.exists()) {
+//            Toast.makeText(requireContext(), "File audio tidak ditemukan", Toast.LENGTH_LONG).show()
+//            return
+//        }
+//
+//        // Konversi data menjadi multipart
+//        val topicRequestBody = topic.toRequestBody("text/plain".toMediaType())
+//        val deviceIdRequestBody = deviceId.toRequestBody("text/plain".toMediaType())
+//        val fileRequestBody = tempFile!!.asRequestBody("audio/m4a".toMediaType())
+//        val multipartFile = MultipartBody.Part.createFormData("file", tempFile!!.name, fileRequestBody)
+//
+//        binding.progressBar.visibility = View.VISIBLE
+//
+//        // Panggil API menggunakan Coroutine
+//        lifecycleScope.launch {
+//            try {
+//                val response = ApiConfig.instance.uploadRecording(topicRequestBody, multipartFile, deviceIdRequestBody)
+//                if (response.isSuccessful) {
+//                    val rawResponse = response.body()?.string()
+//                    Log.d("RawResponse", "Response: $rawResponse")
+//
+//                    val analyzeResponse = parseAnalyzeResponse(rawResponse)
+//                    if (analyzeResponse != null) {
+//                        navigateToAnalysisFragment(analyzeResponse)
+//                    } else {
+//                        Toast.makeText(requireContext(), "Gagal memproses respons", Toast.LENGTH_LONG).show()
+//                    }
+//                } else {
+//                    Log.e("UploadError", "Error uploading audio: ${response.errorBody()?.string()}")
+//                    Toast.makeText(requireContext(), "Gagal mengunggah audio", Toast.LENGTH_LONG).show()
+//                }
+//            } catch (e: Exception) {
+//                e.printStackTrace()
+//                Log.e("UploadError", "Error uploading audio: ${e.message}")
+//                Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_LONG).show()
+//            } finally {
+//                binding.progressBar.visibility = View.GONE
+//            }
+//        }
+//    }
+
     private fun sendDataToApi() {
         val topic = binding.etTopic.text.toString()
         val deviceId = SharedPreferencesHelper.getFromSharedPreferences(requireContext(), "device_id") ?: "unknown_device"
 
-        // Pastikan file sementara tersedia
         if (tempFile == null || !tempFile!!.exists()) {
             Toast.makeText(requireContext(), "File audio tidak ditemukan", Toast.LENGTH_LONG).show()
             return
         }
 
-        // Konversi data menjadi multipart
-        val topicRequestBody = topic.toRequestBody("text/plain".toMediaType())
-        val deviceIdRequestBody = deviceId.toRequestBody("text/plain".toMediaType())
-        val fileRequestBody = tempFile!!.asRequestBody("audio/m4a".toMediaType())
-        val multipartFile = MultipartBody.Part.createFormData("file", tempFile!!.name, fileRequestBody)
+        val serviceIntent = Intent(requireContext(), UploadForegroundService::class.java).apply {
+            putExtra(UploadForegroundService.EXTRA_TOPIC, topic)
+            putExtra(UploadForegroundService.EXTRA_DEVICE_ID, deviceId)
+            putExtra(UploadForegroundService.EXTRA_FILE_PATH, tempFile!!.absolutePath)
+        }
 
-        binding.progressBar.visibility = View.VISIBLE
+        val alertDialog = AlertDialog.Builder(requireContext())
+            .setTitle("Processing Analysis")
+            .setMessage("Proses analisis sedang berlangsung, cek notifikasi untuk melihat hasil analisis")
+            .setCancelable(true) // Tidak bisa ditutup oleh pengguna
+            .create()
+        alertDialog.show()
 
-        // Panggil API menggunakan Coroutine
-        lifecycleScope.launch {
-            try {
-                val response = ApiConfig.instance.uploadRecording(topicRequestBody, multipartFile, deviceIdRequestBody)
-                if (response.isSuccessful) {
-                    val rawResponse = response.body()?.string()
-                    Log.d("RawResponse", "Response: $rawResponse")
+        // Monitor hasil dengan BroadcastReceiver
+        val receiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                val result: AnalyzeResponse? = intent.getParcelableExtra("result")
+                alertDialog.dismiss()
 
-                    val analyzeResponse = parseAnalyzeResponse(rawResponse)
-                    if (analyzeResponse != null) {
-                        navigateToAnalysisFragment(analyzeResponse)
-                    } else {
-                        Toast.makeText(requireContext(), "Gagal memproses respons", Toast.LENGTH_LONG).show()
-                    }
+                if (result != null) {
+                    findNavController().navigate(
+                        R.id.analyzeResultFragment,
+                        Bundle().apply { putParcelable("result", result) }
+                    )
                 } else {
-                    Log.e("UploadError", "Error uploading audio: ${response.errorBody()?.string()}")
-                    Toast.makeText(requireContext(), "Gagal mengunggah audio", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), "Gagal menganalisis data", Toast.LENGTH_LONG).show()
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                Log.e("UploadError", "Error uploading audio: ${e.message}")
-                Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_LONG).show()
-            } finally {
-                binding.progressBar.visibility = View.GONE
             }
         }
+
+        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(receiver, IntentFilter("ANALYZE_RESULT"))
+
+        ContextCompat.startForegroundService(requireContext(), serviceIntent)
     }
 
     private fun parseAnalyzeResponse(rawResponse: String?): AnalyzeResponse? {
