@@ -20,11 +20,14 @@
             android:id="@+id/opening"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
             android:gravity="center"
             android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@+id/accountButton"
-            tools:layout_editor_absoluteX="0dp">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/vintage1"
@@ -42,45 +45,23 @@
                 android:padding="16dp"> <!-- Set background color to red -->
 
                 <!-- Greeting Message -->
-
-
-                <!-- Button for "Coba Analisis Sekarang" -->
                 <TextView
-                    android:id="@+id/greetingsButton"
+                    android:id="@+id/greetingsCard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingTop="8dp"
+                    android:background="@drawable/rounded_rectangle_background"
                     android:gravity="center"
-                    android:text="Coba Analisis Sekarang"
-                    android:textColor="@android:color/holo_blue_light"
-                    android:textSize="12sp"/>
+                    android:padding="16dp"
+                    android:text="@string/pesan_belum_login"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
+
+                <!-- Button for "Coba Analisis Sekarang" -->
             </LinearLayout>
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/imageView6"
-            android:layout_width="127dp"
-            android:layout_height="190dp"
-            android:layout_marginTop="24dp"
-            android:src="@drawable/vintage1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvInstructions" />
 
 
-
-        <TextView
-            android:id="@+id/tvBenefits"
-            android:layout_width="226dp"
-            android:layout_height="68dp"
-            android:layout_marginStart="3dp"
-            android:layout_marginTop="72dp"
-            android:text="Akses riwayat latihan\nLihat perkembangan secara real-time\nAkses Statistik dan Insight"
-            android:textColor="@android:color/black"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageView6"
-            app:layout_constraintTop_toBottomOf="@id/tvInstructions"
-            app:layout_goneMarginStart="20dp" />
 
         <Button
             android:id="@+id/btnSignIn"
@@ -88,12 +69,12 @@
             android:layout_height="48dp"
             android:layout_marginTop="36dp"
             android:background="@android:color/holo_red_light"
-            android:text="Masuk ke Akun"
+            android:text="@string/masuk_ke_akun"
             android:textColor="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView6"
+            app:layout_constraintTop_toBottomOf="@+id/opening"
             tools:ignore="TextContrastCheck" />
 
         <TextView
@@ -101,7 +82,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Atau"
+            android:text="@string/atau"
             android:textColor="@android:color/black"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -113,7 +94,7 @@
             android:layout_width="144dp"
             android:layout_height="48dp"
             android:layout_marginTop="4dp"
-            android:text="Tutup"
+            android:text="@string/tutup"
             android:textColor="@android:color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
