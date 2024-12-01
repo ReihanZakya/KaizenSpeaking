@@ -54,10 +54,11 @@
     </fragment>
 
     <fragment
-        android:id="@+id/profileFragment"
+        android:id="@+id/navigation_profile"
         android:name="com.example.kaizenspeaking.ui.profile.ProfileFragment"
-        android:label="Profile Fragment" />
-
+        android:label="Akun Kamu"
+        tools:layout="@layout/fragment_profile" />
+  
     <fragment
         android:id="@+id/trainingDetailFragment"
         android:name="com.example.kaizenspeaking.ui.history.detail.TrainingDetailFragment"

@@ -25,6 +25,10 @@ class ProfileFragment : Fragment() {
     private lateinit var encryptedSharedPreferences: SharedPreferences
     private val apiConsumer by lazy { APIService.getService() }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -115,5 +119,51 @@ class ProfileFragment : Fragment() {
                 Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
         requireActivity().finish()
+        
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Sembunyikan BottomNavigationView
+        hideBottomNavigation()
+
+        // Tambahkan fungsionalitas tombol kembali
+        val backButton = view.findViewById<ImageView>(R.id.back_btn)
+        backButton.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+
+        // Tambahkan klik listener untuk tvAbout
+        val tvAbout = view.findViewById<TextView>(R.id.tvAbout)
+        tvAbout.setOnClickListener {
+            showAboutDialog()
+        }
+    }
+
+    private fun showAboutDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        val description = getString(R.string.about_kaizen_speaking) // Mengambil teks dari resource string
+        builder.setMessage(Html.fromHtml(description, Html.FROM_HTML_MODE_LEGACY))
+            .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() } // Tombol OK
+            .setCancelable(true) // Membuat dialog dapat ditutup dengan klik di luar
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // Tampilkan kembali BottomNavigationView saat fragment ini dihancurkan
+        showBottomNavigation()
+    }
+
+    private fun hideBottomNavigation() {
+        // Ambil referensi BottomNavigationView dari Activity utama
+        val bottomNav = requireActivity().findViewById<View>(R.id.nav_view)
+        bottomNav?.visibility = View.GONE
+    }
+
+    private fun showBottomNavigation() {
+        // Tampilkan kembali BottomNavigationView
+        val bottomNav = requireActivity().findViewById<View>(R.id.nav_view)
+        bottomNav?.visibility = View.VISIBLE
     }
 }

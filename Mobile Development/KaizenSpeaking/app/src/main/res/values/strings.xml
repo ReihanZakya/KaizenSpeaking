@@ -51,6 +51,7 @@
     <string name="play">Play</string>
     <string name="pause">Pause</string>
     <string name="detail_title">Detail Latihan</string>
+    <string name="about">About Kaizen Speaking</string>
     <string name="score">Nilai Keseluruhan</string>
     <string name="score_detail">Detail Nilai</string>
     <string name="topic_item">0. Judul Topik</string>
@@ -89,6 +90,52 @@
         <item>https://www.generali.co.id/id/healthyliving/healthy-lifestyle/pakai-cara-ini-supaya-kamu-pede-ngomong-di-depan-umum</item>
     </string-array>
     <!--    data dummy article-->
+
+    <!--    About kaizen speaking-->
+    <string name="about_kaizen_speaking">
+      &lt;body&gt;
+        &lt;header&gt;
+        &lt;h2&gt;Tentang Kaizen Speaking&lt;/h2&gt;
+        &lt;/header&gt;
+        &lt;div class=&quot;container&quot;&gt;
+          &lt;p&gt;
+            Kaizen Speaking adalah aplikasi yang dirancang untuk membantu
+            teman-teman dalam meningkatkan kemampuan public speaking. Aplikasi ini
+            memberikan berbagai tips, latihan, dan progress tracking agar teman-teman bisa lebih
+            percaya diri dan mahir berbicara di depan umum.
+          &lt;/p&gt;
+          &lt;p&gt;
+            Proyek ini merupakan bagian dari capstone di
+            Bangkit Academy 2024 Batch 2,
+            yang dikerjakan bersama dengan Kaizen Room.
+          &lt;/p&gt;
+          &lt;section class=&quot;team-section&quot;&gt;
+            &lt;h4&gt;Tim Kami&lt;/h4&gt;
+            &lt;h6&gt;Divisi Machine Learning&lt;/h6&gt;
+            &lt;ul&gt;
+              &lt;li&gt;Kimi Dandy Yudanarko&lt;/li&gt;
+              &lt;li&gt;Dicky Anugrah&lt;/li&gt;
+              &lt;li&gt;Akram Kemal Dewantara&lt;/li&gt;
+            &lt;/ul&gt;
+            &lt;h6&gt;Divisi Cloud Computing&lt;/h6&gt;
+            &lt;ul&gt;
+              &lt;li&gt;Muhammad&lt;/li&gt;
+            &lt;/ul&gt;
+            &lt;h6&gt;Divisi Mobile Development&lt;/h6&gt;
+            &lt;ul&gt;
+              &lt;li&gt;Mohammad Reihan Zakya Alawi&lt;/li&gt;
+              &lt;li&gt;Khoirul Anam&lt;/li&gt;
+              &lt;li&gt;Muhammad Syafiq Zhalifunas&lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+        &lt;footer&gt;
+          &amp;copy; 2024 Tim Kaizen Speaking&lt;br&gt;
+            Semua hak cipta dilindungi
+        &lt;/footer&gt;
+      &lt;/body&gt;
+    &lt;/html&gt;
+</string>
+
 
     <!--    Home After Signed-->
     <string name="greetings_with_name">"Halo</string>

@@ -109,6 +109,13 @@ class HomeSignedFragment : Fragment() {
             }
         }
 
+        // Set onClickListener for profile
+        binding.accountButton.setOnClickListener {
+            val navController = findNavController()
+            navController.navigate(R.id.navigation_profile) // Navigasi ke HomeSignedFragment
+        }
+
+
     }
 
     private fun setupRecyclerView() {
