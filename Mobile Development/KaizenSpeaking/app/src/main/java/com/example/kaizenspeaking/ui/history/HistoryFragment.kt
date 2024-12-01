@@ -1,22 +1,15 @@
 package com.example.kaizenspeaking.ui.history
 
-import android.app.Dialog
-import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
-import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kaizenspeaking.R
 import com.example.kaizenspeaking.databinding.FragmentHistoryBinding
-import com.example.kaizenspeaking.ui.auth.SignInActivity
 import com.example.kaizenspeaking.ui.history.data.TrainingSession
 import com.example.kaizenspeaking.ui.history.data.remote.Repository
 import com.example.kaizenspeaking.ui.history.data.remote.retrofit.ApiConfig
@@ -25,7 +18,6 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.example.kaizenspeaking.ui.history.data.Authenticator.TOKEN
 import com.example.kaizenspeaking.ui.history.data.Authenticator.USER_ID
-import com.example.kaizenspeaking.utils.UserSession
 
 @Suppress("DEPRECATION")
 class HistoryFragment : Fragment() {
@@ -52,7 +44,6 @@ class HistoryFragment : Fragment() {
 
         // Observe LiveData for chart entries
         observeChartData()
-        checkLoginStatus()
 
         return binding.root
     }
@@ -178,36 +169,6 @@ class HistoryFragment : Fragment() {
             averageEntries.add(com.github.mikephil.charting.data.Entry(entriesA[i].x, avg))
         }
         return averageEntries
-    }
-
-    private fun showLoginDialog() {
-        val dialog = Dialog(requireContext())
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCancelable(false)
-        dialog.setContentView(R.layout.dialog_box_login)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-        val signInButton: Button = dialog.findViewById(R.id.btnSignIn)
-        val googleSignInButton: Button = dialog.findViewById(R.id.btnClose)
-
-        signInButton.setOnClickListener {
-            startActivity(Intent(requireContext(), SignInActivity::class.java))
-            dialog.dismiss()
-        }
-
-        googleSignInButton.setOnClickListener {
-            // TODO: Implement Google Sign-In logic
-            // Use Google Sign-In API to handle authentication
-            dialog.dismiss()
-        }
-
-        dialog.show()
-    }
-
-    private fun checkLoginStatus() {
-        if (!UserSession.isLoggedIn(requireContext())) {
-            showLoginDialog()
-        }
     }
 
 
