@@ -17,9 +17,6 @@ def validate_email_format(email: str):
 
 
 def validate_unique_email_service(email: str, db: Session):
-    """
-    Validate if the email is unique and properly formatted.
-    """
     if not email:
         raise HTTPException(
             status_code=422,
@@ -56,7 +53,7 @@ def create_user(db: Session, user: schemas.UserCreate):
             raise ConflictError(str(e))
         existing_user_email = db.query(models.User).filter(models.User.email == user.email).first()
         if existing_user_email:
-            raise ConflictError("A user with this email already exists")
+            raise ConflictError("Email telah digunakan")
 
     # existing_user_username = db.query(models.User).filter(models.User.username == user.username).first()
     # if existing_user_username:
@@ -89,10 +86,10 @@ def authenticate_user(db: Session, email: str, password: str):
 
     user = db.query(models.User).filter(models.User.email == email).first()
     if not user:
-        raise DataNotFoundError("User with this email not found")
+        raise DataNotFoundError("User dengan email tersebut tidak ditemukan")
 
     if not utils.verify_password(password, user.hashed_password):
-        raise AuthenticationError("Invalid credentials provided")
+        raise AuthenticationError("Password salah")
     token_data = {
         "sub": user.username,
         "user_id": str(user.id),
@@ -106,11 +103,11 @@ def get_user_by_id(db: Session, user_id: str):
     try:
         user = db.query(models.User).filter(models.User.id == UUID(user_id)).first()
     except ValueError:
-        raise DataNotFoundError("User ID is not valid. Please provide a valid UUID.")
+        raise DataNotFoundError("User ID tidak valid.")
     except DataError:
-        raise DataNotFoundError("User not found or invalid input format.")
+        raise DataNotFoundError("User tidak ada.")
 
     if not user:
-        raise DataNotFoundError("User not found")
+        raise DataNotFoundError("User tidak ada")
 
     return user
