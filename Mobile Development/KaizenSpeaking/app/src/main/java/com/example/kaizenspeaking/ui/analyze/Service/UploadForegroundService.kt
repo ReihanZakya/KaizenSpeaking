@@ -39,6 +39,7 @@ class UploadForegroundService : Service() {
         private const val CHANNEL_NAME = "Upload Service"
         const val EXTRA_TOPIC = "extra_topic"
         const val EXTRA_DEVICE_ID = "extra_device_id"
+        const val EXTRA_USER_ID = "extra_user_id"
         const val EXTRA_FILE_PATH = "extra_file_path"
     }
 
@@ -50,15 +51,15 @@ class UploadForegroundService : Service() {
     @SuppressLint("ForegroundServiceType")
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val topic = intent?.getStringExtra(EXTRA_TOPIC)
-        val deviceId = intent?.getStringExtra(EXTRA_DEVICE_ID)
+        val id = intent?.getStringExtra(EXTRA_USER_ID) ?: intent?.getStringExtra(EXTRA_DEVICE_ID)
         val filePath = intent?.getStringExtra(EXTRA_FILE_PATH)
 
-        if (topic != null && deviceId != null && filePath != null) {
+        if (topic != null && id != null && filePath != null) {
             startForeground(NOTIFICATION_ID, createNotification("Menganalisis rekaman...."))
             serviceScope.launch {
                 try {
                     val file = File(filePath)
-                    val response = uploadData(topic, deviceId, file)
+                    val response = uploadData(topic, id, file)
                     if (response != null) {
                         // Kirim broadcast ke fragment
                         val resultIntent = Intent("ANALYZE_RESULT").apply {
@@ -94,14 +95,14 @@ class UploadForegroundService : Service() {
         return START_NOT_STICKY
     }
 
-    private suspend fun uploadData(topic: String, deviceId: String, file: File): AnalyzeResponse? {
+    private suspend fun uploadData(topic: String, id: String, file: File): AnalyzeResponse? {
         val topicRequestBody = topic.toRequestBody("text/plain".toMediaType())
-        val deviceIdRequestBody = deviceId.toRequestBody("text/plain".toMediaType())
+        val idRequestBody = id.toRequestBody("text/plain".toMediaType())
         val fileRequestBody = file.asRequestBody("audio/m4a".toMediaType())
         val multipartFile = MultipartBody.Part.createFormData("file", file.name, fileRequestBody)
 
         return try {
-            val response = ApiConfig.instance.uploadRecording(topicRequestBody, multipartFile, deviceIdRequestBody)
+            val response = ApiConfig.instance.uploadRecording(topicRequestBody, multipartFile, idRequestBody)
             if (response.isSuccessful) {
                 val rawResponse = response.body()?.string()
                 parseAnalyzeResponse(rawResponse)

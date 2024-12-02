@@ -31,6 +31,7 @@ import com.example.kaizenspeaking.ui.analyze.data.response.AnalyzeResponse
 import com.example.kaizenspeaking.helper.SharedPreferencesHelper
 import com.example.kaizenspeaking.ui.analyze.Service.UploadForegroundService
 import com.example.kaizenspeaking.ui.instructions.OnboardingActivity
+import com.example.kaizenspeaking.utils.UserSession
 
 class AnalyzeFragment : Fragment() {
 
@@ -288,6 +289,7 @@ class AnalyzeFragment : Fragment() {
     private fun sendDataToApi() {
         val topic = binding.etTopic.text.toString()
         val deviceId = SharedPreferencesHelper.getFromSharedPreferences(requireContext(), "device_id") ?: "unknown_device"
+        val userId = "77c7d604-4457-4496-9131-e36ae1d89d68"
 
         if (tempFile == null || !tempFile!!.exists()) {
             Toast.makeText(requireContext(), "File audio tidak ditemukan", Toast.LENGTH_LONG).show()
@@ -296,7 +298,11 @@ class AnalyzeFragment : Fragment() {
 
         val serviceIntent = Intent(requireContext(), UploadForegroundService::class.java).apply {
             putExtra(UploadForegroundService.EXTRA_TOPIC, topic)
-            putExtra(UploadForegroundService.EXTRA_DEVICE_ID, deviceId)
+            if (userId.isEmpty()){
+                putExtra(UploadForegroundService.EXTRA_DEVICE_ID, deviceId)
+            }else {
+                putExtra(UploadForegroundService.EXTRA_USER_ID, userId)
+            }
             putExtra(UploadForegroundService.EXTRA_FILE_PATH, tempFile!!.absolutePath)
         }
 
