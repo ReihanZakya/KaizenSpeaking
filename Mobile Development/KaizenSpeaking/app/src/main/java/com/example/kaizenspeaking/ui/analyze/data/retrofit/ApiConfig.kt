@@ -1,4 +1,4 @@
-package com.example.kaizenspeaking.data.retrofit
+package com.example.kaizenspeaking.ui.analyze.data.retrofit
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

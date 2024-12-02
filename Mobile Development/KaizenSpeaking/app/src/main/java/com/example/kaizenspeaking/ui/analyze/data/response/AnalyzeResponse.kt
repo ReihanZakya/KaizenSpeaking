@@ -1,4 +1,4 @@
-package com.example.kaizenspeaking.data.response
+package com.example.kaizenspeaking.ui.analyze.data.response
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
