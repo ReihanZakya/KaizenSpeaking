@@ -24,6 +24,7 @@ import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import android.os.Handler
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavDeepLinkBuilder
@@ -289,8 +290,8 @@ class AnalyzeFragment : Fragment() {
     private fun sendDataToApi() {
         val topic = binding.etTopic.text.toString()
         val deviceId = SharedPreferencesHelper.getFromSharedPreferences(requireContext(), "device_id") ?: "unknown_device"
-        val userId = "77c7d604-4457-4496-9131-e36ae1d89d68"
-
+//        val userId = "77c7d604-4457-4496-9131-e36ae1d89d68"
+        val userId = UserSession.getUserId(requireContext()) ?: ""
         if (tempFile == null || !tempFile!!.exists()) {
             Toast.makeText(requireContext(), "File audio tidak ditemukan", Toast.LENGTH_LONG).show()
             return
@@ -300,8 +301,10 @@ class AnalyzeFragment : Fragment() {
             putExtra(UploadForegroundService.EXTRA_TOPIC, topic)
             if (userId.isEmpty()){
                 putExtra(UploadForegroundService.EXTRA_DEVICE_ID, deviceId)
+                Log.d("ServiceIntent", "Mengirim deviceId: $deviceId")
             }else {
                 putExtra(UploadForegroundService.EXTRA_USER_ID, userId)
+                Log.d("ServiceIntent", "Mengirim deviceId: $userId")
             }
             putExtra(UploadForegroundService.EXTRA_FILE_PATH, tempFile!!.absolutePath)
         }
