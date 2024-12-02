@@ -24,10 +24,5 @@ interface APIConsumer {
     @POST("user/login")
     suspend fun loginUser(@Body body: LoginBody): Response<AuthResponse>
 
-    @GET("user/{userId}")
-    suspend fun getUser(@Path("userId") userId: String): Response<User>
-
-    @PUT("user/{userId}")
-    suspend fun updateUser(@Path("userId") userId: String, @Body user: User): Response<User>
 
 }
