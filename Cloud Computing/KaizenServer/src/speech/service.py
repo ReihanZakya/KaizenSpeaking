@@ -10,6 +10,7 @@ from mutagen import File
 from tempfile import NamedTemporaryFile
 import requests
 import json
+from pydub import AudioSegment
 
 def format_duration(duration_in_seconds):
     duration_in_seconds = int(duration_in_seconds)
@@ -23,15 +24,6 @@ def format_duration(duration_in_seconds):
         return f"{minutes}:{seconds}"
     else:
         return f" 00:{seconds}"
-
-
-def generate_random_score(seed: int):
-    """
-    Generate a pseudo-random number based on a seed without using any external libraries.
-    The range of the output is between 50 and 100.
-    """
-    seed = (seed * 9301 + 49297) % 233280
-    return 50 + seed % 51
 
 def save_transcription_data(
     db: Session,
@@ -63,24 +55,19 @@ def save_transcription_data(
 
 
 def get_audio_duration_from_url(audio_url: str) -> float:
-    """
-    Download the audio file from the given URL and calculate its duration.
-    Supports multiple audio formats.
-    """
     try:
         response = requests.get(audio_url, stream=True)
         response.raise_for_status()
-        with NamedTemporaryFile(delete=True) as temp_audio:
+        with NamedTemporaryFile(delete=True, suffix=".tmp") as temp_audio:
             for chunk in response.iter_content(chunk_size=8192):
                 temp_audio.write(chunk)
             temp_audio.flush()
-
-            # Automatically detect file type with mutagen
             audio = File(temp_audio.name)
-            if not audio:
-                raise HTTPException(status_code=400, detail="Unsupported audio format")
+            if audio and hasattr(audio.info, 'length') and audio.info.length:
+                return audio.info.length
 
-            return audio.info.length
+            audio_segment = AudioSegment.from_file(temp_audio.name)
+            return len(audio_segment) / 1000.0
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to calculate audio duration: {str(e)}")
 

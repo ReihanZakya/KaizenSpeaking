@@ -1,5 +1,6 @@
 # src/user/router.py
 from fastapi import APIRouter, Depends
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from src.middleware import JWTBearer
 from src.user import schemas, service
@@ -10,8 +11,15 @@ from src.user.service import validate_unique_email_service
 
 router = APIRouter()
 
+class EmailValidationRequest(BaseModel):
+    email: str
+
 @router.post("/validate-unique-email")
-def validate_unique_email(email: str, db: Session = Depends(get_db)):
+def validate_unique_email(
+    request: EmailValidationRequest,
+    db: Session = Depends(get_db)
+):
+    email = request.email
     return validate_unique_email_service(email, db)
 
 
@@ -31,7 +39,7 @@ def register_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 def login_user(user: schemas.UserLogin, db: Session = Depends(get_db)):
     try:
         token_data = service.authenticate_user(db, user.email, user.password)
-        return success_get(data=token_data, message="Login successful")
+        return success_get(data=token_data, message="Login berhasil")
     except (AuthenticationError, DataNotFoundError) as e:
         raise e
 
