@@ -1,6 +1,5 @@
 package com.example.kaizenspeaking.ui.analyze
 
-import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -12,18 +11,15 @@ import android.widget.ScrollView
 import androidx.fragment.app.Fragment
 import com.ekn.gruzer.gaugelibrary.HalfGauge
 import com.ekn.gruzer.gaugelibrary.Range
-import com.example.kaizenspeaking.R
 import com.example.kaizenspeaking.databinding.FragmentAnalyzeResultBinding
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
-import com.github.mikephil.charting.utils.ColorTemplate
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.kaizenspeaking.data.response.AnalyzeResponse
-import com.example.kaizenspeaking.data.response.Score
-import com.example.kaizenspeaking.databinding.FragmentAnalyzeBinding
+import com.example.kaizenspeaking.ui.analyze.data.response.AnalyzeResponse
+import com.example.kaizenspeaking.ui.analyze.data.response.Score
 
 
 @Suppress("DEPRECATION")

@@ -147,4 +147,5 @@
     <string name="tutup">Tutup</string>
     <string name="masuk_ke_akun">Masuk ke Akun</string>
     <string name="pesan_belum_login">Kamu belum melakukan login nih. Ayo login untuk menyimpan riwayat dan melihat perkembanganmu!</string>
+    <string name="alert_analyze_loading">Harap tunggu sebentar, proses memrlukan waktu sekitar 2 menit. Mohon jangan pindah atau keluar dari aplikasi terlebih dahulu</string>
 </resources>

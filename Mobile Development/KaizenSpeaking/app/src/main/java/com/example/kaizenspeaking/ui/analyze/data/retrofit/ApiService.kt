@@ -1,6 +1,5 @@
-package com.example.kaizenspeaking.data.retrofit
+package com.example.kaizenspeaking.ui.analyze.data.retrofit
 
-import com.example.kaizenspeaking.data.response.AnalyzeResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
