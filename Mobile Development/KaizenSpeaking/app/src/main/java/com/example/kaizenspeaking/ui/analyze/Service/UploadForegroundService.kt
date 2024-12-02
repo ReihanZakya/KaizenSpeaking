@@ -16,9 +16,9 @@ import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavDeepLinkBuilder
 import com.example.kaizenspeaking.R
-import com.example.kaizenspeaking.data.response.AnalyzeResponse
-import com.example.kaizenspeaking.data.response.Score
-import com.example.kaizenspeaking.data.retrofit.ApiConfig
+import com.example.kaizenspeaking.ui.analyze.data.response.AnalyzeResponse
+import com.example.kaizenspeaking.ui.analyze.data.response.Score
+import com.example.kaizenspeaking.ui.analyze.data.retrofit.ApiConfig
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import kotlinx.coroutines.CoroutineScope

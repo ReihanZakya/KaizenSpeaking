@@ -7,11 +7,8 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import com.example.kaizenspeaking.R
 import com.example.kaizenspeaking.databinding.FragmentAnalyzeBinding
 import java.io.File
@@ -20,39 +17,20 @@ import android.app.AlertDialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.BroadcastReceiver
-import android.content.ContentValues
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.media.MediaRecorder
 import android.os.Build
-import android.os.Environment
-import android.provider.MediaStore
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import android.os.Handler
-import android.util.Log
 import androidx.core.app.NotificationCompat
-import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavDeepLinkBuilder
-import com.example.kaizenspeaking.data.response.AnalyzeResponse
-import com.example.kaizenspeaking.data.response.Score
-import com.example.kaizenspeaking.data.retrofit.ApiConfig
+import com.example.kaizenspeaking.ui.analyze.data.response.AnalyzeResponse
 import com.example.kaizenspeaking.helper.SharedPreferencesHelper
-import com.example.kaizenspeaking.helper.SharedPreferencesHelper.getFromSharedPreferences
 import com.example.kaizenspeaking.ui.analyze.Service.UploadForegroundService
 import com.example.kaizenspeaking.ui.instructions.OnboardingActivity
-import com.google.gson.Gson
-import com.google.gson.JsonObject
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 
 class AnalyzeFragment : Fragment() {
 
@@ -306,51 +284,6 @@ class AnalyzeFragment : Fragment() {
     }
 
 
-//    private fun sendDataToApi() {
-//        val topic = binding.etTopic.text.toString()
-//        val deviceId = SharedPreferencesHelper.getFromSharedPreferences(requireContext(), "device_id") ?: "unknown_device"
-//
-//        // Pastikan file sementara tersedia
-//        if (tempFile == null || !tempFile!!.exists()) {
-//            Toast.makeText(requireContext(), "File audio tidak ditemukan", Toast.LENGTH_LONG).show()
-//            return
-//        }
-//
-//        // Konversi data menjadi multipart
-//        val topicRequestBody = topic.toRequestBody("text/plain".toMediaType())
-//        val deviceIdRequestBody = deviceId.toRequestBody("text/plain".toMediaType())
-//        val fileRequestBody = tempFile!!.asRequestBody("audio/m4a".toMediaType())
-//        val multipartFile = MultipartBody.Part.createFormData("file", tempFile!!.name, fileRequestBody)
-//
-//        binding.progressBar.visibility = View.VISIBLE
-//
-//        // Panggil API menggunakan Coroutine
-//        lifecycleScope.launch {
-//            try {
-//                val response = ApiConfig.instance.uploadRecording(topicRequestBody, multipartFile, deviceIdRequestBody)
-//                if (response.isSuccessful) {
-//                    val rawResponse = response.body()?.string()
-//                    Log.d("RawResponse", "Response: $rawResponse")
-//
-//                    val analyzeResponse = parseAnalyzeResponse(rawResponse)
-//                    if (analyzeResponse != null) {
-//                        navigateToAnalysisFragment(analyzeResponse)
-//                    } else {
-//                        Toast.makeText(requireContext(), "Gagal memproses respons", Toast.LENGTH_LONG).show()
-//                    }
-//                } else {
-//                    Log.e("UploadError", "Error uploading audio: ${response.errorBody()?.string()}")
-//                    Toast.makeText(requireContext(), "Gagal mengunggah audio", Toast.LENGTH_LONG).show()
-//                }
-//            } catch (e: Exception) {
-//                e.printStackTrace()
-//                Log.e("UploadError", "Error uploading audio: ${e.message}")
-//                Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_LONG).show()
-//            } finally {
-//                binding.progressBar.visibility = View.GONE
-//            }
-//        }
-//    }
 
     private fun sendDataToApi() {
         val topic = binding.etTopic.text.toString()
@@ -380,14 +313,6 @@ class AnalyzeFragment : Fragment() {
                 val result: AnalyzeResponse? = intent.getParcelableExtra("result")
                 alertDialog.dismiss()
 
-//                if (result != null) {
-//                    findNavController().navigate(
-//                        R.id.analyzeResultFragment,
-//                        Bundle().apply { putParcelable("result", result) }
-//                    )
-//                } else {
-//                    Toast.makeText(requireContext(), "Gagal menganalisis data", Toast.LENGTH_LONG).show()
-//                }
 
                 if (result != null) {
                     // Tampilkan notifikasi untuk berpindah halaman
@@ -412,7 +337,7 @@ class AnalyzeFragment : Fragment() {
                         .setContentTitle("Analisis Selesai")
                         .setContentText("Klik untuk melihat hasil analisis")
                         .setContentIntent(pendingIntent)
-                        .setAutoCancel(true)
+                        .setAutoCancel(false)
                         .build()
 
                     notificationManager.notify(2, notification) // ID notifikasi harus unik
@@ -427,53 +352,6 @@ class AnalyzeFragment : Fragment() {
         ContextCompat.startForegroundService(requireContext(), serviceIntent)
     }
 
-    private fun parseAnalyzeResponse(rawResponse: String?): AnalyzeResponse? {
-        if (rawResponse.isNullOrEmpty()) return null
-
-        val gson = Gson()
-        val lines = rawResponse.split("\n").filter { it.isNotBlank() }
-
-        var score: Score? = null
-        val words = mutableListOf<String>()
-
-        for (line in lines) {
-            try {
-                if (line.contains("score")) {
-                    val jsonObject = gson.fromJson(line, JsonObject::class.java)
-                    val scoreObject = jsonObject["score"]?.asJsonObject
-                    if (scoreObject != null) {
-                        score = Score(
-                            kejelasan = scoreObject["kejelasan"]?.asString,
-                            diksi = scoreObject["diksi"]?.asString,
-                            kelancaran = scoreObject["kelancaran"]?.asString,
-                            emosi = scoreObject["emosi"]?.asString
-                        )
-                    }
-                } else if (line.contains("word")) {
-                    val wordObject = gson.fromJson(line, JsonObject::class.java)
-                    wordObject["word"]?.let { words.add(it.asString) }
-                }
-                Log.d("ParseResponse", "Score: $score")
-                Log.d("ParseResponse", "Words: $words")
-            } catch (e: Exception) {
-                e.printStackTrace()
-                Log.e("ParseError", "Error parsing response: ${e.message}")
-            }
-        }
-
-        return if (score != null) {
-            AnalyzeResponse(score, words)
-        } else {
-            null
-        }
-    }
-
-    private fun navigateToAnalysisFragment(result: AnalyzeResponse) {
-        val bundle = Bundle().apply {
-            putParcelable("result", result)
-        }
-        findNavController().navigate(R.id.analyzeResultFragment, bundle)
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()
