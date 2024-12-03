@@ -25,6 +25,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import android.os.Handler
 import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavDeepLinkBuilder
@@ -64,6 +65,18 @@ class AnalyzeFragment : Fragment() {
     private lateinit var handlerTimer: Handler
     private lateinit var runnable: Runnable
 
+    private val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                Toast.makeText(requireContext(), "Notifications permission granted", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "Notifications permission rejected", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -78,13 +91,17 @@ class AnalyzeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Cek dan minta izin POST_NOTIFICATIONS jika diperlukan
+        if (Build.VERSION.SDK_INT >= 33) {
+            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
+
         checkAndShowOnboarding()
         checkAudioPermission()
 
         binding.btnViewIntructions.setOnClickListener {
             startOnboardingManually()
         }
-
 
 //        button
         binding.btnMultiFunction.text = getString(R.string.start_record)
@@ -310,9 +327,9 @@ class AnalyzeFragment : Fragment() {
         }
 
         val alertDialog = AlertDialog.Builder(requireContext())
-            .setTitle("Processing Analysis")
+            .setTitle("Sedang Menjalankan Proses")
             .setMessage("Proses analisis sedang berlangsung, cek notifikasi untuk melihat hasil analisis")
-            .setCancelable(true) // Tidak bisa ditutup oleh pengguna
+            .setCancelable(false) // Tidak bisa ditutup oleh pengguna
             .create()
         alertDialog.show()
 

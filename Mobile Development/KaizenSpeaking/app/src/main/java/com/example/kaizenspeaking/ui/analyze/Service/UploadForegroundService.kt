@@ -2,6 +2,7 @@ package com.example.kaizenspeaking.ui.analyze.Service
 
 import android.annotation.SuppressLint
 import android.app.Notification
+import android.app.Notification.FOREGROUND_SERVICE_IMMEDIATE
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -117,6 +118,7 @@ class UploadForegroundService : Service() {
 
     private fun createNotification(content: String, pendingIntent: PendingIntent? = null): Notification {
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_LOW
@@ -124,12 +126,19 @@ class UploadForegroundService : Service() {
             notificationManager.createNotificationChannel(channel)
         }
 
-        return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("Analisis Rekaman")
+        // Membuat NotificationCompat.Builder
+        val notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setContentTitle("Rekaman sedang dianalisis")
             .setContentText(content)
             .setSmallIcon(R.drawable.ic_notifications_black_24dp)
             .setContentIntent(pendingIntent)
-            .build()
+
+        // Tambahkan behavior immediate untuk API 31 atau lebih tinggi
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            notificationBuilder.setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
+        }
+
+        return notificationBuilder.build()
     }
 
     private fun parseAnalyzeResponse(rawResponse: String?): AnalyzeResponse? {
