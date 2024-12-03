@@ -38,14 +38,25 @@
                         }
                         is RequesStatus.Success -> {
                             isLoading.value = false
-                            user.value = it.data.data
+                            val userData = it.data.data
+                            user.value = userData
                             loginSuccess.value = true
-                            UserSession.setLoggedIn(context,true)
-                            UserSession.setAccessToken(context, it.data.data.access_token)
-                            UserSession.setUserId(context, it.data.data.userId)
-                            Log.d("SignInActivityViewModel", "User data: ${it.data.data}")
+                            UserSession.setLoggedIn(context, true)
+                            UserSession.setAccessToken(context, userData.access_token)
+                            UserSession.setUserId(context, userData.userId)
+                            UserSession.setUserName(context, userData.name)
+
+                            // Null-safe username and email setting
+                            userData.name?.let { name ->
+                                UserSession.setUserName(context, name)
+                            }
+                            userData.email?.let { email ->
+                                UserSession.setUserEmail(context, email)
+                            }
                             Log.d("SignInActivityViewModel", "AccessToken: ${UserSession.getAccessToken(context)}")
                             Log.d("SignInActivityViewModel", "UserId: ${UserSession.getUserId(context)}")
+                            Log.d("SignInActivityViewModel", "Username: ${UserSession.getUserName(context)}")
+                            Log.d("SignInActivityViewModel", "Email : ${UserSession.getUserEmail(context)}")
                             showToast(application, "Login Berhasil ")
                         }
                         is RequesStatus.Error -> {

@@ -15,66 +15,52 @@
         android:layout_height="match_parent"
         android:padding="16dp">
 
-
-        <LinearLayout
-            android:id="@+id/opening"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/vintage1"
-                android:layout_width="127dp"
-                android:layout_height="190dp"
-                android:contentDescription="@string/hallo"
-                android:src="@drawable/vintage1" />
-
-            <LinearLayout
-                android:id="@+id/cardOpening"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="16dp"> <!-- Set background color to red -->
+        <!-- Set background color to red -->
 
                 <!-- Greeting Message -->
-                <TextView
-                    android:id="@+id/greetingsCard"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/rounded_rectangle_background"
-                    android:gravity="center"
-                    android:padding="16dp"
-                    android:text="@string/pesan_belum_login"
-                    android:textColor="@android:color/white"
-                    android:textSize="14sp" />
 
-                <!-- Button for "Coba Analisis Sekarang" -->
-            </LinearLayout>
-        </LinearLayout>
+        <ImageView
+            android:id="@+id/vintage1"
+            android:layout_width="106dp"
+            android:layout_height="169dp"
+            android:layout_marginTop="32dp"
+            android:contentDescription="@string/hallo"
+            android:src="@drawable/vintage1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Button for "Coba Analisis Sekarang" -->
 
 
-
+        <TextView
+            android:id="@+id/greetingsCard"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="44dp"
+            android:background="@drawable/rounded_rectangle_background"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="@string/pesan_belum_login"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/vintage1"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/btnSignIn"
             android:layout_width="144dp"
             android:layout_height="48dp"
             android:layout_marginTop="36dp"
-            android:background="@android:color/holo_red_light"
+            android:background="@color/red_kaizen"
             android:text="@string/masuk_ke_akun"
             android:textColor="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/opening"
+            app:layout_constraintTop_toBottomOf="@+id/greetingsCard"
             tools:ignore="TextContrastCheck" />
 
         <TextView

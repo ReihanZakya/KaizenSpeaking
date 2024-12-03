@@ -118,7 +118,7 @@
                 intent.putExtra("USER_NAME", user.full_name)
                 intent.putExtra("EMAIL", user.email)
                 intent.putExtra("id", user.id)
-                intent.putExtra("NICK_NAME", user.nick_name)
+                intent.putExtra("NICK_NAME", user.name)
                 startActivity(intent)
                 finish()
             }

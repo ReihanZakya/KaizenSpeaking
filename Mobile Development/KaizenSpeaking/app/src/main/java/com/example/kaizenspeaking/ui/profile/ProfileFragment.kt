@@ -13,6 +13,7 @@ import com.example.kaizenspeaking.ui.auth.data.User
 import com.example.kaizenspeaking.utils.UserSession
 import com.example.kaizenspeaking.MainActivity
 import android.content.SharedPreferences
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
 import kotlinx.coroutines.CoroutineScope
@@ -46,37 +47,23 @@ class ProfileFragment : Fragment() {
             performLogout()
         }
 
-        fetchAndDisplayUserInfo()
+        displayUserInfo()
 
         return binding.root
     }
 
-    private fun fetchAndDisplayUserInfo() {
-        val userId = UserSession.getUserId(requireContext())
-        val token = UserSession.getAccessToken(requireContext())
 
-        if (userId != null && token != null) {
-            CoroutineScope(Dispatchers.IO).launch {
-                val response = apiConsumer.getUser(userId)
 
-                withContext(Dispatchers.Main) {
-                    if (response.isSuccessful && response.body() != null) {
-                        val user = response.body()
-                        displayUserInfo(user)
-                    } else {
-                        // Handle error
-                    }
-                }
-            }
-        }
+    private fun displayUserInfo() {
+        val userName = UserSession.getUserName(requireContext()) ?: "Unknown Name"
+        val userEmail = UserSession.getUserEmail(requireContext()) ?: "unknown@email.com"
+        val userId = UserSession.getUserId(requireContext()) ?: "N/A"
+
+        binding.tvName.text = userName
+        binding.tvEmail.text = userEmail
+        binding.tvUserId.text = "User ID: $userId"
     }
 
-    private fun displayUserInfo(user: User?) {
-        // Set TextViews with user information
-        binding.tvName.text = user?.full_name ?: "Unknown Name"
-        binding.tvEmail.text = user?.email ?: "unknown@email.com"
-        binding.tvUserId.text = "User ID: ${user?.id ?: "N/A"}"
-    }
 
     private fun performLogout() {
         // 1. Clear User Session completely
