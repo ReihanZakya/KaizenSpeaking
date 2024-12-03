@@ -68,7 +68,7 @@
                 if (!UserSession.isLoggedIn(requireContext())) {
                     showLoginDialog()
                 } else {
-                    findNavController().navigate(R.id.action_homeSignedFragment_to_profileFragment) } }
+                    findNavController().navigate(R.id.action_homeSignedFragment_to_profileFragment ) } }
 
             return binding.root
         }
