@@ -24,6 +24,8 @@ import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import android.os.Handler
+import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavDeepLinkBuilder
@@ -63,6 +65,18 @@ class AnalyzeFragment : Fragment() {
     private lateinit var handlerTimer: Handler
     private lateinit var runnable: Runnable
 
+    private val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                Toast.makeText(requireContext(), "Notifications permission granted", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "Notifications permission rejected", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -77,13 +91,17 @@ class AnalyzeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Cek dan minta izin POST_NOTIFICATIONS jika diperlukan
+        if (Build.VERSION.SDK_INT >= 33) {
+            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
+
         checkAndShowOnboarding()
         checkAudioPermission()
 
         binding.btnViewIntructions.setOnClickListener {
             startOnboardingManually()
         }
-
 
 //        button
         binding.btnMultiFunction.text = getString(R.string.start_record)
@@ -289,8 +307,8 @@ class AnalyzeFragment : Fragment() {
     private fun sendDataToApi() {
         val topic = binding.etTopic.text.toString()
         val deviceId = SharedPreferencesHelper.getFromSharedPreferences(requireContext(), "device_id") ?: "unknown_device"
-        val userId = "77c7d604-4457-4496-9131-e36ae1d89d68"
-
+//        val userId = "77c7d604-4457-4496-9131-e36ae1d89d68"
+        val userId = UserSession.getUserId(requireContext()) ?: ""
         if (tempFile == null || !tempFile!!.exists()) {
             Toast.makeText(requireContext(), "File audio tidak ditemukan", Toast.LENGTH_LONG).show()
             return
@@ -300,16 +318,18 @@ class AnalyzeFragment : Fragment() {
             putExtra(UploadForegroundService.EXTRA_TOPIC, topic)
             if (userId.isEmpty()){
                 putExtra(UploadForegroundService.EXTRA_DEVICE_ID, deviceId)
+                Log.d("ServiceIntent", "Mengirim deviceId: $deviceId")
             }else {
                 putExtra(UploadForegroundService.EXTRA_USER_ID, userId)
+                Log.d("ServiceIntent", "Mengirim deviceId: $userId")
             }
             putExtra(UploadForegroundService.EXTRA_FILE_PATH, tempFile!!.absolutePath)
         }
 
         val alertDialog = AlertDialog.Builder(requireContext())
-            .setTitle("Processing Analysis")
+            .setTitle("Sedang Menjalankan Proses")
             .setMessage("Proses analisis sedang berlangsung, cek notifikasi untuk melihat hasil analisis")
-            .setCancelable(true) // Tidak bisa ditutup oleh pengguna
+            .setCancelable(false) // Tidak bisa ditutup oleh pengguna
             .create()
         alertDialog.show()
 
