@@ -61,10 +61,17 @@ class HomeSignedFragment : Fragment() {
 
         val userName = UserSession.getUserName(requireContext())
         binding.accountName.text = if (!userName.isNullOrEmpty()) {
-            "Selamat Datang,\n$userName"
+            val nameParts = userName.split(" ")
+            val displayName = if (nameParts.size > 2) {
+                "${nameParts.first()} ${nameParts.last()}"
+            } else {
+                userName
+            }
+            "Halo, $displayName! >"
         } else {
-            "Hallo, kamu belum \nlogin nih, yuk login "
+            "Masuk Akun >"
         }
+
 
 
         binding.accountButton.setOnClickListener {

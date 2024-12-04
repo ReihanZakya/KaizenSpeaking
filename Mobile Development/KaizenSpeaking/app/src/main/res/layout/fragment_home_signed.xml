@@ -2,54 +2,75 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/homeFragmentSignIn"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginStart="16dp"
-    android:layout_marginEnd="16dp"
-    android:id="@+id/homeFragmentSignIn"
     tools:context=".ui.home_signed.HomeSignedFragment">
 
-    <TextView
-        android:id="@+id/accountName"
-        android:layout_width="wrap_content"
+    <Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/greetings_with_name"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="4dp"
+        android:gravity="start"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/riwayat_latihan">
 
-    <ImageView
-        android:id="@+id/accountButton"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="4dp"
-        android:contentDescription="@string/account"
-        android:src="@drawable/account_logo"
-        app:layout_constraintBottom_toBottomOf="@+id/accountName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/accountName"
-        app:layout_constraintVertical_bias="0.307" />
+        <!-- LinearLayout untuk header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="8dp">
+
+            <!-- TextView untuk accountName -->
+            <TextView
+                android:id="@+id/accountName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="64dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/greetings_with_name"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <!-- ImageView untuk accountButton -->
+            <ImageView
+                android:id="@+id/accountButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="16dp"
+                android:contentDescription="@string/account"
+                android:src="@drawable/account_logo" />
+
+        </LinearLayout>
+    </Toolbar>
+
 
     <TextView
         android:id="@+id/progress_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
         android:text="@string/progress_title"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/accountName" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/progress_chart_layout"
         android:layout_width="0dp"
         android:layout_height="240dp"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
-        android:layout_marginEnd="12dp"
+        android:layout_marginEnd="16dp"
         android:visibility="visible"
         app:cardCornerRadius="16dp"
         app:cardElevation="4dp"
@@ -60,8 +81,7 @@
         <LinearLayout
             android:id="@+id/opening"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_height="240dp"
             android:gravity="center"
             android:orientation="horizontal"
             android:visibility="visible"
@@ -70,18 +90,18 @@
 
             <ImageView
                 android:id="@+id/vintage1"
-                android:layout_width="127dp"
-                android:layout_height="190dp"
+                android:layout_width="140dp"
+                android:layout_height="200dp"
+                android:layout_marginEnd="16dp"
                 android:contentDescription="@string/hallo"
                 android:src="@drawable/vintage1" />
 
             <LinearLayout
                 android:id="@+id/cardOpening"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="240dp"
                 android:gravity="center"
-                android:orientation="vertical"
-                android:padding="16dp"> <!-- Set background color to red -->
+                android:orientation="vertical"> <!-- Set background color to red -->
 
                 <!-- Greeting Message -->
                 <TextView
@@ -90,7 +110,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/rounded_rectangle_background"
                     android:gravity="center"
-                    android:padding="16dp"
+                    android:paddingHorizontal="8dp"
                     android:text="Kamu belum melakukan login nih. Ayo login untuk menyimpan riwayat dan melihat perkembanganmu!"
                     android:textColor="@android:color/white"
                     android:textSize="14sp" />
@@ -104,7 +124,7 @@
                     android:paddingTop="8dp"
                     android:text="Coba Analisis Sekarang"
                     android:textColor="@android:color/holo_blue_light"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -114,7 +134,8 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:gravity="start"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="invisible">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -184,6 +205,7 @@
         android:id="@+id/ArticleTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
         android:text="@string/article_title"
         android:textSize="18sp"
@@ -195,6 +217,7 @@
         android:id="@+id/articleDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="@string/article_description"
         android:textColor="@color/black"
@@ -205,6 +228,7 @@
         android:id="@+id/searchArticle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
         android:layout_marginTop="12dp"
         android:elevation="4dp"
         app:cardCornerRadius="20dp"
@@ -226,6 +250,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginHorizontal="16dp"
         android:layout_marginTop="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -248,7 +273,6 @@
 
 
     </androidx.core.widget.NestedScrollView>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
