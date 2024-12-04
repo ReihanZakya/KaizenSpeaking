@@ -81,19 +81,11 @@ class HomeSignedFragment : Fragment() {
         }
 
         binding.accountName.setOnClickListener {
-            if (!UserSession.isLoggedIn(requireContext())) {
-                showLoginDialog()
-            } else {
-                findNavController().navigate(R.id.action_homeSignedFragment_to_profileFragment)
-            }
+            startActivity(Intent(requireContext(), SignInActivity::class.java))
         }
 
         binding.greetingsCard.setOnClickListener {
-            if (!UserSession.isLoggedIn(requireContext())) {
-                showLoginDialog()
-            } else {
-                findNavController().navigate(R.id.action_homeSignedFragment_to_profileFragment)
-            }
+            startActivity(Intent(requireContext(), SignInActivity::class.java))
         }
 
         binding.greetingsButton.setOnClickListener {
