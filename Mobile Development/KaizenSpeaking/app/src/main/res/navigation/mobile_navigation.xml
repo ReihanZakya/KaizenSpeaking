@@ -18,7 +18,9 @@
             app:destination="@id/profileFragment" />
         <action
             android:id="@+id/action_homeSignedFragment_to_analyzeFragment"
-            app:destination="@id/navigation_analyze" />
+            app:destination="@id/navigation_analyze"
+            app:popUpTo="@id/navigation_home_signed"
+            app:popUpToInclusive="false" />
     </fragment>
 
     <fragment
