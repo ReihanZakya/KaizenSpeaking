@@ -14,7 +14,6 @@ import com.example.kaizenspeaking.databinding.FragmentAnalyzeBinding
 import java.io.File
 import android.Manifest
 import android.app.AlertDialog
-import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.IntentFilter
@@ -29,7 +28,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavDeepLinkBuilder
-import com.example.kaizenspeaking.ui.analyze.data.response.AnalyzeResponse
 import com.example.kaizenspeaking.helper.SharedPreferencesHelper
 import com.example.kaizenspeaking.ui.analyze.Service.UploadForegroundService
 import com.example.kaizenspeaking.ui.analyze.data.response.Score
@@ -368,46 +366,6 @@ class AnalyzeFragment : Fragment() {
                 }
             }
         }
-
-
-//        val receiver = object : BroadcastReceiver() {
-//            override fun onReceive(context: Context, intent: Intent) {
-//                val result: AnalyzeResponse? = intent.getParcelableExtra("result")
-//                alertDialog.dismiss()
-//
-//
-//                if (result != null) {
-//                    // Tampilkan notifikasi untuk berpindah halaman
-//                    val pendingIntent = NavDeepLinkBuilder(requireContext())
-//                        .setGraph(R.navigation.mobile_navigation)
-//                        .setDestination(R.id.analyzeResultFragment)
-//                        .setArguments(Bundle().apply { putParcelable("result", result) })
-//                        .createPendingIntent()
-//
-//                    val notificationManager = requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                        val channel = NotificationChannel(
-//                            "analysis_channel",
-//                            "Analysis Notifications",
-//                            NotificationManager.IMPORTANCE_HIGH
-//                        )
-//                        notificationManager.createNotificationChannel(channel)
-//                    }
-//
-//                    val notification = NotificationCompat.Builder(requireContext(), "analysis_channel")
-//                        .setSmallIcon(R.drawable.ic_notifications_black_24dp)
-//                        .setContentTitle("Analisis Selesai")
-//                        .setContentText("Klik untuk melihat hasil analisis")
-//                        .setContentIntent(pendingIntent)
-//                        .setAutoCancel(false)
-//                        .build()
-//
-//                    notificationManager.notify(2, notification) // ID notifikasi harus unik
-//                } else {
-//                    Toast.makeText(requireContext(), "Gagal menganalisis data", Toast.LENGTH_LONG).show()
-//                }
-//            }
-//        }
 
         LocalBroadcastManager.getInstance(requireContext()).registerReceiver(receiver, IntentFilter("ANALYZE_RESULT"))
 
