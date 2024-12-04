@@ -6,7 +6,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/white">
 
         <Toolbar
             android:id="@+id/toolbar"
@@ -54,6 +55,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
+                            android:textColor="@color/black"
                             android:text="@string/topic_item"
                             android:textSize="14sp"
                             android:textStyle="bold" />
@@ -81,7 +83,8 @@
                 <!-- Gauge Chart Section -->
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:background="@color/white">
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
@@ -89,6 +92,7 @@
                         android:layout_marginHorizontal="16dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="6dp"
+                        card_view:cardBackgroundColor="@color/white"
                         android:padding="16dp"
                         card_view:cardCornerRadius="20dp">
 
@@ -96,6 +100,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
+                            android:textColor="@color/black"
                             android:text="@string/score"
                             android:textAlignment="center"
                             android:textSize="16sp"
@@ -114,6 +119,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/white"
                     android:orientation="vertical">
 
                     <androidx.cardview.widget.CardView
@@ -123,12 +129,14 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginBottom="6dp"
+                        card_view:cardBackgroundColor="@color/white"
                         card_view:cardCornerRadius="20dp">
                         <!-- Placeholder for bar chart -->
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
+                            android:textColor="@color/black"
                             android:text="@string/score_detail"
                             android:textAlignment="center"
                             android:textSize="16sp"
@@ -152,6 +160,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:layout_marginBottom="16dp"
+                    android:background="@color/white"
                     card_view:cardCornerRadius="20dp">
 
                     <LinearLayout
@@ -159,6 +168,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="0dp"
                         android:orientation="vertical"
+                        android:background="@color/white"
                         android:padding="16dp">
 
                         <TextView
@@ -166,6 +176,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginBottom="8dp"
+                            android:textColor="@color/black"
                             android:text="@string/tvPageAnalisis"
                             android:textSize="16sp"
                             android:textStyle="bold" />
