@@ -17,6 +17,7 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import android.widget.Toast
+import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import com.example.kaizenspeaking.R
 import com.example.kaizenspeaking.ui.analyze.data.response.Score
@@ -46,6 +47,15 @@ class AnalyzeResultFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).supportActionBar?.hide()
+
+        hideBottomNavigation()
+
+        // Toolbar setup
+        val toolbar: Toolbar = view.findViewById(R.id.toolbar)
+        toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+
         hideBottomNavigation()
 
         val score = arguments?.getParcelable<Score>("score")

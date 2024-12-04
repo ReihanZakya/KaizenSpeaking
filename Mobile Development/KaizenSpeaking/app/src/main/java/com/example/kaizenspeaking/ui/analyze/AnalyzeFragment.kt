@@ -228,7 +228,7 @@ class AnalyzeFragment : Fragment() {
                     startStopwatch()
                     state = 1
                 }else{
-                    Toast.makeText(requireContext(), "Mohom masukkan topic terlebih dahulu", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Mohon masukkan topic terlebih dahulu", Toast.LENGTH_SHORT).show()
                     state = 0
                 }
 
