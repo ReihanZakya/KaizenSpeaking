@@ -94,7 +94,7 @@ class HomeSignedFragment : Fragment() {
         }
 
         binding.greetingsButton.setOnClickListener {
-            findNavController().navigate(R.id.action_homeSignedFragment_to_analyzeFragment)
+            findNavController().navigate(R.id.action_homeSignedFragment_to_analysisFragment)
         }
 
         return binding.root
