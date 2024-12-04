@@ -13,6 +13,10 @@ import com.example.kaizenspeaking.ui.auth.data.User
 import com.example.kaizenspeaking.utils.UserSession
 import com.example.kaizenspeaking.MainActivity
 import android.content.SharedPreferences
+import android.text.Html
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
@@ -20,6 +24,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import com.example.kaizenspeaking.R
 
 class ProfileFragment : Fragment() {
     private lateinit var binding: FragmentProfileBinding
@@ -52,7 +57,31 @@ class ProfileFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        // Sembunyikan BottomNavigationView
+        hideBottomNavigation()
+        // Tambahkan fungsionalitas tombol kembali
+        val backButton = view.findViewById<ImageView>(R.id.back_btn)
+        backButton.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+        // Tambahkan klik listener untuk tvAbout
+        val tvAbout = view.findViewById<TextView>(R.id.tvAbout)
+        tvAbout.setOnClickListener {
+            showAboutDialog()
+        }
+    }
 
+    private fun showAboutDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        val description = getString(R.string.about_kaizen_speaking) // Mengambil teks dari resource string
+        builder.setMessage(Html.fromHtml(description, Html.FROM_HTML_MODE_LEGACY))
+            .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() } // Tombol OK
+            .setCancelable(true) // Membuat dialog dapat ditutup dengan klik di luar
+        val dialog = builder.create()
+        dialog.show()
+    }
 
     private fun displayUserInfo() {
         val userName = UserSession.getUserName(requireContext()) ?: "Unknown Name"
@@ -64,20 +93,26 @@ class ProfileFragment : Fragment() {
         binding.tvUserId.text = "User ID: $userId"
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        showBottomNavigation()
+    }
+    private fun hideBottomNavigation() {
+        val bottomNav = requireActivity().findViewById<View>(R.id.nav_view)
+        bottomNav?.visibility = View.GONE
+    }
+    private fun showBottomNavigation() {
+        val bottomNav = requireActivity().findViewById<View>(R.id.nav_view)
+        bottomNav?.visibility = View.VISIBLE
+    }
 
     private fun performLogout() {
-        // 1. Clear User Session completely
         UserSession.logout(requireContext())
 
-        // 2. Clear Authentication Tokens
-
-        // 3. Clear Encrypted Preferences
         clearEncryptedPreferences()
 
-        // 4. Clear User-related Data
         clearUserData()
 
-        // 5. Navigate back to login/home screen
         navigateToLoginScreen()
     }
 
