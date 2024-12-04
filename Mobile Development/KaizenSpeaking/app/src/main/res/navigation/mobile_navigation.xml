@@ -21,8 +21,6 @@
             app:destination="@id/navigation_analyze"
             app:popUpTo="@id/navigation_home"
             app:popUpToInclusive="true"/>
-
-
     </fragment>
 
     <fragment
@@ -61,7 +59,11 @@
         android:name="com.example.kaizenspeaking.ui.home_signed.HomeSignedFragment"
         android:label="Home Signed"
         tools:layout="@layout/fragment_home_signed">
-
+        <action
+            android:id="@+id/action_homeSignedFragment_to_analyzeFragment"
+            app:destination="@id/navigation_analyze"
+            app:popUpTo="@id/navigation_analyze"
+            app:popUpToInclusive="true"/>
     </fragment>
 
     <fragment
