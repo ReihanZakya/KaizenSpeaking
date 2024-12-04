@@ -148,6 +148,7 @@
                 android:layout_height="wrap_content"
                 android:text="00.00"
                 android:textSize="15sp"
+                android:textColor="@color/gray"
                 app:layout_constraintEnd_toEndOf="@+id/imgMic"
                 app:layout_constraintStart_toStartOf="@+id/imgMic"
                 app:layout_constraintTop_toBottomOf="@+id/imgMic" />
