@@ -10,6 +10,7 @@
     import android.view.ViewGroup
     import android.view.Window
     import android.widget.Button
+    import androidx.core.content.ContextCompat
     import androidx.fragment.app.Fragment
     import androidx.fragment.app.viewModels
     import androidx.lifecycle.ViewModelProvider
@@ -217,17 +218,22 @@
             dialog.show()
         }
 
-        private fun updateProgressChartVisibility(){
-            if(UserSession.isLoggedIn(requireContext())){
+        private fun updateProgressChartVisibility() {
+            if (UserSession.isLoggedIn(requireContext())) {
                 binding.progressChartLayout.visibility = View.VISIBLE
+                binding.progressChartLayout.cardElevation = 4f
+                binding.progressChartLayout.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white)) // Atur warna default
                 binding.chartHistory.visibility = View.VISIBLE
                 binding.opening.visibility = View.GONE
-            }else{
-                binding.progressChartLayout.visibility = View.GONE
+            } else {
+                binding.progressChartLayout.visibility = View.VISIBLE
+                binding.progressChartLayout.cardElevation = 0f
+                binding.progressChartLayout.setCardBackgroundColor(Color.TRANSPARENT)
                 binding.chartHistory.visibility = View.GONE
                 binding.opening.visibility = View.VISIBLE
             }
         }
+
 
         override fun onDestroyView() {
             super.onDestroyView()

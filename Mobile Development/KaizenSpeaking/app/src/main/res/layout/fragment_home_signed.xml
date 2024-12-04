@@ -64,6 +64,7 @@
             android:layout_marginTop="16dp"
             android:gravity="center"
             android:orientation="horizontal"
+            android:visibility="visible"
             app:layout_constraintTop_toBottomOf="@+id/accountButton"
             tools:layout_editor_absoluteX="0dp">
 
@@ -99,11 +100,11 @@
                     android:id="@+id/greetingsButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingTop="8dp"
                     android:gravity="center"
+                    android:paddingTop="8dp"
                     android:text="Coba Analisis Sekarang"
                     android:textColor="@android:color/holo_blue_light"
-                    android:textSize="12sp"/>
+                    android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -111,8 +112,8 @@
             android:id="@+id/chartHistory"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="start"
             android:layout_gravity="center_vertical"
+            android:gravity="start"
             android:orientation="vertical">
 
             <LinearLayout
