@@ -25,6 +25,7 @@ import androidx.core.content.ContextCompat
 import android.os.Handler
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavDeepLinkBuilder
@@ -83,6 +84,7 @@ class AnalyzeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        (requireActivity() as AppCompatActivity).supportActionBar?.hide()
         _binding = FragmentAnalyzeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
