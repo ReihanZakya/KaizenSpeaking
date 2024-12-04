@@ -18,6 +18,7 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.kaizenspeaking.R
 import com.example.kaizenspeaking.ui.analyze.data.response.Score
 
 
@@ -45,6 +46,7 @@ class AnalyzeResultFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).supportActionBar?.hide()
+        hideBottomNavigation()
 
         val score = arguments?.getParcelable<Score>("score")
         val analyzeMessage = arguments?.getString("analyze_message")
@@ -208,6 +210,15 @@ class AnalyzeResultFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        (activity as AppCompatActivity).supportActionBar?.show()
+        showBottomNavigation()
+    }
+
+    private fun hideBottomNavigation() {
+        val bottomNav = requireActivity().findViewById<View>(R.id.nav_view)
+        bottomNav?.visibility = View.GONE
+    }
+    private fun showBottomNavigation() {
+        val bottomNav = requireActivity().findViewById<View>(R.id.nav_view)
+        bottomNav?.visibility = View.VISIBLE
     }
 }

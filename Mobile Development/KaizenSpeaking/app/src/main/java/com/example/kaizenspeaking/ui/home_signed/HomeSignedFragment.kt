@@ -72,14 +72,32 @@ class HomeSignedFragment : Fragment() {
             "Masuk Akun >"
         }
 
-
-
         binding.accountButton.setOnClickListener {
             if (!UserSession.isLoggedIn(requireContext())) {
                 showLoginDialog()
             } else {
                 findNavController().navigate(R.id.action_homeSignedFragment_to_profileFragment)
             }
+        }
+
+        binding.accountName.setOnClickListener {
+            if (!UserSession.isLoggedIn(requireContext())) {
+                showLoginDialog()
+            } else {
+                findNavController().navigate(R.id.action_homeSignedFragment_to_profileFragment)
+            }
+        }
+
+        binding.greetingsCard.setOnClickListener {
+            if (!UserSession.isLoggedIn(requireContext())) {
+                showLoginDialog()
+            } else {
+                findNavController().navigate(R.id.action_homeSignedFragment_to_profileFragment)
+            }
+        }
+
+        binding.greetingsButton.setOnClickListener {
+            findNavController().navigate(R.id.action_homeSignedFragment_to_analyzeFragment)
         }
 
         return binding.root
@@ -92,7 +110,6 @@ class HomeSignedFragment : Fragment() {
 
         updateProgressChartVisibility()
 
-        // Observer untuk isLoading
         historyViewModel.isLoading.observe(viewLifecycleOwner, { isLoading ->
             if (isLoading) {
                 binding.loadingLayout.visibility = View.VISIBLE
