@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">KaizenSpeaking</string>
-    <string name="title_home">Home</string>
-    <string name="title_analyze">Analyze</string>
-    <string name="title_history">History</string>
+    <string name="title_home">Beranda</string>
+    <string name="title_analyze">Latihan</string>
+    <string name="title_history">Riwayat</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
@@ -58,6 +58,7 @@
     <string name="topic_item">0. Judul Topik</string>
     <string name="date_item">24 Nov 2024 11.30</string>
     <string name="duration_item">00:00</string>
+    <string name="latihan_pidato">Latihan</string>
     <string name="riwayat_latihan">Riwayat Latihan</string>
     <string name="progres_latihan">Progres Latihan</string>
 
