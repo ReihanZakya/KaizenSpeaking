@@ -81,7 +81,11 @@ class HomeSignedFragment : Fragment() {
         }
 
         binding.accountName.setOnClickListener {
-            startActivity(Intent(requireContext(), SignInActivity::class.java))
+            if (!UserSession.isLoggedIn(requireContext())) {
+                startActivity(Intent(requireContext(), SignInActivity::class.java))
+            } else {
+                findNavController().navigate(R.id.action_homeSignedFragment_to_profileFragment)
+            }
         }
 
         binding.greetingsCard.setOnClickListener {
