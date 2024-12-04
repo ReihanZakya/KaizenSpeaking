@@ -242,17 +242,21 @@ class HomeSignedFragment : Fragment() {
                     requireContext(),
                     R.color.white
                 )
-            ) // Atur warna default
+            )
             binding.chartHistory.visibility = View.VISIBLE
             binding.opening.visibility = View.GONE
+            binding.progressTitle.text = getString(R.string.progress_title)
         } else {
             binding.progressChartLayout.visibility = View.VISIBLE
             binding.progressChartLayout.cardElevation = 0f
             binding.progressChartLayout.setCardBackgroundColor(Color.TRANSPARENT)
             binding.chartHistory.visibility = View.GONE
+            binding.loadingLayout.visibility = View.GONE
             binding.opening.visibility = View.VISIBLE
+            binding.progressTitle.text = getString(R.string.progress_title2)
         }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
