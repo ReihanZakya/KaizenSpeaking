@@ -15,7 +15,8 @@
             android:background="@color/cardview_light_background"
             android:navigationIcon="@drawable/btn_back"
             android:title="@string/detail_title"
-            android:titleTextColor="@color/black" />
+            android:titleTextColor="@color/black"
+            android:elevation="1dp"/>
 
         <ScrollView
             android:id="@+id/scrollView"

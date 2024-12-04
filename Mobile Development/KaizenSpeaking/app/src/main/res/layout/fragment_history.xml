@@ -10,18 +10,18 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/cardview_light_background"
         android:gravity="center"
         android:navigationIcon="@drawable/btn_back"
         android:title="@string/riwayat_latihan"
         android:titleTextColor="@color/black"
-        card_view:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <LinearLayout
         android:id="@+id/contentLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="40dp"
         android:orientation="vertical"
         android:visibility="visible"
         card_view:layout_constraintTop_toBottomOf="@id/toolbar"

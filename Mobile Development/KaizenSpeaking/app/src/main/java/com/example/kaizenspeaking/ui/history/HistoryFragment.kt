@@ -10,6 +10,7 @@
     import android.view.ViewGroup
     import android.view.Window
     import android.widget.Button
+    import android.widget.Toolbar
     import androidx.appcompat.app.AppCompatActivity
     import androidx.fragment.app.Fragment
     import androidx.fragment.app.viewModels
@@ -61,6 +62,12 @@
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
+
+            // Toolbar setup
+            val toolbar: Toolbar = view.findViewById(R.id.toolbar)
+            toolbar.setNavigationOnClickListener {
+                requireActivity().onBackPressedDispatcher.onBackPressed()
+            }
 
             setupRecyclerView()
             // Observer untuk isLoading
