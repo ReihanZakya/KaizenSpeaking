@@ -10,6 +10,7 @@
     import android.view.ViewGroup
     import android.view.Window
     import android.widget.Button
+    import android.widget.ImageView
     import androidx.fragment.app.Fragment
     import androidx.fragment.app.viewModels
     import androidx.navigation.fragment.findNavController
@@ -194,7 +195,7 @@
             dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
             val signInButton: Button = dialog.findViewById(R.id.btnSignIn)
-            val googleSignInButton: Button = dialog.findViewById(R.id.btnClose)
+            val googleSignInButton: ImageView = dialog.findViewById(R.id.btnClose)
 
             signInButton.setOnClickListener {
                 startActivity(Intent(requireContext(), SignInActivity::class.java))
@@ -203,7 +204,7 @@
 
             googleSignInButton.setOnClickListener {
                 dialog.dismiss()
-                startActivity(Intent(requireContext(),MainActivity::class.java))
+                findNavController().navigate(R.id.action_historyFragment_to_homeFragment )
             }
 
 

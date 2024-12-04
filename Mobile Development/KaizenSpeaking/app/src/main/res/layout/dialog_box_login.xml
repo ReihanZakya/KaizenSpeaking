@@ -20,6 +20,17 @@
                 <!-- Greeting Message -->
 
         <ImageView
+            android:id="@+id/btnClose"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="4dp"
+            android:contentDescription="@string/botton_close"
+            android:src="@drawable/btn_close"
+            app:layout_constraintBottom_toTopOf="@+id/greetingsCard"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
             android:id="@+id/vintage1"
             android:layout_width="106dp"
             android:layout_height="169dp"
@@ -51,41 +62,22 @@
 
         <Button
             android:id="@+id/btnSignIn"
-            android:layout_width="144dp"
-            android:layout_height="48dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="36dp"
             android:background="@color/red_kaizen"
             android:text="@string/masuk_ke_akun"
             android:textColor="@android:color/white"
+            android:padding="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/greetingsCard"
             tools:ignore="TextContrastCheck" />
 
-        <TextView
-            android:id="@+id/tvOr"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/atau"
-            android:textColor="@android:color/black"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnSignIn" />
 
-        <Button
-            android:id="@+id/btnClose"
-            android:layout_width="144dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="4dp"
-            android:text="@string/tutup"
-            android:textColor="@android:color/black"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvOr" />
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -10,6 +10,7 @@
     import android.view.ViewGroup
     import android.view.Window
     import android.widget.Button
+    import android.widget.ImageView
     import androidx.fragment.app.Fragment
     import androidx.fragment.app.viewModels
     import androidx.lifecycle.ViewModelProvider
@@ -61,6 +62,10 @@
                 "Selamat Datang,\n$userName"
             } else {
                 "Hallo, kamu belum \nlogin nih, yuk login "
+            }
+
+            binding.greetingsButton.setOnClickListener {
+                findNavController().navigate(R.id.action_homeSignedFragment_to_analysisFragment)
             }
 
 
@@ -201,16 +206,14 @@
             dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
             val signInButton: Button = dialog.findViewById(R.id.btnSignIn)
-            val googleSignInButton: Button = dialog.findViewById(R.id.btnClose)
+            val btnClose: ImageView = dialog.findViewById(R.id.btnClose)
 
             signInButton.setOnClickListener {
                 startActivity(Intent(requireContext(), SignInActivity::class.java))
                 dialog.dismiss()
             }
 
-            googleSignInButton.setOnClickListener {
-                // TODO: Implement Google Sign-In logic
-                // Use Google Sign-In API to handle authentication
+            btnClose.setOnClickListener {
                 dialog.dismiss()
             }
 

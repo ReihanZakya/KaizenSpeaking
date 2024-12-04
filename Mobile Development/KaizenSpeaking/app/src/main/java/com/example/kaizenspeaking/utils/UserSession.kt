@@ -10,6 +10,8 @@ object UserSession {
     private const val USER_ID = "user_id"
     private const val USER_EMAIL = "user_email"
     private const val USER_NAME = "user_name"
+    private const val IS_FIRST_TIME_USER = "is_first_time_user"
+    private const val ONBOARDING_SHOWN = "onboarding_shown"
 
     private val loginStateListeners = mutableListOf<LoginStateListener>()
 
@@ -31,6 +33,9 @@ object UserSession {
         editor.remove(USER_ID)
         editor.remove(USER_EMAIL)
         editor.remove(USER_NAME)
+
+        setFirstTimeUser(context, true)
+        setOnboardingShown(context, false)
 
         // Commit the changes
         editor.apply()
@@ -103,11 +108,25 @@ object UserSession {
         return prefs.getString(USER_NAME, null)
     }
 
-    fun addLoginStateListener(listener: LoginStateListener) {
-        loginStateListeners.add(listener)
+    fun isFirstTimeUser(context: Context): Boolean {
+        val prefs: SharedPreferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        return prefs.getBoolean(IS_FIRST_TIME_USER, true)
     }
 
-    fun removeLoginStateListener(listener: LoginStateListener) {
-        loginStateListeners.remove(listener)
+
+    fun setFirstTimeUser(context: Context, isFirstTime: Boolean) {
+        val prefs: SharedPreferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        val editor = prefs.edit()
+        editor.putBoolean(IS_FIRST_TIME_USER, isFirstTime)
+        editor.apply()
     }
+
+    fun setOnboardingShown(context: Context, shown: Boolean) {
+        val prefs: SharedPreferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        val editor = prefs.edit()
+        editor.putBoolean(ONBOARDING_SHOWN, shown)
+        editor.apply()
+    }
+
+
 }

@@ -16,6 +16,11 @@
         <action
             android:id="@+id/action_homeSignedFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_homeSignedFragment_to_analysisFragment"
+            app:destination="@id/navigation_analyze"
+            app:popUpTo="@id/navigation_home"
+            app:popUpToInclusive="true"/>
 
 
     </fragment>
@@ -40,7 +45,9 @@
             app:destination="@id/trainingDetailFragment" />
         <action
             android:id="@+id/action_historyFragment_to_homeFragment"
-            app:destination="@id/navigation_home_signed" />
+            app:destination="@id/navigation_home"
+            app:popUpTo="@id/navigation_home"
+            app:popUpToInclusive="true"/>
     </fragment>
 
     <fragment

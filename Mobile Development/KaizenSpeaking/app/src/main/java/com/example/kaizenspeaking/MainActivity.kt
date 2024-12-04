@@ -9,6 +9,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.Window
 import android.widget.Button
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.findNavController
@@ -66,14 +67,14 @@ class MainActivity : AppCompatActivity() {
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         val signInButton: Button = dialog.findViewById(R.id.btnSignIn)
-        val googleSignInButton: Button = dialog.findViewById(R.id.btnClose)
+        val buttonClose: ImageView = dialog.findViewById(R.id.btnClose)
 
         signInButton.setOnClickListener {
             startActivity(Intent(this@MainActivity, SignInActivity::class.java))
             dialog.dismiss()
         }
 
-        googleSignInButton.setOnClickListener {
+        buttonClose.setOnClickListener {
             // TODO: Implement Google Sign-In logic
             // Use Google Sign-In API to handle authentication
             dialog.dismiss()

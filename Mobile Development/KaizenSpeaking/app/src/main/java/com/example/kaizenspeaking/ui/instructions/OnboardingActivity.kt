@@ -49,6 +49,7 @@ class OnboardingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
         if (hasSeenOnboarding(this) && !isManualStart()) {
             proceedToMainActivity()
             return
