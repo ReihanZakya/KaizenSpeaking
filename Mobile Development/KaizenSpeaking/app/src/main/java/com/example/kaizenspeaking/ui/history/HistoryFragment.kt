@@ -10,6 +10,7 @@
     import android.view.ViewGroup
     import android.view.Window
     import android.widget.Button
+    import android.widget.ImageView
     import android.widget.Toolbar
     import androidx.appcompat.app.AppCompatActivity
     import androidx.fragment.app.Fragment
@@ -203,7 +204,7 @@
             dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
             val signInButton: Button = dialog.findViewById(R.id.btnSignIn)
-            val googleSignInButton: Button = dialog.findViewById(R.id.btnClose)
+            val googleSignInButton: ImageView = dialog.findViewById(R.id.btnClose)
 
             signInButton.setOnClickListener {
                 startActivity(Intent(requireContext(), SignInActivity::class.java))
@@ -214,7 +215,6 @@
                 dialog.dismiss()
                 startActivity(Intent(requireContext(),MainActivity::class.java))
             }
-
 
             dialog.show()
         }

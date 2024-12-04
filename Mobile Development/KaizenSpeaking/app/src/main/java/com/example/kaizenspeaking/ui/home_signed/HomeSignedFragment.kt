@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.Button
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -230,7 +231,7 @@ class HomeSignedFragment : Fragment() {
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         val signInButton: Button = dialog.findViewById(R.id.btnSignIn)
-        val googleSignInButton: Button = dialog.findViewById(R.id.btnClose)
+        val googleSignInButton: ImageView = dialog.findViewById(R.id.btnClose)
 
         signInButton.setOnClickListener {
             startActivity(Intent(requireContext(), SignInActivity::class.java))
