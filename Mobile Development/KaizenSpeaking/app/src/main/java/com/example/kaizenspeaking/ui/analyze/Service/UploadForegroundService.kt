@@ -14,6 +14,7 @@ import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavDeepLinkBuilder
 import com.example.kaizenspeaking.R
@@ -38,6 +39,10 @@ class UploadForegroundService : Service() {
         private const val NOTIFICATION_ID = 1
         private const val CHANNEL_ID = "upload_channel"
         private const val CHANNEL_NAME = "Upload Service"
+        private const val ANALYSIS_CHANNEL_ID = "analysis_channel"
+        private const val ANALYSIS_CHANNEL_NAME = "Analysis Notifications"
+        private const val FAILURE_CHANNEL_ID = "failure_channel"
+        private const val FAILURE_CHANNEL_NAME = "Failure Notifications"
         const val EXTRA_TOPIC = "extra_topic"
         const val EXTRA_DEVICE_ID = "extra_device_id"
         const val EXTRA_USER_ID = "extra_user_id"
@@ -49,54 +54,68 @@ class UploadForegroundService : Service() {
 
     override fun onBind(intent: Intent?): IBinder? = null
 
-    @SuppressLint("ForegroundServiceType")
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val topic = intent?.getStringExtra(EXTRA_TOPIC)
         val id = intent?.getStringExtra(EXTRA_USER_ID) ?: intent?.getStringExtra(EXTRA_DEVICE_ID)
         val filePath = intent?.getStringExtra(EXTRA_FILE_PATH)
 
-        if (topic != null && id != null && filePath != null) {
-            startForeground(NOTIFICATION_ID, createNotification("Menganalisis rekaman...."))
-            serviceScope.launch {
-                try {
-                    val file = File(filePath)
-                    val response = uploadData(topic, id, file)
-                    if (response != null) {
-                        // Kirim broadcast ke fragment
-                        val resultIntent = Intent("ANALYZE_RESULT").apply {
-                            putExtra("result", response)
-                        }
-                        LocalBroadcastManager.getInstance(this@UploadForegroundService).sendBroadcast(resultIntent)
+        if (topic.isNullOrEmpty() || id.isNullOrEmpty() || filePath.isNullOrEmpty()) {
+            stopSelf()
+            return START_NOT_STICKY
+        }
 
-                        // Buat notifikasi
-                        val navDeepLinkIntent = NavDeepLinkBuilder(this@UploadForegroundService)
-                            .setGraph(R.navigation.mobile_navigation)
-                            .setDestination(R.id.analyzeResultFragment)
-                            .setArguments(Bundle().apply {
-                                putParcelable("result", response)
-                            })
-                            .createPendingIntent()
+        createNotificationChannels()
+        startForeground(NOTIFICATION_ID, createNotification("Menganalisis rekaman..."))
 
-                        val finishedNotification = createNotification(
-                            "Analisis selesai!",
-                            navDeepLinkIntent
-                        )
-                        val notificationManager =
-                            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                        notificationManager.notify(NOTIFICATION_ID, finishedNotification)
-                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                } finally {
-                    stopForeground(true)
+        serviceScope.launch {
+            try {
+                val file = File(filePath)
+                if (!file.exists()) {
+                    Log.e("UploadService", "File tidak ditemukan: $filePath")
                     stopSelf()
+                    return@launch
                 }
+
+                val response = uploadData(topic, id, file)
+                if (response != null) {
+                    // Kirim broadcast ke fragment
+                    val resultIntent = Intent("ANALYZE_RESULT").apply {
+                        putExtra("result", response)
+                    }
+                    LocalBroadcastManager.getInstance(this@UploadForegroundService).sendBroadcast(resultIntent)
+
+                    // Buat notifikasi hasil analisis
+                    val navDeepLinkIntent = NavDeepLinkBuilder(this@UploadForegroundService)
+                        .setGraph(R.navigation.mobile_navigation)
+                        .setDestination(R.id.analyzeResultFragment)
+                        .setArguments(Bundle().apply {
+                            putParcelable("score", response.first)
+                            putString("analyze_message", response.second)
+                        })
+                        .createPendingIntent()
+
+                    val finishedNotification = createNotification(
+                        "Analisis selesai!",
+                        navDeepLinkIntent
+                    )
+                    val notificationManager =
+                        getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                    notificationManager.notify(NOTIFICATION_ID, finishedNotification)
+                } else {
+                    showFailureNotification()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                showFailureNotification()
+            } finally {
+                stopForeground(true)
+                stopSelf()
             }
         }
         return START_NOT_STICKY
     }
 
-    private suspend fun uploadData(topic: String, id: String, file: File): AnalyzeResponse? {
+    private suspend fun uploadData(topic: String, id: String, file: File): Pair<Score, String>? {
         val topicRequestBody = topic.toRequestBody("text/plain".toMediaType())
         val idRequestBody = id.toRequestBody("text/plain".toMediaType())
         val fileRequestBody = file.asRequestBody("audio/m4a".toMediaType())
@@ -116,24 +135,30 @@ class UploadForegroundService : Service() {
         }
     }
 
-    private fun createNotification(content: String, pendingIntent: PendingIntent? = null): Notification {
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    private fun parseAnalyzeResponse(rawResponse: String?): Pair<Score, String>? {
+        if (rawResponse.isNullOrEmpty()) return null
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_LOW
-            )
-            notificationManager.createNotificationChannel(channel)
+        return try {
+            val response = Gson().fromJson(rawResponse, AnalyzeResponse::class.java)
+            val firstItem = response.data.firstOrNull() ?: return null
+            Pair(firstItem.score, firstItem.analize)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
         }
+    }
 
-        // Membuat NotificationCompat.Builder
+    private fun createNotification(content: String, pendingIntent: PendingIntent? = null): Notification {
         val notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("Rekaman sedang dianalisis")
             .setContentText(content)
             .setSmallIcon(R.drawable.ic_notifications_black_24dp)
-            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
 
-        // Tambahkan behavior immediate untuk API 31 atau lebih tinggi
+        pendingIntent?.let {
+            notificationBuilder.setContentIntent(it)
+        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             notificationBuilder.setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
         }
@@ -141,45 +166,44 @@ class UploadForegroundService : Service() {
         return notificationBuilder.build()
     }
 
-    private fun parseAnalyzeResponse(rawResponse: String?): AnalyzeResponse? {
-        if (rawResponse.isNullOrEmpty()) return null
+    private fun createNotificationChannels() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        val gson = Gson()
-        val lines = rawResponse.split("\n").filter { it.isNotBlank() }
-
-        var score: Score? = null
-        val words = mutableListOf<String>()
-
-        for (line in lines) {
-            try {
-                if (line.contains("score")) {
-                    val jsonObject = gson.fromJson(line, JsonObject::class.java)
-                    val scoreObject = jsonObject["score"]?.asJsonObject
-                    if (scoreObject != null) {
-                        score = Score(
-                            kejelasan = scoreObject["Kejelasan Berbicara"]?.asString,
-                            diksi = scoreObject["Penggunaan Diksi"]?.asString,
-                            kelancaran = scoreObject["Kelancaran dan Intonasi"]?.asString,
-                            emosi = scoreObject["Emosional dan Keterlibatan Audiens"]?.asString
-                        )
-                    }
-                } else if (line.contains("word")) {
-                    val wordObject = gson.fromJson(line, JsonObject::class.java)
-                    wordObject["word"]?.let { words.add(it.asString) }
-                }
-                Log.d("ParseResponse", "Score: $score")
-                Log.d("ParseResponse", "Words: $words")
-            } catch (e: Exception) {
-                e.printStackTrace()
-                Log.e("ParseError", "Error parsing response: ${e.message}")
+            val uploadChannel = NotificationChannel(
+                CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_LOW
+            ).apply {
+                description = "Channel untuk layanan unggahan"
             }
-        }
+            notificationManager.createNotificationChannel(uploadChannel)
 
-        return if (score != null) {
-            AnalyzeResponse(score, words)
-        } else {
-            null
+            val analysisChannel = NotificationChannel(
+                ANALYSIS_CHANNEL_ID, ANALYSIS_CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH
+            ).apply {
+                description = "Channel untuk notifikasi hasil analisis"
+            }
+            notificationManager.createNotificationChannel(analysisChannel)
+
+            val failureChannel = NotificationChannel(
+                FAILURE_CHANNEL_ID, FAILURE_CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH
+            ).apply {
+                description = "Channel untuk notifikasi kegagalan"
+            }
+            notificationManager.createNotificationChannel(failureChannel)
         }
+    }
+
+    private fun showFailureNotification() {
+        val failureNotification = NotificationCompat.Builder(this, FAILURE_CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_notifications_black_24dp)
+            .setContentTitle("Analisis Gagal")
+            .setContentText("Terjadi kesalahan saat menganalisis data. Silakan coba lagi.")
+            .setAutoCancel(true)
+            .build()
+
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.notify(2, failureNotification)
     }
 
     override fun onDestroy() {
@@ -187,3 +211,219 @@ class UploadForegroundService : Service() {
         serviceJob.cancel()
     }
 }
+
+//class UploadForegroundService : Service() {
+//
+//    companion object {
+//        private const val NOTIFICATION_ID = 1
+//        private const val CHANNEL_ID = "upload_channel"
+//        private const val CHANNEL_NAME = "Upload Service"
+//        const val EXTRA_TOPIC = "extra_topic"
+//        const val EXTRA_DEVICE_ID = "extra_device_id"
+//        const val EXTRA_USER_ID = "extra_user_id"
+//        const val EXTRA_FILE_PATH = "extra_file_path"
+//    }
+//
+//    private val serviceJob = Job()
+//    private val serviceScope = CoroutineScope(Dispatchers.IO + serviceJob)
+//
+//    override fun onBind(intent: Intent?): IBinder? = null
+//
+//    @SuppressLint("ForegroundServiceType")
+//    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+//        val topic = intent?.getStringExtra(EXTRA_TOPIC)
+//        val id = intent?.getStringExtra(EXTRA_USER_ID) ?: intent?.getStringExtra(EXTRA_DEVICE_ID)
+//        val filePath = intent?.getStringExtra(EXTRA_FILE_PATH)
+//
+//        if (topic != null && id != null && filePath != null) {
+//            startForeground(NOTIFICATION_ID, createNotification("Menganalisis rekaman...."))
+//            serviceScope.launch {
+//                try {
+//                    val file = File(filePath)
+//                    val response = uploadData(topic, id, file)
+//                    if (response != null) {
+//                        // Kirim broadcast ke fragment
+//                        val resultIntent = Intent("ANALYZE_RESULT").apply {
+//                            putExtra("result", response)
+//                        }
+//                        LocalBroadcastManager.getInstance(this@UploadForegroundService).sendBroadcast(resultIntent)
+//
+//                        // Buat notifikasi
+//                        val navDeepLinkIntent = NavDeepLinkBuilder(this@UploadForegroundService)
+//                            .setGraph(R.navigation.mobile_navigation)
+//                            .setDestination(R.id.analyzeResultFragment)
+//                            .setArguments(Bundle().apply {
+//                                putParcelable("score", response.first) // Score sebagai Parcelable
+//                                putString("analyze_message", response.second) // Message sebagai String
+//                            })
+//                            .createPendingIntent()
+//
+//
+//                        val finishedNotification = createNotification(
+//                            "Analisis selesai!",
+//                            navDeepLinkIntent
+//                        )
+//                        val notificationManager =
+//                            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+//                        notificationManager.notify(NOTIFICATION_ID, finishedNotification)
+//                    }
+//                } catch (e: Exception) {
+//                    e.printStackTrace()
+//                } finally {
+//                    stopForeground(true)
+//                    stopSelf()
+//                }
+//            }
+//        }
+//        return START_NOT_STICKY
+//    }
+//
+//    private suspend fun uploadData(topic: String, id: String, file: File): Pair<Score, String>? {
+//        val topicRequestBody = topic.toRequestBody("text/plain".toMediaType())
+//        val idRequestBody = id.toRequestBody("text/plain".toMediaType())
+//        val fileRequestBody = file.asRequestBody("audio/m4a".toMediaType())
+//        val multipartFile = MultipartBody.Part.createFormData("file", file.name, fileRequestBody)
+//
+//        return try {
+//            val response = ApiConfig.instance.uploadRecording(topicRequestBody, multipartFile, idRequestBody)
+//            if (response.isSuccessful) {
+//                val rawResponse = response.body()?.string()
+//                parseAnalyzeResponse(rawResponse)
+//            } else {
+//                null
+//            }
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//            null
+//        }
+//    }
+//
+//
+////    private suspend fun uploadData(topic: String, id: String, file: File): AnalyzeResponse? {
+////        val topicRequestBody = topic.toRequestBody("text/plain".toMediaType())
+////        val idRequestBody = id.toRequestBody("text/plain".toMediaType())
+////        val fileRequestBody = file.asRequestBody("audio/m4a".toMediaType())
+////        val multipartFile = MultipartBody.Part.createFormData("file", file.name, fileRequestBody)
+////
+////        return try {
+////            val response = ApiConfig.instance.uploadRecording(topicRequestBody, multipartFile, idRequestBody)
+////            if (response.isSuccessful) {
+////                val rawResponse = response.body()?.string()
+////                parseAnalyzeResponse(rawResponse)
+////            } else {
+////                null
+////            }
+////        } catch (e: Exception) {
+////            e.printStackTrace()
+////            null
+////        }
+////    }
+//
+//    private fun createNotification(content: String, pendingIntent: PendingIntent? = null): Notification {
+//        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+//
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            val channel = NotificationChannel(
+//                CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT
+//            )
+//            notificationManager.createNotificationChannel(channel)
+//        }
+//
+//        // Membuat NotificationCompat.Builder
+//        val notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
+//            .setContentTitle("Rekaman sedang dianalisis")
+//            .setContentText(content)
+//            .setSmallIcon(R.drawable.ic_notifications_black_24dp)
+//            .setContentIntent(pendingIntent)
+//
+//        // Tambahkan behavior immediate untuk API 31 atau lebih tinggi
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+//            notificationBuilder.setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
+//        }
+//
+//        return notificationBuilder.build()
+//    }
+//
+//    private fun createAnalysisChannel() {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            val channelId = "analysis_channel"
+//            val channelName = "Analysis Notifications"
+//            val importance = NotificationManager.IMPORTANCE_HIGH
+//            val channel = NotificationChannel(channelId, channelName, importance).apply {
+//                description = "Channel for analysis notifications"
+//            }
+//
+//            val notificationManager = requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+//            notificationManager.createNotificationChannel(channel)
+//        }
+//    }
+//
+//
+//    private fun parseAnalyzeResponse(rawResponse: String?): Pair<Score, String>? {
+//        if (rawResponse.isNullOrEmpty()) return null
+//
+//        return try {
+//            val response = Gson().fromJson(rawResponse, AnalyzeResponse::class.java)
+//            val firstItem = response.data.firstOrNull() ?: return null
+//
+//            // Log untuk debug
+//            Log.d("Parsed Score", "Kejelasan: ${firstItem.score.kejelasan}, " +
+//                    "Diksi: ${firstItem.score.diksi}, " +
+//                    "Kelancaran: ${firstItem.score.kelancaran}, " +
+//                    "Emosi: ${firstItem.score.emosi}")
+//
+//            Pair(firstItem.score, firstItem.analize)
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//            null
+//        }
+//    }
+//
+//
+////    private fun parseAnalyzeResponse(rawResponse: String?): AnalyzeResponse? {
+////        if (rawResponse.isNullOrEmpty()) return null
+////
+////        val gson = Gson()
+////        gson.fromJson(rawResponse, AnalyzeResponse::class.java)
+////        val lines = rawResponse.split("\n").filter { it.isNotBlank() }
+////
+////        var score: Score? = null
+////        val words = mutableListOf<String>()
+////
+////        for (line in lines) {
+////            try {
+////                if (line.contains("score")) {
+////                    val jsonObject = gson.fromJson(line, JsonObject::class.java)
+////                    val scoreObject = jsonObject["score"]?.asJsonObject
+////                    if (scoreObject != null) {
+////                        score = Score(
+////                            kejelasan = scoreObject["Kejelasan Berbicara"]?.asString,
+////                            diksi = scoreObject["Penggunaan Diksi"]?.asString,
+////                            kelancaran = scoreObject["Kelancaran dan Intonasi"]?.asString,
+////                            emosi = scoreObject["Emosional dan Keterlibatan Audiens"]?.asString
+////                        )
+////                    }
+////                } else if (line.contains("word")) {
+////                    val wordObject = gson.fromJson(line, JsonObject::class.java)
+////                    wordObject["word"]?.let { words.add(it.asString) }
+////                }
+////                Log.d("ParseResponse", "Score: $score")
+////                Log.d("ParseResponse", "Words: $words")
+////            } catch (e: Exception) {
+////                e.printStackTrace()
+////                Log.e("ParseError", "Error parsing response: ${e.message}")
+////            }
+////        }
+////
+////        return if (score != null) {
+////            AnalyzeResponse(score, words)
+////        } else {
+////            null
+////        }
+////    }
+//
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        serviceJob.cancel()
+//    }
+//}

@@ -32,6 +32,7 @@ import androidx.navigation.NavDeepLinkBuilder
 import com.example.kaizenspeaking.ui.analyze.data.response.AnalyzeResponse
 import com.example.kaizenspeaking.helper.SharedPreferencesHelper
 import com.example.kaizenspeaking.ui.analyze.Service.UploadForegroundService
+import com.example.kaizenspeaking.ui.analyze.data.response.Score
 import com.example.kaizenspeaking.ui.instructions.OnboardingActivity
 import com.example.kaizenspeaking.utils.UserSession
 
@@ -64,6 +65,8 @@ class AnalyzeFragment : Fragment() {
     private var startTime: Long = 0L
     private lateinit var handlerTimer: Handler
     private lateinit var runnable: Runnable
+
+//    private lateinit var receiver: BroadcastReceiver
 
     private val requestPermissionLauncher =
         registerForActivityResult(
@@ -302,12 +305,9 @@ class AnalyzeFragment : Fragment() {
         }
     }
 
-
-
     private fun sendDataToApi() {
         val topic = binding.etTopic.text.toString()
         val deviceId = SharedPreferencesHelper.getFromSharedPreferences(requireContext(), "device_id") ?: "unknown_device"
-//        val userId = "77c7d604-4457-4496-9131-e36ae1d89d68"
         val userId = UserSession.getUserId(requireContext()) ?: ""
         if (tempFile == null || !tempFile!!.exists()) {
             Toast.makeText(requireContext(), "File audio tidak ditemukan", Toast.LENGTH_LONG).show()
@@ -333,45 +333,81 @@ class AnalyzeFragment : Fragment() {
             .create()
         alertDialog.show()
 
-        // Monitor hasil dengan BroadcastReceiver
         val receiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
-                val result: AnalyzeResponse? = intent.getParcelableExtra("result")
+                val result: Pair<Score, String>? = intent.getSerializableExtra("result") as? Pair<Score, String>
                 alertDialog.dismiss()
 
 
                 if (result != null) {
-                    // Tampilkan notifikasi untuk berpindah halaman
+                    val (score, message) = result
+                    val bundle = Bundle().apply {
+                        putParcelable("score", score)
+                        putString("analyze_message", message)
+                    }
                     val pendingIntent = NavDeepLinkBuilder(requireContext())
                         .setGraph(R.navigation.mobile_navigation)
                         .setDestination(R.id.analyzeResultFragment)
-                        .setArguments(Bundle().apply { putParcelable("result", result) })
+                        .setArguments(bundle)
                         .createPendingIntent()
 
                     val notificationManager = requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        val channel = NotificationChannel(
-                            "analysis_channel",
-                            "Analysis Notifications",
-                            NotificationManager.IMPORTANCE_HIGH
-                        )
-                        notificationManager.createNotificationChannel(channel)
-                    }
 
                     val notification = NotificationCompat.Builder(requireContext(), "analysis_channel")
                         .setSmallIcon(R.drawable.ic_notifications_black_24dp)
                         .setContentTitle("Analisis Selesai")
                         .setContentText("Klik untuk melihat hasil analisis")
                         .setContentIntent(pendingIntent)
-                        .setAutoCancel(false)
+                        .setAutoCancel(true)
                         .build()
 
-                    notificationManager.notify(2, notification) // ID notifikasi harus unik
+                    notificationManager.notify(2, notification)
                 } else {
+
                     Toast.makeText(requireContext(), "Gagal menganalisis data", Toast.LENGTH_LONG).show()
                 }
             }
         }
+
+
+//        val receiver = object : BroadcastReceiver() {
+//            override fun onReceive(context: Context, intent: Intent) {
+//                val result: AnalyzeResponse? = intent.getParcelableExtra("result")
+//                alertDialog.dismiss()
+//
+//
+//                if (result != null) {
+//                    // Tampilkan notifikasi untuk berpindah halaman
+//                    val pendingIntent = NavDeepLinkBuilder(requireContext())
+//                        .setGraph(R.navigation.mobile_navigation)
+//                        .setDestination(R.id.analyzeResultFragment)
+//                        .setArguments(Bundle().apply { putParcelable("result", result) })
+//                        .createPendingIntent()
+//
+//                    val notificationManager = requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                        val channel = NotificationChannel(
+//                            "analysis_channel",
+//                            "Analysis Notifications",
+//                            NotificationManager.IMPORTANCE_HIGH
+//                        )
+//                        notificationManager.createNotificationChannel(channel)
+//                    }
+//
+//                    val notification = NotificationCompat.Builder(requireContext(), "analysis_channel")
+//                        .setSmallIcon(R.drawable.ic_notifications_black_24dp)
+//                        .setContentTitle("Analisis Selesai")
+//                        .setContentText("Klik untuk melihat hasil analisis")
+//                        .setContentIntent(pendingIntent)
+//                        .setAutoCancel(false)
+//                        .build()
+//
+//                    notificationManager.notify(2, notification) // ID notifikasi harus unik
+//                } else {
+//                    Toast.makeText(requireContext(), "Gagal menganalisis data", Toast.LENGTH_LONG).show()
+//                }
+//            }
+//        }
 
         LocalBroadcastManager.getInstance(requireContext()).registerReceiver(receiver, IntentFilter("ANALYZE_RESULT"))
 
@@ -382,5 +418,6 @@ class AnalyzeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+//        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(receiver)
     }
 }
