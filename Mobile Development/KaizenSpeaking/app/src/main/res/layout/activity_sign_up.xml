@@ -202,7 +202,7 @@
                     android:id="@+id/etConfirmPassword"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:inputType="text"
+                    android:inputType="textPassword"
                     android:paddingVertical="12dp"
                     android:textColorHint="@color/black"
                     android:textSize="12sp"

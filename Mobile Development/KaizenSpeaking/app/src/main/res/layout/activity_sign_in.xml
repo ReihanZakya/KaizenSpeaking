@@ -154,7 +154,7 @@
                     android:id="@+id/etPassword"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:inputType="text"
+                    android:inputType="textPassword"
                     android:paddingVertical="12dp"
                     android:textSize="12sp"
                     android:textColor="@color/gray"
