@@ -54,6 +54,8 @@ class TrainingDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as AppCompatActivity).supportActionBar?.hide()
+        hideBottomNavigation()
 
         // Toolbar setup
         val toolbar: Toolbar = view.findViewById(R.id.toolbar)
@@ -298,6 +300,19 @@ class TrainingDetailFragment : Fragment() {
         // Log hasil akhir HTML
         Log.d("HTMLConverter", "Converted HTML: $justifiedHtml")
         return justifiedHtml
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        showBottomNavigation()
+    }
+    private fun hideBottomNavigation() {
+        val bottomNav = requireActivity().findViewById<View>(R.id.nav_view)
+        bottomNav?.visibility = View.GONE
+    }
+    private fun showBottomNavigation() {
+        val bottomNav = requireActivity().findViewById<View>(R.id.nav_view)
+        bottomNav?.visibility = View.VISIBLE
     }
 
 }

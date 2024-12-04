@@ -51,15 +51,15 @@ data class DataItem(
 )
 
 data class Score(
-	@field:SerializedName("kejelasan")
+	@field:SerializedName("Kejelasan Berbicara")
 	val kejelasan: String,
 
-	@field:SerializedName("diksi")
+	@field:SerializedName("Penggunaan Diksi")
 	val diksi: String,
 
-	@field:SerializedName("kelancaran")
+	@field:SerializedName("Kelancaran dan Intonasi")
 	val kelancaran: String,
 
-	@field:SerializedName("emosi")
+	@field:SerializedName("Emosional dan Keterlibatan Audiens")
 	val emosi: String
 )

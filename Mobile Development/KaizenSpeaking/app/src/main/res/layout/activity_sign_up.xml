@@ -44,6 +44,7 @@
             android:layout_height="match_parent"
             android:paddingHorizontal="30dp"
             android:paddingVertical="40dp"
+            android:background="@color/white"
             tools:ignore="ExtraText">
 
             <ImageView

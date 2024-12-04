@@ -10,7 +10,8 @@
     import android.view.ViewGroup
     import android.view.Window
     import android.widget.Button
-    import android.widget.ImageView
+    import android.widget.Toolbar
+    import androidx.appcompat.app.AppCompatActivity
     import androidx.fragment.app.Fragment
     import androidx.fragment.app.viewModels
     import androidx.navigation.fragment.findNavController
@@ -49,6 +50,7 @@
             container: ViewGroup?,
             savedInstanceState: Bundle?
         ): View {
+            (requireActivity() as AppCompatActivity).supportActionBar?.hide()
             _binding = FragmentHistoryBinding.inflate(inflater, container, false)
             lineChart = binding.lineChart
 
@@ -60,6 +62,12 @@
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
+
+            // Toolbar setup
+            val toolbar: Toolbar = view.findViewById(R.id.toolbar)
+            toolbar.setNavigationOnClickListener {
+                requireActivity().onBackPressedDispatcher.onBackPressed()
+            }
 
             setupRecyclerView()
             // Observer untuk isLoading
@@ -165,8 +173,8 @@
             xAxis.position = com.github.mikephil.charting.components.XAxis.XAxisPosition.BOTTOM
             xAxis.granularity = 1f
 
-            lineChart.axisLeft.axisMinimum = 0f
-            lineChart.axisLeft.axisMaximum = 100f
+            // lineChart.axisLeft.axisMinimum = 0f
+            // lineChart.axisLeft.axisMaximum = 100f
             lineChart.axisRight.isEnabled = false
             lineChart.description.text = "Latihan Ke: "
             lineChart.invalidate()
@@ -195,7 +203,7 @@
             dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
             val signInButton: Button = dialog.findViewById(R.id.btnSignIn)
-            val googleSignInButton: ImageView = dialog.findViewById(R.id.btnClose)
+            val googleSignInButton: Button = dialog.findViewById(R.id.btnClose)
 
             signInButton.setOnClickListener {
                 startActivity(Intent(requireContext(), SignInActivity::class.java))
@@ -204,7 +212,7 @@
 
             googleSignInButton.setOnClickListener {
                 dialog.dismiss()
-                findNavController().navigate(R.id.action_historyFragment_to_homeFragment )
+                startActivity(Intent(requireContext(),MainActivity::class.java))
             }
 
 

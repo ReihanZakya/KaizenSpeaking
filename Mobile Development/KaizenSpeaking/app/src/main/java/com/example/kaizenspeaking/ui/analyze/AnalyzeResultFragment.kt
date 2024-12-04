@@ -3,7 +3,7 @@ package com.example.kaizenspeaking.ui.analyze
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +18,7 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.kaizenspeaking.ui.analyze.data.response.AnalyzeResponse
+import com.example.kaizenspeaking.R
 import com.example.kaizenspeaking.ui.analyze.data.response.Score
 
 
@@ -46,24 +46,61 @@ class AnalyzeResultFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).supportActionBar?.hide()
+        hideBottomNavigation()
 
-        // Ambil data dari arguments
-        val analyzeResponse = arguments?.getParcelable<AnalyzeResponse>("result")
-        Log.d("AnalyzeResultFragment", "Received AnalyzeResponse: $analyzeResponse")
-        if (analyzeResponse != null) {
-            setupBarChart(analyzeResponse.score)
-            setupGaugeChart(analyzeResponse.score)
-            setupAnalyzeWords(analyzeResponse.words)
-            Log.d("AnalyzeResultFragment", "Hasil Analisis: ${analyzeResponse.score}")
+        val score = arguments?.getParcelable<Score>("score")
+        val analyzeMessage = arguments?.getString("analyze_message")
+
+        if (score != null && analyzeMessage != null) {
+            setupBarChart(score)
+            setupGaugeChart(score)
+
+            val htmlMessage = convertToHtml(analyzeMessage)
+            binding.tvAnalyzeResult.text = Html.fromHtml(htmlMessage, Html.FROM_HTML_MODE_COMPACT)
         } else {
             Toast.makeText(requireContext(), "Data tidak ditemukan", Toast.LENGTH_SHORT).show()
-            Log.e("AnalyzeResultFragment", "Data tidak ditemukan")
         }
 
         // Auto-scroll to "Hasil Analisis" section after 3 seconds
         Handler(Looper.getMainLooper()).postDelayed({
             scrollView.smoothScrollTo(0, cardViewAnalysis.top)
         }, 3000)
+    }
+
+    fun convertToHtml(text: String): String {
+        val boldText = text.replace(Regex("\\*\\*(.*?)\\*\\*"), "<b>$1</b>")
+        val listLines = mutableListOf<String>()
+        val finalText = StringBuilder()
+        var isInList = false
+
+        boldText.lines().forEach { line ->
+            when {
+                line.trim().startsWith("-") -> {
+                    isInList = true
+                    listLines.add("<li>${line.trim().substring(1).trim()}</li>")
+                }
+                line.isBlank() -> {
+                    if (isInList) {
+                        finalText.append("<ul>${listLines.joinToString("")}</ul>")
+                        listLines.clear()
+                        isInList = false
+                    }
+                    finalText.append("<br>")
+                }
+                else -> {
+                    if (isInList) {
+                        finalText.append("<ul>${listLines.joinToString("")}</ul>")
+                        listLines.clear()
+                        isInList = false
+                    }
+                    finalText.append(line).append("<br>")
+                }
+            }
+        }
+        if (isInList) {
+            finalText.append("<ul>${listLines.joinToString("")}</ul>")
+        }
+        return "<div style=\"text-align: justify;\">${finalText.toString()}</div>"
     }
 
     private fun setupBarChart(score: Score?) {
@@ -123,10 +160,10 @@ class AnalyzeResultFragment : Fragment() {
 
         // Hitung rata-rata dari skor
         val scores = listOfNotNull(
-            score.kejelasan?.toFloatOrNull(),
-            score.diksi?.toFloatOrNull(),
-            score.kelancaran?.toFloatOrNull(),
-            score.emosi?.toFloatOrNull()
+            score.kejelasan?.toFloatOrNull() ?: 0f,
+            score.diksi?.toFloatOrNull() ?: 0f,
+            score.kelancaran?.toFloatOrNull() ?: 0f,
+            score.emosi?.toFloatOrNull() ?: 0f
         )
         val averageScore = if (scores.isNotEmpty()) scores.average().toFloat() else 0f
 
@@ -173,6 +210,15 @@ class AnalyzeResultFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        (activity as AppCompatActivity).supportActionBar?.show()
+        showBottomNavigation()
+    }
+
+    private fun hideBottomNavigation() {
+        val bottomNav = requireActivity().findViewById<View>(R.id.nav_view)
+        bottomNav?.visibility = View.GONE
+    }
+    private fun showBottomNavigation() {
+        val bottomNav = requireActivity().findViewById<View>(R.id.nav_view)
+        bottomNav?.visibility = View.VISIBLE
     }
 }

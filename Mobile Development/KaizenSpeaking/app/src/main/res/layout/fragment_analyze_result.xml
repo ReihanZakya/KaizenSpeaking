@@ -6,15 +6,18 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".ui.analyze.AnalyzeResultFragment">
 
     <Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:navigationIcon="@drawable/ic_arrow_back_button"
-        android:title="@string/event_analyze_result"
-        android:titleTextColor="?colorPrimary"
+        android:background="@color/cardview_light_background"
+        android:navigationIcon="@drawable/btn_back"
+        android:title="@string/detail_title"
+        android:titleTextColor="@color/black"
+        android:elevation="1dp"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <ScrollView
@@ -32,29 +35,67 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp">
 
+            <!-- Gauge Chart Section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    card_view:cardCornerRadius="20dp"
+                    android:padding="16dp"
+                    app:cardBackgroundColor="@color/white"
+                    android:layout_margin="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/black"
+                        android:text="@string/nilai_keseluruhan"
+                        android:textAlignment="center"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <com.ekn.gruzer.gaugelibrary.HalfGauge
+                        android:id="@+id/gauge_chart"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_marginBottom="16dp" />
+
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="16dp"
                 android:layout_marginTop="2dp"
+                android:background="@color/white"
                 android:layout_marginBottom="10dp">
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     card_view:cardCornerRadius="20dp"
+                    app:cardBackgroundColor="@color/white"
                     android:layout_marginBottom="10dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/event_analyze_result"
-                        android:textStyle="bold"
-                        android:textSize="16sp"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/black"
+                        android:text="@string/score_detail"
                         android:textAlignment="center"
-                        android:textColor="?attr/colorPrimary"
-                        android:layout_marginTop="10dp"/>
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
                     <!-- Placeholder for bar chart -->
                     <com.github.mikephil.charting.charts.BarChart
@@ -69,39 +110,6 @@
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
 
-            <!-- Gauge Chart Section -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    card_view:cardCornerRadius="20dp"
-                    android:padding="16dp"
-                    android:layout_margin="16dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/nilai_keseluruhan"
-                        android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:textColor="?attr/colorPrimary"
-                        android:textAlignment="center"
-                        android:layout_marginTop="10dp"/>
-
-                    <com.ekn.gruzer.gaugelibrary.HalfGauge
-                        android:id="@+id/gauge_chart"
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:layout_marginBottom="16dp" />
-
-                </androidx.cardview.widget.CardView>
-            </LinearLayout>
 
             <!-- Analysis Result Section -->
             <androidx.cardview.widget.CardView
@@ -110,6 +118,7 @@
                 android:layout_height="wrap_content"
                 card_view:cardCornerRadius="20dp"
                 android:layout_marginTop="8dp"
+                app:cardBackgroundColor="@color/white"
                 android:layout_marginBottom="16dp">
 
                 <LinearLayout
@@ -117,6 +126,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_marginTop="10dp"
+                    android:background="@color/white"
                     android:padding="16dp">
 
 
@@ -125,6 +135,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/tvPageAnalisis"
                         android:textSize="18sp"
+                        android:textColor="@color/black"
                         android:layout_gravity="center"
                         android:textStyle="bold"
                         android:layout_marginBottom="8dp"/>
