@@ -48,6 +48,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:paddingHorizontal="16dp"
+                        android:background="@color/white"
                         android:paddingVertical="8dp">
 
                         <TextView

@@ -43,23 +43,21 @@
 
         <!-- Button for "Coba Analisis Sekarang" -->
 
-
         <TextView
             android:id="@+id/greetingsCard"
             android:layout_width="200dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="44dp"
-            android:background="@drawable/rounded_rectangle_background"
             android:gravity="center"
             android:padding="16dp"
             android:text="@string/pesan_belum_login"
-            android:textColor="@android:color/white"
+            android:textColor="@color/red"
             android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/vintage1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/vintage1"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/vintage1" />
 
         <Button
             android:id="@+id/btnSignIn"
