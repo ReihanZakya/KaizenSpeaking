@@ -168,7 +168,6 @@ class OnboardingActivity : AppCompatActivity() {
                 1 -> R.drawable.btn_next_red
                 2 -> R.drawable.btn_next_yellow
                 3 -> R.drawable.btn_next_red
-                adapter.itemCount - 1 -> R.drawable.btn_finish
                 else -> R.drawable.btn_next_yellow
             }
         )
