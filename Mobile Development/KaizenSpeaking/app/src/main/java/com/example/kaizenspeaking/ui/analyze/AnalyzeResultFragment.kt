@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Html
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +18,6 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.kaizenspeaking.ui.analyze.data.response.AnalyzeResponse
 import com.example.kaizenspeaking.ui.analyze.data.response.Score
 
 
@@ -55,26 +53,11 @@ class AnalyzeResultFragment : Fragment() {
             setupBarChart(score)
             setupGaugeChart(score)
 
-            // Konversi analyzeMessage ke HTML dan tampilkan
             val htmlMessage = convertToHtml(analyzeMessage)
             binding.tvAnalyzeResult.text = Html.fromHtml(htmlMessage, Html.FROM_HTML_MODE_COMPACT)
         } else {
             Toast.makeText(requireContext(), "Data tidak ditemukan", Toast.LENGTH_SHORT).show()
         }
-
-
-//        // Ambil data dari arguments
-//        val analyzeResponse = arguments?.getParcelable<AnalyzeResponse>("result")
-//        Log.d("AnalyzeResultFragment", "Received AnalyzeResponse: $analyzeResponse")
-//        if (analyzeResponse != null) {
-//            setupBarChart(analyzeResponse.score)
-//            setupGaugeChart(analyzeResponse.score)
-//            setupAnalyzeWords(analyzeResponse.words)
-//            Log.d("AnalyzeResultFragment", "Hasil Analisis: ${analyzeResponse.score}")
-//        } else {
-//            Toast.makeText(requireContext(), "Data tidak ditemukan", Toast.LENGTH_SHORT).show()
-//            Log.e("AnalyzeResultFragment", "Data tidak ditemukan")
-//        }
 
         // Auto-scroll to "Hasil Analisis" section after 3 seconds
         Handler(Looper.getMainLooper()).postDelayed({
