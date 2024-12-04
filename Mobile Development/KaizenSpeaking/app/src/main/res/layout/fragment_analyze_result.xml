@@ -32,6 +32,40 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp">
 
+            <!-- Gauge Chart Section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    card_view:cardCornerRadius="20dp"
+                    android:padding="16dp"
+                    android:layout_margin="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/nilai_keseluruhan"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:textColor="?attr/colorPrimary"
+                        android:textAlignment="center"
+                        android:layout_marginTop="10dp"/>
+
+                    <com.ekn.gruzer.gaugelibrary.HalfGauge
+                        android:id="@+id/gauge_chart"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_marginBottom="16dp" />
+
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -69,39 +103,6 @@
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
 
-            <!-- Gauge Chart Section -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    card_view:cardCornerRadius="20dp"
-                    android:padding="16dp"
-                    android:layout_margin="16dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/nilai_keseluruhan"
-                        android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:textColor="?attr/colorPrimary"
-                        android:textAlignment="center"
-                        android:layout_marginTop="10dp"/>
-
-                    <com.ekn.gruzer.gaugelibrary.HalfGauge
-                        android:id="@+id/gauge_chart"
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:layout_marginBottom="16dp" />
-
-                </androidx.cardview.widget.CardView>
-            </LinearLayout>
 
             <!-- Analysis Result Section -->
             <androidx.cardview.widget.CardView
