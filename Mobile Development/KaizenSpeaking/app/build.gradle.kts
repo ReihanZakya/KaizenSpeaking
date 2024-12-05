@@ -73,6 +73,8 @@ dependencies {
     implementation (libs.mpandroidchart)
     implementation (libs.simple.gauge.android)
 
+    implementation ("com.arthenica:mobile-ffmpeg-full:4.4.LTS")
+
     //retrofit
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")

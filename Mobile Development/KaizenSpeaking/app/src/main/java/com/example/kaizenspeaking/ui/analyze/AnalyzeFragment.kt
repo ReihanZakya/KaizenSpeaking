@@ -30,6 +30,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavDeepLinkBuilder
+import com.arthenica.mobileffmpeg.Config
+import com.arthenica.mobileffmpeg.FFmpeg
 import com.example.kaizenspeaking.helper.SharedPreferencesHelper
 import com.example.kaizenspeaking.ui.analyze.Service.UploadForegroundService
 import com.example.kaizenspeaking.ui.analyze.data.response.Score
@@ -66,7 +68,7 @@ class AnalyzeFragment : Fragment() {
     private lateinit var handlerTimer: Handler
     private lateinit var runnable: Runnable
 
-//    private lateinit var receiver: BroadcastReceiver
+    private var receiver: BroadcastReceiver? = null
 
     private val requestPermissionLauncher =
         registerForActivityResult(
@@ -295,6 +297,24 @@ class AnalyzeFragment : Fragment() {
     }
 
 
+    private fun convertToMp3(inputFile: File, outputFile: File, onSuccess: () -> Unit, onError: (String) -> Unit) {
+        val command = arrayOf(
+            "-i", inputFile.absolutePath,  // Input file
+            "-codec:a", "libmp3lame",      // Codec untuk MP3
+            "-qscale:a", "2",              // Kualitas audio (lebih rendah lebih baik, gunakan nilai 2-5)
+            outputFile.absolutePath        // Output file
+        )
+
+        // Jalankan FFmpeg
+        val rc = FFmpeg.execute(command)
+        if (rc == Config.RETURN_CODE_SUCCESS) {
+            onSuccess()
+        } else {
+            Config.printLastCommandOutput(Log.INFO)
+            onError("Error saat mengonversi file. Periksa log untuk detailnya.")
+        }
+    }
+
     private fun stopRecording() {
         try {
             mediaRecorder?.apply {
@@ -305,12 +325,22 @@ class AnalyzeFragment : Fragment() {
             isRunning = false
             handlerTimer.removeCallbacks(runnable)
             mediaRecorder = null
-            Toast.makeText(requireContext(), "Recording stopped", Toast.LENGTH_LONG).show()
+
+            // Konversi M4A ke MP3
+            val outputMp3File = File(requireContext().cacheDir, "${tempFile?.nameWithoutExtension}.mp3")
+            convertToMp3(tempFile!!, outputMp3File, onSuccess = {
+                tempFile = outputMp3File  // Ganti referensi ke file MP3
+                Toast.makeText(requireContext(), "File berhasil dikonversi ke MP3", Toast.LENGTH_SHORT).show()
+            }, onError = { error ->
+                Toast.makeText(requireContext(), "Gagal konversi MP3: $error", Toast.LENGTH_LONG).show()
+            })
         } catch (e: Exception) {
             e.printStackTrace()
             Toast.makeText(requireContext(), "Gagal menghentikan perekaman", Toast.LENGTH_LONG).show()
         }
     }
+
+
 
     private fun sendDataToApi() {
         val topic = binding.etTopic.text.toString()
@@ -335,16 +365,16 @@ class AnalyzeFragment : Fragment() {
 
         val alertDialog = AlertDialog.Builder(requireContext())
             .setTitle("Sedang Menjalankan Proses")
-            .setMessage("Proses analisis sedang berlangsung, cek notifikasi untuk melihat hasil analisis")
+            .setMessage("Proses analisis sedang berlangsung, anda bisa menunggu sambil meninggalkalkan aplikasi tetapi " +
+                    "jangan menghapusnya dari background. Cek notifikasi untuk melihat hasil analisis")
             .setCancelable(false) // Tidak bisa ditutup oleh pengguna
             .create()
         alertDialog.show()
 
-        val receiver = object : BroadcastReceiver() {
+        receiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
                 val result: Pair<Score, String>? = intent.getSerializableExtra("result") as? Pair<Score, String>
                 alertDialog.dismiss()
-
 
                 if (result != null) {
                     val (score, message) = result
@@ -370,13 +400,24 @@ class AnalyzeFragment : Fragment() {
 
                     notificationManager.notify(2, notification)
                 } else {
+                    AlertDialog.Builder(requireContext())
+                        .setTitle("Analisis Gagal")
+                        .setMessage("Terjadi kesalahan saat menganalisis data. Silakan coba lagi.")
+                        .setPositiveButton("OK") { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                        .create()
+                        .show()
 
                     Toast.makeText(requireContext(), "Gagal menganalisis data", Toast.LENGTH_LONG).show()
                 }
+                // Unregister receiver setelah tugas selesai
+                LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(this)
+                receiver = null
             }
         }
 
-        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(receiver, IntentFilter("ANALYZE_RESULT"))
+        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(receiver!!, IntentFilter("ANALYZE_RESULT"))
 
         ContextCompat.startForegroundService(requireContext(), serviceIntent)
     }
@@ -385,6 +426,9 @@ class AnalyzeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-//        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(receiver)
+        receiver?.let {
+            LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(it)
+            receiver = null
+        }
     }
 }
