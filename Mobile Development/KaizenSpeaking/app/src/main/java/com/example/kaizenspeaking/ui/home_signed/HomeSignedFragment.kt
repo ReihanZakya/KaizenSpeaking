@@ -12,6 +12,7 @@ import android.view.Window
 import android.widget.Button
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -53,6 +54,7 @@ class HomeSignedFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         (requireActivity() as AppCompatActivity).supportActionBar?.hide()
         homeSignedViewModel = ViewModelProvider(this)[HomeSignedViewModel::class.java]
         _binding = FragmentHomeSignedBinding.inflate(inflater, container, false)
