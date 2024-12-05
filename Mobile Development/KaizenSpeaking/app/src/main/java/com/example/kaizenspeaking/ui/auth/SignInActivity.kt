@@ -61,6 +61,7 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
+
     }
 
     private fun setupObservers() {
@@ -287,5 +288,13 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
             submitForm()
         }
         return false
+    }
+
+    @Suppress("OVERRIDE_DEPRECATION")
+    override fun onBackPressed() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
+        super.onBackPressed()
     }
 }
