@@ -351,4 +351,12 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
     }
 
     override fun afterTextChanged(s: Editable?) {}
+
+    @Suppress("OVERRIDE_DEPRECATION")
+    override fun onBackPressed() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
+        super.onBackPressed()
+    }
 }

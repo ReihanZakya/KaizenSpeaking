@@ -3,13 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginStart="20dp"
+    android:layout_marginEnd="20dp"
     android:background="@android:color/white"
     android:padding="16dp"
-    app:cardElevation="10dp"
-    app:cardCornerRadius="20dp"
     app:cardBackgroundColor="@color/white"
-    android:layout_marginStart="20dp"
-    android:layout_marginEnd="20dp">
+    app:cardCornerRadius="20dp"
+    app:cardElevation="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -18,7 +19,7 @@
 
         <!-- Set background color to red -->
 
-                <!-- Greeting Message -->
+        <!-- Greeting Message -->
 
         <ImageView
             android:id="@+id/btnClose"
@@ -50,6 +51,7 @@
             android:layout_marginStart="8dp"
             android:gravity="center"
             android:padding="16dp"
+            android:paddingEnd="40dp"
             android:text="@string/pesan_belum_login"
             android:textColor="@color/red"
             android:textSize="14sp"
@@ -66,17 +68,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="36dp"
             android:background="@color/red_kaizen"
+            android:padding="16dp"
             android:text="@string/masuk_ke_akun"
             android:textColor="@android:color/white"
-            android:padding="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/greetingsCard"
             tools:ignore="TextContrastCheck" />
-
-
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

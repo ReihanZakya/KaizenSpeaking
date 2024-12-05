@@ -11,6 +11,8 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
@@ -36,6 +38,9 @@ import com.github.mikephil.charting.data.LineDataSet
 import kotlin.getValue
 
 class HomeSignedFragment : Fragment() {
+    private var backPressedTime: Long = 0
+    private val backPressDelay: Long = 2000
+    private var toast: Toast? = null
     private val repository: Repository by lazy {
         Repository.getInstance(ApiConfig.getApiService())
     }
@@ -110,14 +115,19 @@ class HomeSignedFragment : Fragment() {
         updateProgressChartVisibility()
 
         historyViewModel.isLoading.observe(viewLifecycleOwner, { isLoading ->
-            if (isLoading) {
-                binding.loadingLayout.visibility = View.VISIBLE
-                binding.progressChartLayout.visibility = View.INVISIBLE
-            } else {
+            if (!UserSession.isLoggedIn(requireContext())) {
                 binding.loadingLayout.visibility = View.GONE
-                binding.progressChartLayout.visibility = View.VISIBLE
+            } else {
+                if (isLoading) {
+                    binding.loadingLayout.visibility = View.VISIBLE
+                    binding.progressChartLayout.visibility = View.INVISIBLE
+                } else {
+                    binding.loadingLayout.visibility = View.GONE
+                    binding.progressChartLayout.visibility = View.VISIBLE
+                }
             }
         })
+
         historyViewModel.getAllHistory(
             Authenticator.getToken(requireContext()) ?: "",
             Authenticator.getUserId(requireContext()) ?: ""
@@ -149,6 +159,27 @@ class HomeSignedFragment : Fragment() {
             }
         }
 
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    val currentTime = System.currentTimeMillis()
+
+                    if (currentTime - backPressedTime < backPressDelay) {
+                        toast?.cancel() // Batalkan toast jika ada
+                        requireActivity().finishAffinity() // Keluar dari aplikasi
+                    } else {
+                        backPressedTime = currentTime
+                        toast = Toast.makeText(
+                            requireContext(),
+                            "Tekan Sekali Lagi untuk Keluar",
+                            Toast.LENGTH_SHORT
+                        )
+                        toast?.show()
+                    }
+                }
+            }
+        )
     }
 
     private fun setupRecyclerView() {

@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         // Check login status and show dialog if not logged in
-        checkLoginStatus()
+//        checkLoginStatus()
     }
 
     private fun checkLoginStatus() {
@@ -75,8 +75,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         buttonClose.setOnClickListener {
-            // TODO: Implement Google Sign-In logic
-            // Use Google Sign-In API to handle authentication
             dialog.dismiss()
         }
 
