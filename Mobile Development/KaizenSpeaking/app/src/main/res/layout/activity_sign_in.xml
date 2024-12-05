@@ -132,9 +132,8 @@
                     android:layout_height="48dp"
                     android:inputType="text"
                     android:paddingVertical="12dp"
-                    android:background="@color/white"
-                    android:textSize="12sp"
                     android:textColor="@color/gray"
+                    android:textSize="12sp"
                     tools:layout_editor_absoluteX="26dp"
                     tools:layout_editor_absoluteY="191dp" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -158,7 +157,6 @@
                     android:id="@+id/etPassword"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:background="#FFFFFF"
                     android:inputType="text"
                     android:paddingVertical="12dp"
                     android:textColor="@color/gray"
