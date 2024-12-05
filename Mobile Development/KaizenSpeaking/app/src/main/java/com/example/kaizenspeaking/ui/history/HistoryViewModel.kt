@@ -4,12 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.kaizenspeaking.ui.history.data.Result
 import com.example.kaizenspeaking.ui.history.data.TrainingSession
 import com.example.kaizenspeaking.ui.history.data.remote.Repository
 import com.example.kaizenspeaking.ui.history.data.remote.response.DataItem
 import com.github.mikephil.charting.data.Entry
 import kotlinx.coroutines.launch
-import com.example.kaizenspeaking.ui.history.data.Result
 
 class HistoryViewModel(private val repository: Repository) : ViewModel() {
 

@@ -1,18 +1,11 @@
 package com.example.kaizenspeaking.ui.auth.utils
 
-import com.example.kaizenspeaking.ui.auth.data.RegisterBody
 import com.example.kaizenspeaking.ui.auth.data.AuthResponse
 import com.example.kaizenspeaking.ui.auth.data.LoginBody
-import com.example.kaizenspeaking.ui.auth.data.LoginResponse
-import com.example.kaizenspeaking.ui.auth.data.UniqueEmailValidationResponse
-import com.example.kaizenspeaking.ui.auth.data.User
-import com.example.kaizenspeaking.ui.auth.data.ValidateEmailBody
+import com.example.kaizenspeaking.ui.auth.data.RegisterBody
 import retrofit2.Response
 import retrofit2.http.Body
-import retrofit2.http.GET
 import retrofit2.http.POST
-import retrofit2.http.PUT
-import retrofit2.http.Path
 
 interface APIConsumer {
 //    @POST("user/validate-unique-email")

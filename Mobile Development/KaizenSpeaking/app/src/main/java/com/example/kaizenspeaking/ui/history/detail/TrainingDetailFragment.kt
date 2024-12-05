@@ -1,7 +1,5 @@
 package com.example.kaizenspeaking.ui.history.detail
 
-import android.graphics.Color
-import android.graphics.Typeface
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
 import android.os.Bundle
@@ -14,19 +12,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ScrollView
 import android.widget.TextView
-import android.widget.Toast
 import android.widget.Toolbar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.ekn.gruzer.gaugelibrary.HalfGauge
+import com.ekn.gruzer.gaugelibrary.Range
 import com.example.kaizenspeaking.R
+import com.example.kaizenspeaking.ui.history.data.TrainingSession
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
-import com.ekn.gruzer.gaugelibrary.Range
-import com.ekn.gruzer.gaugelibrary.HalfGauge
-import com.example.kaizenspeaking.ui.history.data.TrainingSession
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
@@ -95,14 +92,19 @@ class TrainingDetailFragment : Fragment() {
 
             val rawAnalize = session.analize
             val formattedHtml = convertToHtml(rawAnalize) // Konversi ke HTML
-            analizeTextView.text = Html.fromHtml(formattedHtml, Html.FROM_HTML_MODE_LEGACY) // Render HTML
+            analizeTextView.text =
+                Html.fromHtml(formattedHtml, Html.FROM_HTML_MODE_LEGACY) // Render HTML
 
             val formattedTitle = "Topik Pembicaraan: " + session.title
             titleTextView = view.findViewById(R.id.titleTextView)
             titleTextView.text = formattedTitle
 
-            val originalFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS", Locale.getDefault())
-            val desiredFormat = SimpleDateFormat("dd MMM yyyy HH:mm 'WIB'", Locale.getDefault()) // Tambahkan literal WIB
+            val originalFormat =
+                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS", Locale.getDefault())
+            val desiredFormat = SimpleDateFormat(
+                "dd MMM yyyy HH:mm 'WIB'",
+                Locale.getDefault()
+            ) // Tambahkan literal WIB
 
             var dateExpected = session.date
             try {
@@ -176,7 +178,8 @@ class TrainingDetailFragment : Fragment() {
         barDataSetEmosi.color = resources.getColor(android.R.color.holo_orange_light)
 
         // Create BarData
-        val barData = BarData(barDataSetKejelasan, barDataSetDiksi, barDataSetKelancaran, barDataSetEmosi)
+        val barData =
+            BarData(barDataSetKejelasan, barDataSetDiksi, barDataSetKelancaran, barDataSetEmosi)
 
         // Set data to the chart
         barChart.data = barData
@@ -240,7 +243,12 @@ class TrainingDetailFragment : Fragment() {
                     // Tampilkan AlertDialog
                     AlertDialog.Builder(requireContext())
                         .setTitle(title) // Set judul dialog
-                        .setMessage(Html.fromHtml(description, Html.FROM_HTML_MODE_LEGACY)) // Render HTML pada deskripsi
+                        .setMessage(
+                            Html.fromHtml(
+                                description,
+                                Html.FROM_HTML_MODE_LEGACY
+                            )
+                        ) // Render HTML pada deskripsi
                         .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() } // Tombol OK
                         .show()
                 }
@@ -251,6 +259,7 @@ class TrainingDetailFragment : Fragment() {
             }
         })
     }
+
     private fun convertToHtml(text: String): String {
         // Ganti "**{text}**" dengan "<b>{text}</b>"
         val boldText = text.replace(Regex("\\*\\*(.*?)\\*\\*"), "<b>$1</b>")
@@ -295,7 +304,7 @@ class TrainingDetailFragment : Fragment() {
         }
 
         // Bungkus seluruh teks dalam div dengan gaya justify
-        val justifiedHtml = "<div style=\"text-align: justify;\">${finalText.toString()}</div>"
+        val justifiedHtml = "<div style=\"text-align: justify;\">$finalText</div>"
 
         // Log hasil akhir HTML
         Log.d("HTMLConverter", "Converted HTML: $justifiedHtml")
@@ -306,10 +315,12 @@ class TrainingDetailFragment : Fragment() {
         super.onDestroyView()
         showBottomNavigation()
     }
+
     private fun hideBottomNavigation() {
         val bottomNav = requireActivity().findViewById<View>(R.id.nav_view)
         bottomNav?.visibility = View.GONE
     }
+
     private fun showBottomNavigation() {
         val bottomNav = requireActivity().findViewById<View>(R.id.nav_view)
         bottomNav?.visibility = View.VISIBLE

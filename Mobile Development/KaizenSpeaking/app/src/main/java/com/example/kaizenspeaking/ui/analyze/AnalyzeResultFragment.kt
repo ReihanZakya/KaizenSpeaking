@@ -110,7 +110,7 @@ class AnalyzeResultFragment : Fragment() {
         if (isInList) {
             finalText.append("<ul>${listLines.joinToString("")}</ul>")
         }
-        return "<div style=\"text-align: justify;\">${finalText.toString()}</div>"
+        return "<div style=\"text-align: justify;\">$finalText</div>"
     }
 
     private fun setupBarChart(score: Score?) {

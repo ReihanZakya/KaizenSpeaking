@@ -1,3 +1,3 @@
 package com.example.kaizenspeaking.ui.auth.data
 
-data class ValidateEmailBody(val email : String )
+data class ValidateEmailBody(val email: String)

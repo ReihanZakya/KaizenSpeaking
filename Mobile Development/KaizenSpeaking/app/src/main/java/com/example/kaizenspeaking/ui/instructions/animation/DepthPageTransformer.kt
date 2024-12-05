@@ -17,6 +17,7 @@ class DepthPageTransformer : ViewPager2.PageTransformer {
                     // This page is way off-screen to the left.
                     alpha = 0f
                 }
+
                 position <= 0 -> { // [-1,0]
                     // Use the default slide transition when moving to the left page.
                     alpha = 1f
@@ -25,6 +26,7 @@ class DepthPageTransformer : ViewPager2.PageTransformer {
                     scaleX = 1f
                     scaleY = 1f
                 }
+
                 position <= 1 -> { // (0,1]
                     // Fade the page out.
                     alpha = 1 - position
@@ -39,6 +41,7 @@ class DepthPageTransformer : ViewPager2.PageTransformer {
                     scaleX = scaleFactor
                     scaleY = scaleFactor
                 }
+
                 else -> { // (1,+Infinity]
                     // This page is way off-screen to the right.
                     alpha = 0f

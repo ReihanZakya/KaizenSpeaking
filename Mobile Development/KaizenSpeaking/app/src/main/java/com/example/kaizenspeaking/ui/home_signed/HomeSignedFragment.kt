@@ -59,7 +59,7 @@ class HomeSignedFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         (requireActivity() as AppCompatActivity).supportActionBar?.hide()
         homeSignedViewModel = ViewModelProvider(this)[HomeSignedViewModel::class.java]
         _binding = FragmentHomeSignedBinding.inflate(inflater, container, false)

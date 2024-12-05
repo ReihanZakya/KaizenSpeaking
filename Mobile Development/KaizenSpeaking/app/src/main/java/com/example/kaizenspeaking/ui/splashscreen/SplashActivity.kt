@@ -3,14 +3,13 @@ package com.example.kaizenspeaking.ui.splashscreen
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.view.WindowManager
 import android.widget.VideoView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.kaizenspeaking.MainActivity
 import com.example.kaizenspeaking.R
-import android.os.Handler
-import android.os.Looper
-import android.view.WindowManager
-import androidx.appcompat.app.AppCompatDelegate
 
 @Suppress("DEPRECATION")
 class SplashActivity : AppCompatActivity() {

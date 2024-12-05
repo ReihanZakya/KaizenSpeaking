@@ -24,7 +24,8 @@ object UserSession {
      * @param context Application context
      */
     fun logout(context: Context) {
-        val prefs: SharedPreferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        val prefs: SharedPreferences =
+            context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
         val editor = prefs.edit()
 
         // Clear all user-related data
@@ -45,7 +46,8 @@ object UserSession {
     }
 
     fun setLoggedIn(context: Context, isLoggedIn: Boolean) {
-        val prefs: SharedPreferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        val prefs: SharedPreferences =
+            context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
         val editor = prefs.edit()
         editor.putBoolean(IS_LOGGED_IN, isLoggedIn)
         editor.apply()
@@ -55,74 +57,86 @@ object UserSession {
     }
 
     fun isLoggedIn(context: Context): Boolean {
-        val prefs: SharedPreferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        val prefs: SharedPreferences =
+            context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
         return prefs.getBoolean(IS_LOGGED_IN, false)
     }
 
     fun setAccessToken(context: Context, token: String) {
-        val prefs: SharedPreferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        val prefs: SharedPreferences =
+            context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
         val editor = prefs.edit()
         editor.putString(ACCESS_TOKEN, token)
         editor.apply()
     }
 
     fun getAccessToken(context: Context): String? {
-        val prefs: SharedPreferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        val prefs: SharedPreferences =
+            context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
         return prefs.getString(ACCESS_TOKEN, null)
     }
 
     fun setUserId(context: Context, userId: String) {
-        val prefs: SharedPreferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        val prefs: SharedPreferences =
+            context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
         val editor = prefs.edit()
         editor.putString(USER_ID, userId)
         editor.apply()
     }
 
     fun getUserId(context: Context): String? {
-        val prefs: SharedPreferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        val prefs: SharedPreferences =
+            context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
         return prefs.getString(USER_ID, null)
     }
 
     // New methods for storing additional user information
     fun setUserEmail(context: Context, email: String) {
-        val prefs: SharedPreferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        val prefs: SharedPreferences =
+            context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
         val editor = prefs.edit()
         editor.putString(USER_EMAIL, email)
         editor.apply()
     }
 
     fun getUserEmail(context: Context): String? {
-        val prefs: SharedPreferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        val prefs: SharedPreferences =
+            context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
         return prefs.getString(USER_EMAIL, null)
     }
 
     fun setUserName(context: Context, name: String) {
-        val prefs: SharedPreferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        val prefs: SharedPreferences =
+            context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
         val editor = prefs.edit()
         editor.putString(USER_NAME, name)
         editor.apply()
     }
 
     fun getUserName(context: Context): String? {
-        val prefs: SharedPreferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        val prefs: SharedPreferences =
+            context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
         return prefs.getString(USER_NAME, null)
     }
 
     fun isFirstTimeUser(context: Context): Boolean {
-        val prefs: SharedPreferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        val prefs: SharedPreferences =
+            context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
         return prefs.getBoolean(IS_FIRST_TIME_USER, true)
     }
 
 
     fun setFirstTimeUser(context: Context, isFirstTime: Boolean) {
-        val prefs: SharedPreferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        val prefs: SharedPreferences =
+            context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
         val editor = prefs.edit()
         editor.putBoolean(IS_FIRST_TIME_USER, isFirstTime)
         editor.apply()
     }
 
     fun setOnboardingShown(context: Context, shown: Boolean) {
-        val prefs: SharedPreferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        val prefs: SharedPreferences =
+            context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
         val editor = prefs.edit()
         editor.putBoolean(ONBOARDING_SHOWN, shown)
         editor.apply()

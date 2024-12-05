@@ -33,7 +33,7 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignInBinding.inflate(LayoutInflater.from(this))
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         setContentView(binding.root)
 
         binding.btnGoogle.setOnClickListener(this)
@@ -136,7 +136,7 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
 
     private fun handleLoginErrors(errorMap: HashMap<String, String>?) {
         errorMap?.let { errors ->
-            val formErrorKeys = arrayOf("email", "password")
+            arrayOf("email", "password")
             val generalErrorMessage = StringBuilder()
 
             errors.forEach { (key, value) ->
