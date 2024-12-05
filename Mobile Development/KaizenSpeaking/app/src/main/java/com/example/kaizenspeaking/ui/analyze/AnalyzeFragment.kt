@@ -73,9 +73,9 @@ class AnalyzeFragment : Fragment() {
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
             if (isGranted) {
-                Toast.makeText(requireContext(), "Notifications permission granted", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Notifikasi diizinkan", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(requireContext(), "Notifications permission rejected", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Izin notifikasi ditolak", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -143,7 +143,7 @@ class AnalyzeFragment : Fragment() {
     }
     private fun performAction() {
         // Your logic when permission is granted
-        Toast.makeText(requireContext(), "Permission granted!", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), "Izin merekam diberikan!", Toast.LENGTH_SHORT).show()
     }
 
     override fun onRequestPermissionsResult(
@@ -160,7 +160,7 @@ class AnalyzeFragment : Fragment() {
             } else {
                 Toast.makeText(
                     requireContext(),
-                    "Permission denied. Please grant permission to proceed.",
+                    "Izin merekam ditolak, tolong izinkan!",
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -228,7 +228,7 @@ class AnalyzeFragment : Fragment() {
                     startStopwatch()
                     state = 1
                 }else{
-                    Toast.makeText(requireContext(), "Mohon masukkan topic terlebih dahulu", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Mohon masukkan topik terlebih dahulu", Toast.LENGTH_SHORT).show()
                     state = 0
                 }
 
