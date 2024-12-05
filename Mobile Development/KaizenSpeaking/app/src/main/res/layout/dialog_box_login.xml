@@ -67,7 +67,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="36dp"
-            android:background="@color/red_kaizen"
+            android:background="@color/red"
             android:padding="16dp"
             android:text="@string/masuk_ke_akun"
             android:textColor="@android:color/white"

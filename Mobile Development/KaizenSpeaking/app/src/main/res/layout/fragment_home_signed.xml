@@ -101,7 +101,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="240dp"
                 android:gravity="center"
-                android:orientation="vertical"> <!-- Set background color to red -->
+                android:orientation="vertical"
+                android:visibility="visible"> <!-- Set background color to red -->
 
                 <!-- Greeting Message -->
                 <TextView
@@ -123,7 +124,7 @@
                     android:gravity="center"
                     android:paddingTop="8dp"
                     android:text="Coba Analisis Sekarang"
-                    android:textColor="@android:color/holo_blue_light"
+                    android:textColor="@android:color/holo_red_dark"
                     android:textSize="14sp" />
             </LinearLayout>
         </LinearLayout>
@@ -133,9 +134,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
+            android:background="@color/white"
             android:gravity="start"
             android:orientation="vertical"
-            android:background="@color/white"
             android:visibility="visible">
 
             <LinearLayout
