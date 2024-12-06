@@ -13,8 +13,8 @@ android {
         applicationId = "com.example.kaizenspeaking"
         minSdk = 26
         targetSdk = 34
-        versionCode = 2
-        versionName = "KaizenSpeaking-v1.1"
+        versionCode = 1
+        versionName = "KaizenSpeaking-v1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -73,8 +73,6 @@ dependencies {
 
     implementation(libs.mpandroidchart)
     implementation(libs.simple.gauge.android)
-
-    implementation(libs.mobile.ffmpeg.full)
 
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)

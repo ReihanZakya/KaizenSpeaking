@@ -1,42 +1,40 @@
 package com.example.kaizenspeaking.ui.analyze
 
-import android.content.Context
-import android.content.Intent
-import android.os.Bundle
-import android.os.Looper
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
-import androidx.fragment.app.Fragment
-import com.example.kaizenspeaking.R
-import com.example.kaizenspeaking.databinding.FragmentAnalyzeBinding
-import java.io.File
 import android.Manifest
 import android.app.AlertDialog
 import android.app.NotificationManager
 import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.media.MediaRecorder
 import android.os.Build
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
 import android.widget.Toolbar
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavDeepLinkBuilder
-import com.arthenica.mobileffmpeg.Config
-import com.arthenica.mobileffmpeg.FFmpeg
+import com.example.kaizenspeaking.R
+import com.example.kaizenspeaking.databinding.FragmentAnalyzeBinding
 import com.example.kaizenspeaking.helper.SharedPreferencesHelper
 import com.example.kaizenspeaking.ui.analyze.Service.UploadForegroundService
 import com.example.kaizenspeaking.ui.analyze.data.response.Score
 import com.example.kaizenspeaking.ui.instructions.OnboardingActivity
 import com.example.kaizenspeaking.utils.UserSession
+import java.io.File
 
 class AnalyzeFragment : Fragment() {
 
@@ -76,7 +74,8 @@ class AnalyzeFragment : Fragment() {
             if (isGranted) {
                 Toast.makeText(requireContext(), "Notifikasi diizinkan", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(requireContext(), "Izin notifikasi ditolak", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Izin notifikasi ditolak", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
 
@@ -116,7 +115,12 @@ class AnalyzeFragment : Fragment() {
 
 //        button
         binding.btnMultiFunction.text = getString(R.string.start_record)
-        binding.btnMultiFunction.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+        binding.btnMultiFunction.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.black
+            )
+        )
         binding.btnMultiFunction.setBackgroundResource(R.drawable.btn_gray)
 
 //        mic
@@ -126,6 +130,7 @@ class AnalyzeFragment : Fragment() {
             handleButtonClick()
         }
     }
+
     private fun checkAudioPermission() {
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
@@ -142,6 +147,7 @@ class AnalyzeFragment : Fragment() {
             performAction()
         }
     }
+
     private fun performAction() {
         // Your logic when permission is granted
         Toast.makeText(requireContext(), "Izin merekam diberikan!", Toast.LENGTH_SHORT).show()
@@ -219,7 +225,12 @@ class AnalyzeFragment : Fragment() {
                 val fileName = binding.etTopic.text.toString()
                 if (fileName.isNotEmpty()) {
                     binding.btnMultiFunction.text = getString(R.string.stop)
-                    binding.btnMultiFunction.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+                    binding.btnMultiFunction.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.white
+                        )
+                    )
                     binding.btnMultiFunction.setBackgroundResource(R.drawable.btn_red)
                     binding.imgMic.setImageResource(R.drawable.mic_on)
                     startRecording(fileName)
@@ -228,23 +239,39 @@ class AnalyzeFragment : Fragment() {
                     isRunning = true
                     startStopwatch()
                     state = 1
-                }else{
-                    Toast.makeText(requireContext(), "Mohon masukkan topik terlebih dahulu", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Mohon masukkan topik terlebih dahulu",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     state = 0
                 }
 
             }
+
             1 -> {
                 binding.btnMultiFunction.text = getString(R.string.analyze)
-                binding.btnMultiFunction.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
+                binding.btnMultiFunction.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.red
+                    )
+                )
                 binding.btnMultiFunction.setBackgroundResource(R.drawable.btn_gray)
                 binding.imgMic.setImageResource(R.drawable.mic_off)
                 stopRecording()
                 state = 2
             }
+
             2 -> {
                 binding.btnMultiFunction.text = getString(R.string.start_record)
-                binding.btnMultiFunction.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+                binding.btnMultiFunction.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.black
+                    )
+                )
                 sendDataToApi()
                 elapsedTime = 0L // Reset waktu
                 binding.tvTimer.text = "00:00"
@@ -301,30 +328,23 @@ class AnalyzeFragment : Fragment() {
                 stop()
                 release()
             }
-            // Menghentikan Stopwatch
             isRunning = false
             handlerTimer.removeCallbacks(runnable)
             mediaRecorder = null
-
-            // Konversi M4A ke MP3
-            val outputMp3File = File(requireContext().cacheDir, "${tempFile?.nameWithoutExtension}.mp3")
-            convertToMp3(tempFile!!, outputMp3File, onSuccess = {
-                tempFile = outputMp3File  // Ganti referensi ke file MP3
-                Toast.makeText(requireContext(), "File berhasil dikonversi ke MP3", Toast.LENGTH_SHORT).show()
-            }, onError = { error ->
-                Toast.makeText(requireContext(), "Gagal konversi MP3: $error", Toast.LENGTH_LONG).show()
-            })
+            Toast.makeText(requireContext(), "Recording stopped", Toast.LENGTH_LONG).show()
         } catch (e: Exception) {
             e.printStackTrace()
-            Toast.makeText(requireContext(), "Gagal menghentikan perekaman", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), "Gagal menghentikan perekaman", Toast.LENGTH_LONG)
+                .show()
         }
     }
 
 
-
     private fun sendDataToApi() {
         val topic = binding.etTopic.text.toString()
-        val deviceId = SharedPreferencesHelper.getFromSharedPreferences(requireContext(), "device_id") ?: "unknown_device"
+        val deviceId =
+            SharedPreferencesHelper.getFromSharedPreferences(requireContext(), "device_id")
+                ?: "unknown_device"
         val userId = UserSession.getUserId(requireContext()) ?: ""
         if (tempFile == null || !tempFile!!.exists()) {
             Toast.makeText(requireContext(), "File audio tidak ditemukan", Toast.LENGTH_LONG).show()
@@ -333,10 +353,10 @@ class AnalyzeFragment : Fragment() {
 
         val serviceIntent = Intent(requireContext(), UploadForegroundService::class.java).apply {
             putExtra(UploadForegroundService.EXTRA_TOPIC, topic)
-            if (userId.isEmpty()){
+            if (userId.isEmpty()) {
                 putExtra(UploadForegroundService.EXTRA_DEVICE_ID, deviceId)
                 Log.d("ServiceIntent", "Mengirim deviceId: $deviceId")
-            }else {
+            } else {
                 putExtra(UploadForegroundService.EXTRA_USER_ID, userId)
                 Log.d("ServiceIntent", "Mengirim deviceId: $userId")
             }
@@ -345,15 +365,18 @@ class AnalyzeFragment : Fragment() {
 
         val alertDialog = AlertDialog.Builder(requireContext())
             .setTitle("Sedang Menjalankan Proses")
-            .setMessage("Proses analisis sedang berlangsung, anda bisa menunggu sambil meninggalkalkan aplikasi tetapi " +
-                    "jangan menghapusnya dari background. Cek notifikasi untuk melihat hasil analisis")
+            .setMessage(
+                "Proses analisis sedang berlangsung, anda bisa menunggu sambil meninggalkalkan aplikasi tetapi " +
+                        "jangan menghapusnya dari background. Cek notifikasi untuk melihat hasil analisis"
+            )
             .setCancelable(false) // Tidak bisa ditutup oleh pengguna
             .create()
         alertDialog.show()
 
         receiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
-                val result: Pair<Score, String>? = intent.getSerializableExtra("result") as? Pair<Score, String>
+                val result: Pair<Score, String>? =
+                    intent.getSerializableExtra("result") as? Pair<Score, String>
                 alertDialog.dismiss()
 
                 if (result != null) {
@@ -368,15 +391,17 @@ class AnalyzeFragment : Fragment() {
                         .setArguments(bundle)
                         .createPendingIntent()
 
-                    val notificationManager = requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                    val notificationManager =
+                        requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-                    val notification = NotificationCompat.Builder(requireContext(), "analysis_channel")
-                        .setSmallIcon(R.drawable.ic_notifications_black_24dp)
-                        .setContentTitle("Analisis Selesai")
-                        .setContentText("Klik untuk melihat hasil analisis")
-                        .setContentIntent(pendingIntent)
-                        .setAutoCancel(true)
-                        .build()
+                    val notification =
+                        NotificationCompat.Builder(requireContext(), "analysis_channel")
+                            .setSmallIcon(R.drawable.ic_notifications_black_24dp)
+                            .setContentTitle("Analisis Selesai")
+                            .setContentText("Klik untuk melihat hasil analisis")
+                            .setContentIntent(pendingIntent)
+                            .setAutoCancel(true)
+                            .build()
 
                     notificationManager.notify(2, notification)
                 } else {
@@ -389,7 +414,8 @@ class AnalyzeFragment : Fragment() {
                         .create()
                         .show()
 
-                    Toast.makeText(requireContext(), "Gagal menganalisis data", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), "Gagal menganalisis data", Toast.LENGTH_LONG)
+                        .show()
                 }
                 // Unregister receiver setelah tugas selesai
                 LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(this)
@@ -397,7 +423,8 @@ class AnalyzeFragment : Fragment() {
             }
         }
 
-        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(receiver!!, IntentFilter("ANALYZE_RESULT"))
+        LocalBroadcastManager.getInstance(requireContext())
+            .registerReceiver(receiver!!, IntentFilter("ANALYZE_RESULT"))
 
         ContextCompat.startForegroundService(requireContext(), serviceIntent)
     }
