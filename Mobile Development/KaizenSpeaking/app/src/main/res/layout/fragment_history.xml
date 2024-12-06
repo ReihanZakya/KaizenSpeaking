@@ -72,8 +72,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:layout_marginBottom="4dp"
-                            android:textColor="@android:color/darker_gray"
                             android:text="@string/number_of_exercise"
+                            android:textColor="@android:color/holo_red_dark"
                             android:textSize="11sp" />
                     </LinearLayout>
 
@@ -152,6 +152,7 @@
             android:id="@+id/progressbar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:indeterminateTint="@android:color/holo_red_dark"/>
     </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
