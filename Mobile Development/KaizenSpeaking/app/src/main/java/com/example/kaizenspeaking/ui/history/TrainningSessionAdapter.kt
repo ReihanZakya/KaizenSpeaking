@@ -58,7 +58,10 @@ class TrainingSessionAdapter : RecyclerView.Adapter<TrainingSessionAdapter.Train
 
                 val originalFormat =
                     SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS", Locale.getDefault())
-                val desiredFormat = SimpleDateFormat("dd MMM yyyy HH:mm 'WIB'", Locale.getDefault()) // Tambahkan literal WIB
+                val desiredFormat = SimpleDateFormat(
+                    "dd MMM yyyy HH:mm 'WIB'",
+                    Locale.getDefault()
+                ) // Tambahkan literal WIB
 
                 try {
                     val date = originalFormat.parse(session.date) // Parsing string date
@@ -66,7 +69,8 @@ class TrainingSessionAdapter : RecyclerView.Adapter<TrainingSessionAdapter.Train
                         // Gunakan Calendar untuk menyesuaikan jam
                         val calendar = Calendar.getInstance().apply {
                             time = date
-                            val adjustedHour = (get(Calendar.HOUR_OF_DAY) + 7) % 24 // Penyesuaian jam
+                            val adjustedHour =
+                                (get(Calendar.HOUR_OF_DAY) + 7) % 24 // Penyesuaian jam
                             set(Calendar.HOUR_OF_DAY, adjustedHour) // Set jam yang sudah diubah
                         }
 
@@ -94,9 +98,11 @@ class TrainingSessionAdapter : RecyclerView.Adapter<TrainingSessionAdapter.Train
                             val seconds = parts[1].toIntOrNull() ?: 0
                             minutes * 60 + seconds
                         }
+
                         1 -> {
                             parts[0].toIntOrNull() ?: 0
                         }
+
                         else -> 0
                     }
 
@@ -165,7 +171,8 @@ class TrainingSessionAdapter : RecyclerView.Adapter<TrainingSessionAdapter.Train
                         override fun run() {
                             try {
                                 binding.seekBar.progress = player.currentPosition
-                                binding.durationTextView.text = formatDuration(player.currentPosition.toLong())
+                                binding.durationTextView.text =
+                                    formatDuration(player.currentPosition.toLong())
                                 handler.postDelayed(this, 1000)
                             } catch (e: IllegalStateException) {
                                 // Handle potential IllegalStateException if MediaPlayer is in invalid state

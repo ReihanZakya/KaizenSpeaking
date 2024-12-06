@@ -1,31 +1,24 @@
 package com.example.kaizenspeaking.ui.profile
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import com.example.kaizenspeaking.databinding.FragmentProfileBinding
-import com.example.kaizenspeaking.ui.auth.SignInActivity
-import com.example.kaizenspeaking.ui.auth.utils.APIService
-import com.example.kaizenspeaking.ui.auth.data.User
-import com.example.kaizenspeaking.utils.UserSession
-import com.example.kaizenspeaking.MainActivity
-import android.content.SharedPreferences
-import android.text.Html
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.fragment.app.Fragment
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.example.kaizenspeaking.MainActivity
 import com.example.kaizenspeaking.R
+import com.example.kaizenspeaking.databinding.FragmentProfileBinding
+import com.example.kaizenspeaking.ui.auth.utils.APIService
+import com.example.kaizenspeaking.utils.UserSession
 
 class ProfileFragment : Fragment() {
     private lateinit var binding: FragmentProfileBinding
@@ -77,7 +70,8 @@ class ProfileFragment : Fragment() {
 
     private fun showAboutDialog() {
         val builder = AlertDialog.Builder(requireContext())
-        val description = getString(R.string.about_kaizen_speaking) // Mengambil teks dari resource string
+        val description =
+            getString(R.string.about_kaizen_speaking) // Mengambil teks dari resource string
         builder.setMessage(Html.fromHtml(description, Html.FROM_HTML_MODE_LEGACY))
             .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() } // Tombol OK
             .setCancelable(true) // Membuat dialog dapat ditutup dengan klik di luar
@@ -99,10 +93,12 @@ class ProfileFragment : Fragment() {
         super.onDestroyView()
         showBottomNavigation()
     }
+
     private fun hideBottomNavigation() {
         val bottomNav = requireActivity().findViewById<View>(R.id.nav_view)
         bottomNav?.visibility = View.GONE
     }
+
     private fun showBottomNavigation() {
         val bottomNav = requireActivity().findViewById<View>(R.id.nav_view)
         bottomNav?.visibility = View.VISIBLE

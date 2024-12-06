@@ -6,4 +6,4 @@ data class OnboardingItem(
     val description: String,
     val backgroundImage: Int,
 
-)
+    )

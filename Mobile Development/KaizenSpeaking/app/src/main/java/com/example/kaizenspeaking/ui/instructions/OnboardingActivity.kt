@@ -35,7 +35,7 @@ class OnboardingActivity : AppCompatActivity() {
         }
 
         fun hasSeenOnboarding(context: Context): Boolean {
-            return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            return context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
                 .getBoolean(KEY_HAS_SHOWN_ONBOARDING, false)
         }
 
@@ -174,7 +174,7 @@ class OnboardingActivity : AppCompatActivity() {
     }
 
     private fun completeOnboarding() {
-        getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
             .edit()
             .putBoolean(KEY_HAS_SHOWN_ONBOARDING, true)
             .apply()

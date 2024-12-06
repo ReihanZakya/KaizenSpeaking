@@ -8,4 +8,5 @@ data class Data(
     @SerializedName("token type")
     val tokenType: String,
     @SerializedName("userId")
-    val userId: String )
+    val userId: String
+)

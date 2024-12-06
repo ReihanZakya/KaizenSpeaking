@@ -1,7 +1,6 @@
 package com.example.kaizenspeaking.ui.instructions.animation
 
 import android.view.View
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import kotlin.math.abs
 import kotlin.math.max
