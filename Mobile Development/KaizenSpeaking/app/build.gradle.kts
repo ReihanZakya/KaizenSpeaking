@@ -70,24 +70,16 @@ dependencies {
 
     implementation(libs.androidx.core.splashscreen)
 
-    implementation (libs.mpandroidchart)
-    implementation (libs.simple.gauge.android)
+    implementation(libs.mpandroidchart)
+    implementation(libs.simple.gauge.android)
 
-    implementation ("com.arthenica:mobile-ffmpeg-full:4.4.LTS")
+    implementation(libs.mobile.ffmpeg.full)
 
-    //retrofit
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.retrofit2.kotlin.coroutines.adapter)
 
-    //coroutines
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
-    implementation ("com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2")
+    implementation(libs.androidx.localbroadcastmanager)
 
-    implementation ("androidx.localbroadcastmanager:localbroadcastmanager:1.1.0")
-
-
-    implementation ("androidx.security:security-crypto:1.0.0")
-
-
+    implementation(libs.androidx.security.crypto)
 }
