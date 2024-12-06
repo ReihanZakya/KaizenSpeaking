@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.example.kaizenspeaking.MainActivity
-import com.example.kaizenspeaking.MainActivityLogin
 import com.example.kaizenspeaking.R
 import com.example.kaizenspeaking.databinding.ActivitySignInBinding
 import com.example.kaizenspeaking.ui.auth.data.LoginBody
@@ -112,19 +111,6 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
                 navigateToHome()
             }
         }
-    }
-
-    private fun navigateToHomeSignedFragment(user: User) {
-        // Set login session
-        UserSession.setLoggedIn(this, true)
-
-        val intent = Intent(this, MainActivityLogin::class.java)
-        intent.putExtra("USER_NAME", user.full_name)
-        intent.putExtra("EMAIL", user.email)
-        intent.putExtra("id", user.id)
-        intent.putExtra("NICK_NAME", user.name)
-        startActivity(intent)
-        finish()
     }
 
     private fun navigateToHome() {
