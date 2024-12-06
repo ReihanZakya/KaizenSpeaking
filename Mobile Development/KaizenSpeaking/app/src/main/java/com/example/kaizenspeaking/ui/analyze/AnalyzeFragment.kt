@@ -295,25 +295,6 @@ class AnalyzeFragment : Fragment() {
         return String.format("%02d:%02d", minutes, seconds)
     }
 
-
-    private fun convertToMp3(inputFile: File, outputFile: File, onSuccess: () -> Unit, onError: (String) -> Unit) {
-        val command = arrayOf(
-            "-i", inputFile.absolutePath,  // Input file
-            "-codec:a", "libmp3lame",      // Codec untuk MP3
-            "-qscale:a", "2",              // Kualitas audio (lebih rendah lebih baik, gunakan nilai 2-5)
-            outputFile.absolutePath        // Output file
-        )
-
-        // Jalankan FFmpeg
-        val rc = FFmpeg.execute(command)
-        if (rc == Config.RETURN_CODE_SUCCESS) {
-            onSuccess()
-        } else {
-            Config.printLastCommandOutput(Log.INFO)
-            onError("Error saat mengonversi file. Periksa log untuk detailnya.")
-        }
-    }
-
     private fun stopRecording() {
         try {
             mediaRecorder?.apply {
