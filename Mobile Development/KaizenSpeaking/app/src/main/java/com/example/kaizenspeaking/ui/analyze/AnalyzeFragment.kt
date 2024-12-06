@@ -56,7 +56,6 @@ class AnalyzeFragment : Fragment() {
 
     //audio
     private var mediaRecorder: MediaRecorder? = null
-    private var audioFile: File? = null
     private var tempFile: File? = null
 
     private val REQUEST_CODE_RECORD_AUDIO = 1

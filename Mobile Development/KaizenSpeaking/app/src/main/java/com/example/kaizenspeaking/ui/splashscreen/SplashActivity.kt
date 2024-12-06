@@ -8,6 +8,7 @@ import android.os.Looper
 import android.view.WindowManager
 import android.widget.VideoView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.example.kaizenspeaking.MainActivity
 import com.example.kaizenspeaking.R
 
@@ -16,7 +17,7 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         // Full screen immersive mode
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,

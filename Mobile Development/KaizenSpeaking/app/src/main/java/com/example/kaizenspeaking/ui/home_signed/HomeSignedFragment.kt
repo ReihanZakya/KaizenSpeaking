@@ -145,8 +145,8 @@ class HomeSignedFragment : Fragment() {
                                 val averageEntries =
                                     calculateAverageEntries(entriesA, entriesB, entriesC, entriesD)
                                 val averageDataSet =
-                                    LineDataSet(averageEntries, "Nilai Rata-Rata").apply {
-                                        color = resources.getColor(android.R.color.holo_purple)
+                                    LineDataSet(averageEntries, getString(R.string.simple_value)).apply {
+                                        color = resources.getColor(android.R.color.holo_red_dark)
                                     }
                                 val lineData = LineData(averageDataSet)
                                 setupChart(lineData)
@@ -205,19 +205,19 @@ class HomeSignedFragment : Fragment() {
     private fun observeChartData() {
         historyViewModel.entriesA.observe(viewLifecycleOwner, { entriesA ->
             val dataSetA = LineDataSet(entriesA, "Kejelasan").apply {
-                color = resources.getColor(android.R.color.holo_blue_light)
+                color = resources.getColor(android.R.color.holo_blue_dark)
             }
             historyViewModel.entriesB.observe(viewLifecycleOwner, { entriesB ->
                 val dataSetB = LineDataSet(entriesB, "Diksi").apply {
-                    color = resources.getColor(android.R.color.holo_green_light)
+                    color = resources.getColor(android.R.color.holo_green_dark)
                 }
                 historyViewModel.entriesC.observe(viewLifecycleOwner, { entriesC ->
                     val dataSetC = LineDataSet(entriesC, "Kelancaran").apply {
-                        color = resources.getColor(android.R.color.holo_red_light)
+                        color = resources.getColor(android.R.color.holo_red_dark)
                     }
                     historyViewModel.entriesD.observe(viewLifecycleOwner, { entriesD ->
                         val dataSetD = LineDataSet(entriesD, "Emosi").apply {
-                            color = resources.getColor(android.R.color.holo_orange_light)
+                            color = resources.getColor(android.R.color.holo_orange_dark)
                         }
                         val lineData = LineData(dataSetA, dataSetB, dataSetC, dataSetD)
                         setupChart(lineData)
