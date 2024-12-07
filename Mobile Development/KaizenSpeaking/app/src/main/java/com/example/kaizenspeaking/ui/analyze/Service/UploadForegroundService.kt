@@ -98,6 +98,9 @@ class UploadForegroundService : Service() {
                         getSystemService(NOTIFICATION_SERVICE) as NotificationManager
                     notificationManager.notify(NOTIFICATION_ID, finishedNotification)
                 } else {
+                    val failureIntent = Intent("ANALYZE_RESULT_FAILURE")
+                    LocalBroadcastManager.getInstance(this@UploadForegroundService).sendBroadcast(failureIntent)
+
                     showFailureNotification()
                 }
             } catch (e: Exception) {

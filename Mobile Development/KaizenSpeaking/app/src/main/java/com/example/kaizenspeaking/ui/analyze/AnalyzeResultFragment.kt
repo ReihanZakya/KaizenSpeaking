@@ -18,9 +18,13 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import android.widget.Toast
 import android.widget.Toolbar
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.kaizenspeaking.R
 import com.example.kaizenspeaking.ui.analyze.data.response.Score
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 
 
 @Suppress("DEPRECATION")
@@ -70,6 +74,36 @@ class AnalyzeResultFragment : Fragment() {
         } else {
             Toast.makeText(requireContext(), "Data tidak ditemukan", Toast.LENGTH_SHORT).show()
         }
+
+        barChart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
+            override fun onValueSelected(e: Entry?, h: Highlight?) {
+                e?.let { entry ->
+                    val (title, description) = when (entry.x.toInt()) {
+                        0 -> getString(R.string.matrix_kejelasan) to getString(R.string.description_matrix_kejelasan)
+                        1 -> getString(R.string.matrix_diksi) to getString(R.string.description_matrix_diksi)
+                        2 -> getString(R.string.matrix_kelancaran) to getString(R.string.description_matrix_kelancaran)
+                        3 -> getString(R.string.matrix_emosi) to getString(R.string.description_matrix_emosi)
+                        else -> "Informasi" to "Deskripsi tidak tersedia"
+                    }
+
+                    // Tampilkan AlertDialog
+                    AlertDialog.Builder(requireContext())
+                        .setTitle(title) // Set judul dialog
+                        .setMessage(
+                            Html.fromHtml(
+                                description,
+                                Html.FROM_HTML_MODE_LEGACY
+                            )
+                        ) // Render HTML pada deskripsi
+                        .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() } // Tombol OK
+                        .show()
+                }
+            }
+
+            override fun onNothingSelected() {
+                // Tidak melakukan apa-apa jika tidak ada yang dipilih
+            }
+        })
 
         // Auto-scroll to "Hasil Analisis" section after 3 seconds
         Handler(Looper.getMainLooper()).postDelayed({
