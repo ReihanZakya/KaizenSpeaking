@@ -85,10 +85,10 @@ class TrainingDetailFragment : Fragment() {
 
         // Assign values inside the let block
         trainingSession?.let { session ->
-            kejelasan = session.kejelasan.toFloatOrNull() ?: 0f
-            diksi = session.diksi.toFloatOrNull() ?: 0f
-            kelancaran = session.kelancaran.toFloatOrNull() ?: 0f
-            emosi = session.emosi.toFloatOrNull() ?: 0f
+            kejelasan = session.kejelasan?.toFloatOrNull() ?: 0f
+            diksi = session.diksi?.toFloatOrNull() ?: 0f
+            kelancaran = session.kelancaran?.toFloatOrNull() ?: 0f
+            emosi = session.emosi?.toFloatOrNull() ?: 0f
 
             val rawAnalize = session.analize
             val formattedHtml = convertToHtml(rawAnalize) // Konversi ke HTML
