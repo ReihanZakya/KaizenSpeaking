@@ -153,6 +153,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:indeterminateTint="@android:color/holo_red_dark"/>
+            android:indeterminateTint="?attr/colorPrimary" />
     </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
