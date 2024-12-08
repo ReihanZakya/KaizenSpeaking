@@ -70,14 +70,15 @@ class ProfileFragment : Fragment() {
 
     private fun showAboutDialog() {
         val builder = AlertDialog.Builder(requireContext())
-        val description =
-            getString(R.string.about_kaizen_speaking) // Mengambil teks dari resource string
-        builder.setMessage(Html.fromHtml(description, Html.FROM_HTML_MODE_LEGACY))
-            .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() } // Tombol OK
-            .setCancelable(true) // Membuat dialog dapat ditutup dengan klik di luar
+            .setIcon(R.drawable.ic_kaizen)
+            .setTitle("Tentang Kaizen Speaking")
+            .setMessage(Html.fromHtml(getString(R.string.about_kaizen_speaking), Html.FROM_HTML_MODE_LEGACY))
+            .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+            .setCancelable(true)
         val dialog = builder.create()
         dialog.show()
     }
+
 
     private fun displayUserInfo() {
         val userName = UserSession.getUserName(requireContext()) ?: "Unknown Name"
@@ -105,13 +106,23 @@ class ProfileFragment : Fragment() {
     }
 
     private fun performLogout() {
-        UserSession.logout(requireContext())
+        val builder = AlertDialog.Builder(requireContext())
+            .setIcon(R.drawable.ic_kaizen)
+            .setTitle("Logout")
+            .setMessage("Apakah anda yakin akan keluar dari akun?")
+            .setCancelable(true)
+            .setPositiveButton("OK") { _, _ ->
+                UserSession.logout(requireContext())
+                clearEncryptedPreferences()
+                clearUserData()
+                navigateToLoginScreen()
+            }
+            .setNegativeButton("Batal") { dialog, _ ->
+                dialog.dismiss()
+            }
 
-        clearEncryptedPreferences()
-
-        clearUserData()
-
-        navigateToLoginScreen()
+        val dialog = builder.create()
+        dialog.show()
     }
 
     private fun clearEncryptedPreferences() {

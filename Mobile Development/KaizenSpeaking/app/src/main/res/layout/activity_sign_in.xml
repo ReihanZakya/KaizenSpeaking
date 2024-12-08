@@ -133,7 +133,7 @@
                     android:layout_height="48dp"
                     android:inputType="text"
                     android:paddingVertical="12dp"
-                    android:textColor="@color/gray"
+                    android:textColor="@color/black"
                     android:textSize="12sp"
                     tools:layout_editor_absoluteX="26dp"
                     tools:layout_editor_absoluteY="191dp" />
@@ -160,7 +160,7 @@
                     android:layout_height="48dp"
                     android:inputType="text"
                     android:paddingVertical="12dp"
-                    android:textColor="@color/gray"
+                    android:textColor="@color/black"
                     android:textSize="12sp"
                     tools:layout_editor_absoluteX="26dp"
                     tools:layout_editor_absoluteY="191dp" />

@@ -140,14 +140,10 @@
     <!--    About kaizen speaking-->
     <string name="about_kaizen_speaking">
       &lt;body&gt;
-        &lt;header&gt;
-        &lt;h2&gt;Tentang Kaizen Speaking&lt;/h2&gt;
-        &lt;/header&gt;
         &lt;div class=&quot;container&quot;&gt;
           &lt;p&gt;
-            Kaizen Speaking adalah aplikasi yang dirancang untuk membantu
-            teman-teman dalam meningkatkan kemampuan public speaking. Aplikasi ini
-            memberikan berbagai tips, latihan, dan progress tracking agar teman-teman bisa lebih
+            Kaizen Speaking adalah aplikasi yang dirancang untuk membantu dalam meningkatkan kemampuan public speaking. Aplikasi ini
+            memberikan berbagai tips, latihan, dan progress tracking agar setiap orang bisa lebih
             percaya diri dan mahir berbicara di depan umum.
           &lt;/p&gt;
           &lt;p&gt;
@@ -156,7 +152,7 @@
             yang dikerjakan bersama dengan Kaizen Room.
           &lt;/p&gt;
           &lt;section class=&quot;team-section&quot;&gt;
-            &lt;h4&gt;Tim Kami&lt;/h4&gt;
+            &lt;h4&gt;Tim Pengembang&lt;/h4&gt;
             &lt;h6&gt;Divisi Machine Learning&lt;/h6&gt;
             &lt;ul&gt;
               &lt;li&gt;Kimi Dandy Yudanarko&lt;/li&gt;
