@@ -27,6 +27,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavDeepLinkBuilder
+import androidx.navigation.fragment.findNavController
 import com.example.kaizenspeaking.R
 import com.example.kaizenspeaking.databinding.FragmentAnalyzeBinding
 import com.example.kaizenspeaking.helper.SharedPreferencesHelper
@@ -126,6 +127,9 @@ class AnalyzeFragment : Fragment() {
 //        mic
         binding.imgMic.setImageResource(R.drawable.mic_off)
 
+        binding.imgMic.setOnClickListener {
+            handleButtonClick()
+        }
         binding.btnMultiFunction.setOnClickListener {
             handleButtonClick()
         }
@@ -373,62 +377,152 @@ class AnalyzeFragment : Fragment() {
             .create()
         alertDialog.show()
 
+//        receiver = object : BroadcastReceiver() {
+//            override fun onReceive(context: Context, intent: Intent) {
+//                val result: Pair<Score, String>? =
+//                    intent.getSerializableExtra("result") as? Pair<Score, String>
+//                alertDialog.dismiss()
+//
+//                if (result != null) {
+//                    val (score, message) = result
+//                    val bundle = Bundle().apply {
+//                        putParcelable("score", score)
+//                        putString("analyze_message", message)
+//                    }
+//                    val pendingIntent = NavDeepLinkBuilder(requireContext())
+//                        .setGraph(R.navigation.mobile_navigation)
+//                        .setDestination(R.id.analyzeResultFragment)
+//                        .setArguments(bundle)
+//                        .createPendingIntent()
+//
+//                    val notificationManager =
+//                        requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+//
+//                    val notification =
+//                        NotificationCompat.Builder(requireContext(), "analysis_channel")
+//                            .setSmallIcon(R.drawable.ic_notifications_black_24dp)
+//                            .setContentTitle("Analisis Selesai")
+//                            .setContentText("Klik untuk melihat hasil analisis")
+//                            .setContentIntent(pendingIntent)
+//                            .setAutoCancel(true)
+//                            .build()
+//
+//                    notificationManager.notify(2, notification)
+//                } else {
+//                    AlertDialog.Builder(requireContext())
+//                        .setTitle("Analisis Gagal")
+//                        .setMessage("Terjadi kesalahan saat menganalisis data. Silakan coba lagi.")
+//                        .setPositiveButton("OK") { dialog, _ ->
+//                            dialog.dismiss()
+//                        }
+//                        .create()
+//                        .show()
+//
+//                    Toast.makeText(requireContext(), "Gagal menganalisis data", Toast.LENGTH_LONG)
+//                        .show()
+//                }
+//                // Unregister receiver setelah tugas selesai
+//                LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(this)
+//                receiver = null
+//            }
+//        }
+
         receiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
-                val result: Pair<Score, String>? =
-                    intent.getSerializableExtra("result") as? Pair<Score, String>
-                alertDialog.dismiss()
+                when (intent.action) {
+                    "ANALYZE_RESULT" -> {
+                        val result: Pair<Score, String>? =
+                            intent.getSerializableExtra("result") as? Pair<Score, String>
+                        alertDialog.dismiss()
 
-                if (result != null) {
-                    val (score, message) = result
-                    val bundle = Bundle().apply {
-                        putParcelable("score", score)
-                        putString("analyze_message", message)
-                    }
-                    val pendingIntent = NavDeepLinkBuilder(requireContext())
-                        .setGraph(R.navigation.mobile_navigation)
-                        .setDestination(R.id.analyzeResultFragment)
-                        .setArguments(bundle)
-                        .createPendingIntent()
+                        if (result != null) {
+                            val (score, message) = result
+                            val bundle = Bundle().apply {
+                                putParcelable("score", score)
+                                putString("analyze_message", message)
+                            }
+                            val pendingIntent = NavDeepLinkBuilder(requireContext())
+                                .setGraph(R.navigation.mobile_navigation)
+                                .setDestination(R.id.analyzeResultFragment)
+                                .setArguments(bundle)
+                                .createPendingIntent()
 
-                    val notificationManager =
-                        requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                            val notificationManager =
+                                requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-                    val notification =
-                        NotificationCompat.Builder(requireContext(), "analysis_channel")
-                            .setSmallIcon(R.drawable.ic_notifications_black_24dp)
-                            .setContentTitle("Analisis Selesai")
-                            .setContentText("Klik untuk melihat hasil analisis")
-                            .setContentIntent(pendingIntent)
-                            .setAutoCancel(true)
-                            .build()
+                            val notification =
+                                NotificationCompat.Builder(requireContext(), "analysis_channel")
+                                    .setSmallIcon(R.drawable.ic_notifications_black_24dp)
+                                    .setContentTitle("Analisis Selesai")
+                                    .setContentText("Klik untuk melihat hasil analisis")
+                                    .setContentIntent(pendingIntent)
+                                    .setAutoCancel(true)
+                                    .build()
 
-                    notificationManager.notify(2, notification)
-                } else {
-                    AlertDialog.Builder(requireContext())
-                        .setTitle("Analisis Gagal")
-                        .setMessage("Terjadi kesalahan saat menganalisis data. Silakan coba lagi.")
-                        .setPositiveButton("OK") { dialog, _ ->
-                            dialog.dismiss()
+                            notificationManager.notify(2, notification)
+
+                            // Tampilkan dialog berhasil
+                            AlertDialog.Builder(requireContext())
+                                .setTitle("Analisis Berhasil")
+                                .setMessage("Hasil analisis sudah tersedia. Apakah Anda ingin melihat hasilnya?")
+                                .setPositiveButton("Lihat Hasil") { dialog, _ ->
+                                    dialog.dismiss()
+
+                                    // Navigasi ke AnalyzeResultFragment
+                                    val bundle = Bundle().apply {
+                                        putParcelable("score", score)
+                                        putString("analyze_message", message)
+                                    }
+                                    findNavController().navigate(
+                                        R.id.analyzeResultFragment,
+                                        bundle
+                                    )
+                                }
+                                .create()
+                                .show()
+                        } else {
+                            // Fallback error handling
+                            showFailureDialog()
                         }
-                        .create()
-                        .show()
+                    }
 
-                    Toast.makeText(requireContext(), "Gagal menganalisis data", Toast.LENGTH_LONG)
-                        .show()
+                    "ANALYZE_RESULT_FAILURE" -> {
+                        // Tutup dialog "proses" jika masih ditampilkan
+                        alertDialog.dismiss()
+
+                        // Tampilkan dialog "gagal"
+                        showFailureDialog()
+                    }
                 }
+
                 // Unregister receiver setelah tugas selesai
                 LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(this)
                 receiver = null
             }
         }
 
-        LocalBroadcastManager.getInstance(requireContext())
-            .registerReceiver(receiver!!, IntentFilter("ANALYZE_RESULT"))
+        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(
+            receiver!!,
+            IntentFilter().apply {
+                addAction("ANALYZE_RESULT")
+                addAction("ANALYZE_RESULT_FAILURE")
+            }
+        )
+
 
         ContextCompat.startForegroundService(requireContext(), serviceIntent)
     }
 
+    private fun showFailureDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Analisis Gagal")
+            .setMessage("Terjadi kesalahan saat menganalisis data. Silakan coba lagi.")
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+            .show()
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

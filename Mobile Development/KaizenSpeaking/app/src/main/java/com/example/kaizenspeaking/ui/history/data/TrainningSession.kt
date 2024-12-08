@@ -10,10 +10,10 @@ data class TrainingSession(
     val date: String,
     val audioUrl: String,
     val duration: String,
-    val kejelasan: String,
-    val diksi: String,
-    val kelancaran: String,
-    val emosi: String,
+    val kejelasan: String?,
+    val diksi: String?,
+    val kelancaran: String?,
+    val emosi: String?,
     val analize: String
 ) : Parcelable
 

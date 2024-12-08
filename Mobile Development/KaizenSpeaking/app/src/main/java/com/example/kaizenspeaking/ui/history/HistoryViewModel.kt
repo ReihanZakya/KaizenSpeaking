@@ -81,11 +81,17 @@ class HistoryViewModel(private val repository: Repository) : ViewModel() {
 
         sortedDataItems.forEachIndexed { index, sortedDataItem ->
             val position = (index + 1).toFloat()
-            entriesA.add(Entry(position, sortedDataItem.score.kejelasan.toFloatOrNull() ?: 0f))
-            entriesB.add(Entry(position, sortedDataItem.score.diksi.toFloatOrNull() ?: 0f))
-            entriesC.add(Entry(position, sortedDataItem.score.kelancaran.toFloatOrNull() ?: 0f))
-            entriesD.add(Entry(position, sortedDataItem.score.emosi.toFloatOrNull() ?: 0f))
+
+            fun safeScore(score: String?): Float {
+                return score?.toFloatOrNull() ?: 0f
+            }
+
+            entriesA.add(Entry(position, safeScore(sortedDataItem.score.kejelasan)))
+            entriesB.add(Entry(position, safeScore(sortedDataItem.score.diksi)))
+            entriesC.add(Entry(position, safeScore(sortedDataItem.score.kelancaran)))
+            entriesD.add(Entry(position, safeScore(sortedDataItem.score.emosi)))
         }
+
 
         _entriesA.value = entriesA
         _entriesB.value = entriesB
