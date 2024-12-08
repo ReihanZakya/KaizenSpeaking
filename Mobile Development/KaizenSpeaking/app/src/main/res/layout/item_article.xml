@@ -1,32 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_marginTop="6dp"
     android:layout_marginBottom="6dp"
-    card_view:cardCornerRadius="20dp"
-    card_view:cardBackgroundColor="@color/white">
+    card_view:cardBackgroundColor="@color/white"
+    card_view:cardCornerRadius="20dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="12dp">
+        android:layout_height="match_parent"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="8dp">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/articleImage"
-            android:layout_width="120dp"
-            android:layout_height="100dp"
-            android:scaleType="centerCrop"
+            android:layout_width="100dp"
+            android:layout_height="0dp"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/RoundImageView"
-            card_view:layout_constraintBottom_toBottomOf="parent"
-            card_view:layout_constraintStart_toStartOf="parent"
-            card_view:layout_constraintTop_toTopOf="parent"
             tools:src="@tools:sample/avatars" />
+
 
         <TextView
             android:id="@+id/articleTitle"
@@ -37,10 +39,10 @@
             android:layout_toEndOf="@id/articleImage"
             android:ellipsize="end"
             android:maxLines="2"
-            android:textColor="@color/black"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:textStyle="bold"
             card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintHorizontal_bias="0.0"
             card_view:layout_constraintStart_toEndOf="@+id/articleImage"
             card_view:layout_constraintTop_toTopOf="@+id/articleImage"
             tools:ignore="SmallSp"
@@ -49,13 +51,11 @@
         <TextView
             android:id="@+id/articleDescription"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="8dp"
+            android:layout_height="wrap_content"
             android:ellipsize="end"
             android:gravity="center_vertical"
-            android:maxLines="5"
-            android:textColor="@color/black"
-            android:textSize="12sp"
+            android:maxLines="3"
+            android:textSize="11sp"
             card_view:layout_constraintBottom_toBottomOf="@+id/articleImage"
             card_view:layout_constraintEnd_toEndOf="@+id/articleTitle"
             card_view:layout_constraintStart_toStartOf="@+id/articleTitle"
