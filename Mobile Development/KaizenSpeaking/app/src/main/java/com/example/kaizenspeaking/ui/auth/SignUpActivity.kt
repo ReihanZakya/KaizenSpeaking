@@ -78,7 +78,7 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
     }
 
     private fun handleGoogleSignUp() {
-        Toast.makeText(this, "Google Sign-Up Coming Soon", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Dalam Pengembangan", Toast.LENGTH_SHORT).show()
     }
 
     private fun navigateToSignIn() {
@@ -132,7 +132,9 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
                     message.append(entry.value).append("\n")
                 }
                 if (message.isNotEmpty()) {
-                    AlertDialog.Builder(this).setIcon(R.drawable.ic_info).setTitle("INFORMATION")
+                    AlertDialog.Builder(this)
+                        .setIcon(R.drawable.ic_kaizen)
+                        .setTitle("INFORMATION!")
                         .setMessage(message)
                         .setPositiveButton("OK") { dialog, _ -> dialog!!.dismiss() }.show()
                 }

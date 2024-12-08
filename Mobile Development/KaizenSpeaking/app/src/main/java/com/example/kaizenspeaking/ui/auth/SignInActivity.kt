@@ -119,7 +119,6 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
         finish()
     }
 
-
     private fun handleLoginErrors(errorMap: HashMap<String, String>?) {
         errorMap?.let { errors ->
             arrayOf("email", "password")
@@ -154,8 +153,8 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
 
     private fun showGeneralErrorDialog(message: String) {
         AlertDialog.Builder(this)
-            .setIcon(R.drawable.ic_info)
-            .setTitle("LOGIN ERROR")
+            .setIcon(R.drawable.ic_kaizen)
+            .setTitle("LOGIN ERROR!")
             .setMessage(message)
             .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
             .show()
@@ -215,12 +214,20 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
                     submitForm()
                 }
 
+                R.id.btnGoogle -> {
+                    handleGoogleSignUp()
+                }
+
                 R.id.btnSignUp -> {
                     val intent = Intent(this, SignUpActivity::class.java)
                     startActivity(intent)
                 }
             }
         }
+    }
+
+    private fun handleGoogleSignUp() {
+        Toast.makeText(this, "Dalam Pengembangan", Toast.LENGTH_SHORT).show()
     }
 
     override fun onFocusChange(view: View?, hasFocus: Boolean) {

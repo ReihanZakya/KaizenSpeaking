@@ -34,7 +34,7 @@
 
         <activity
             android:name=".ui.auth.SignInActivity"
-            android:exported="false" />
+            android:exported="false"/>
         <activity
             android:name=".ui.auth.SignUpActivity"
             android:exported="false" />
@@ -45,11 +45,6 @@
             android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/SplashTheme">
-        </activity>
-        <activity
-            android:name=".MainActivityLogin"
-            android:exported="true">
-
         </activity>
 
         <activity
