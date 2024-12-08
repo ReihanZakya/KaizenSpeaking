@@ -50,9 +50,15 @@ class AnalyzeResultFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as AppCompatActivity).supportActionBar?.hide()
+        // Delay hiding the Action Bar after the fragment's view is fully created
+        Handler(Looper.getMainLooper()).post {
+            (activity as AppCompatActivity).supportActionBar?.hide()
+        }
 
-        hideBottomNavigation()
+        // Hide Bottom Navigation after fragment view is created
+        Handler(Looper.getMainLooper()).post {
+            hideBottomNavigation()
+        }
 
         // Toolbar setup
         val toolbar: Toolbar = view.findViewById(R.id.toolbar)
