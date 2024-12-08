@@ -44,7 +44,6 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
         binding.etPassword.onFocusChangeListener = this
         binding.etPassword.setOnKeyListener(this)
 
-
         mViewModel = ViewModelProvider(
             this,
             SignInActivityViewModelFactory(AuthRepository(APIService.getService()), application)

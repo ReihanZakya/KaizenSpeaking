@@ -118,7 +118,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:ems="10"
-                android:textColorHint="@color/black"
+                android:textColorHint="@color/gray"
                 android:inputType="text"
                 android:hint="@string/input_name"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -146,7 +146,7 @@
                 android:ems="10"
                 android:hint="@string/input_email"
                 android:inputType="textEmailAddress"
-                android:textColorHint="@color/black"
+                android:textColorHint="@color/gray"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/etNameTil">
@@ -168,14 +168,13 @@
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:textColorHint="@color/black"
+                android:textColorHint="@color/gray"
                 android:hint="@string/input_password"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/etEmailTil"
-                app:passwordToggleEnabled="true"
-                >
+                app:passwordToggleEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etPassword"
@@ -196,7 +195,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/input_confirm_password"
-                android:textColorHint="@color/black"
+                android:textColorHint="@color/gray"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/etPasswordTil"
@@ -206,7 +205,7 @@
                     android:id="@+id/etConfirmPassword"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:inputType="text"
+                    android:inputType="textPassword"
                     android:paddingVertical="12dp"
                     android:textColorHint="@color/black"
                     android:textSize="12sp"
