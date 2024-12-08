@@ -1,40 +1,41 @@
 package com.example.kaizenspeaking.ui.analyze
 
-import android.content.Context
-import android.content.Intent
-import android.os.Bundle
-import android.os.Looper
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
-import androidx.fragment.app.Fragment
-import com.example.kaizenspeaking.R
-import com.example.kaizenspeaking.databinding.FragmentAnalyzeBinding
-import java.io.File
 import android.Manifest
 import android.app.AlertDialog
 import android.app.NotificationManager
 import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.media.MediaRecorder
 import android.os.Build
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
 import android.widget.Toolbar
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavDeepLinkBuilder
+import androidx.navigation.fragment.findNavController
+import com.example.kaizenspeaking.R
+import com.example.kaizenspeaking.databinding.FragmentAnalyzeBinding
 import com.example.kaizenspeaking.helper.SharedPreferencesHelper
 import com.example.kaizenspeaking.ui.analyze.Service.UploadForegroundService
 import com.example.kaizenspeaking.ui.analyze.data.response.Score
 import com.example.kaizenspeaking.ui.instructions.OnboardingActivity
 import com.example.kaizenspeaking.utils.UserSession
+import java.io.File
 
 class AnalyzeFragment : Fragment() {
 
@@ -54,7 +55,6 @@ class AnalyzeFragment : Fragment() {
 
     //audio
     private var mediaRecorder: MediaRecorder? = null
-    private var audioFile: File? = null
     private var tempFile: File? = null
 
     private val REQUEST_CODE_RECORD_AUDIO = 1
@@ -66,16 +66,17 @@ class AnalyzeFragment : Fragment() {
     private lateinit var handlerTimer: Handler
     private lateinit var runnable: Runnable
 
-//    private lateinit var receiver: BroadcastReceiver
+    private var receiver: BroadcastReceiver? = null
 
     private val requestPermissionLauncher =
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
             if (isGranted) {
-                Toast.makeText(requireContext(), "Notifications permission granted", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Notifikasi diizinkan", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(requireContext(), "Notifications permission rejected", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Izin notifikasi ditolak", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
 
@@ -115,16 +116,25 @@ class AnalyzeFragment : Fragment() {
 
 //        button
         binding.btnMultiFunction.text = getString(R.string.start_record)
-        binding.btnMultiFunction.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+        binding.btnMultiFunction.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.black
+            )
+        )
         binding.btnMultiFunction.setBackgroundResource(R.drawable.btn_gray)
 
 //        mic
         binding.imgMic.setImageResource(R.drawable.mic_off)
 
+        binding.imgMic.setOnClickListener {
+            handleButtonClick()
+        }
         binding.btnMultiFunction.setOnClickListener {
             handleButtonClick()
         }
     }
+
     private fun checkAudioPermission() {
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
@@ -141,9 +151,10 @@ class AnalyzeFragment : Fragment() {
             performAction()
         }
     }
+
     private fun performAction() {
         // Your logic when permission is granted
-        Toast.makeText(requireContext(), "Permission granted!", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), "Izin merekam diberikan!", Toast.LENGTH_SHORT).show()
     }
 
     override fun onRequestPermissionsResult(
@@ -160,7 +171,7 @@ class AnalyzeFragment : Fragment() {
             } else {
                 Toast.makeText(
                     requireContext(),
-                    "Permission denied. Please grant permission to proceed.",
+                    "Izin merekam ditolak, tolong izinkan!",
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -218,7 +229,12 @@ class AnalyzeFragment : Fragment() {
                 val fileName = binding.etTopic.text.toString()
                 if (fileName.isNotEmpty()) {
                     binding.btnMultiFunction.text = getString(R.string.stop)
-                    binding.btnMultiFunction.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+                    binding.btnMultiFunction.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.white
+                        )
+                    )
                     binding.btnMultiFunction.setBackgroundResource(R.drawable.btn_red)
                     binding.imgMic.setImageResource(R.drawable.mic_on)
                     startRecording(fileName)
@@ -227,23 +243,39 @@ class AnalyzeFragment : Fragment() {
                     isRunning = true
                     startStopwatch()
                     state = 1
-                }else{
-                    Toast.makeText(requireContext(), "Mohon masukkan topic terlebih dahulu", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Mohon masukkan topik terlebih dahulu",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     state = 0
                 }
 
             }
+
             1 -> {
                 binding.btnMultiFunction.text = getString(R.string.analyze)
-                binding.btnMultiFunction.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
+                binding.btnMultiFunction.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.red
+                    )
+                )
                 binding.btnMultiFunction.setBackgroundResource(R.drawable.btn_gray)
                 binding.imgMic.setImageResource(R.drawable.mic_off)
                 stopRecording()
                 state = 2
             }
+
             2 -> {
                 binding.btnMultiFunction.text = getString(R.string.start_record)
-                binding.btnMultiFunction.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+                binding.btnMultiFunction.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.black
+                    )
+                )
                 sendDataToApi()
                 elapsedTime = 0L // Reset waktu
                 binding.tvTimer.text = "00:00"
@@ -294,27 +326,29 @@ class AnalyzeFragment : Fragment() {
         return String.format("%02d:%02d", minutes, seconds)
     }
 
-
     private fun stopRecording() {
         try {
             mediaRecorder?.apply {
                 stop()
                 release()
             }
-            // Menghentikan Stopwatch
             isRunning = false
             handlerTimer.removeCallbacks(runnable)
             mediaRecorder = null
             Toast.makeText(requireContext(), "Recording stopped", Toast.LENGTH_LONG).show()
         } catch (e: Exception) {
             e.printStackTrace()
-            Toast.makeText(requireContext(), "Gagal menghentikan perekaman", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), "Gagal menghentikan perekaman", Toast.LENGTH_LONG)
+                .show()
         }
     }
 
+
     private fun sendDataToApi() {
         val topic = binding.etTopic.text.toString()
-        val deviceId = SharedPreferencesHelper.getFromSharedPreferences(requireContext(), "device_id") ?: "unknown_device"
+        val deviceId =
+            SharedPreferencesHelper.getFromSharedPreferences(requireContext(), "device_id")
+                ?: "unknown_device"
         val userId = UserSession.getUserId(requireContext()) ?: ""
         if (tempFile == null || !tempFile!!.exists()) {
             Toast.makeText(requireContext(), "File audio tidak ditemukan", Toast.LENGTH_LONG).show()
@@ -323,10 +357,10 @@ class AnalyzeFragment : Fragment() {
 
         val serviceIntent = Intent(requireContext(), UploadForegroundService::class.java).apply {
             putExtra(UploadForegroundService.EXTRA_TOPIC, topic)
-            if (userId.isEmpty()){
+            if (userId.isEmpty()) {
                 putExtra(UploadForegroundService.EXTRA_DEVICE_ID, deviceId)
                 Log.d("ServiceIntent", "Mengirim deviceId: $deviceId")
-            }else {
+            } else {
                 putExtra(UploadForegroundService.EXTRA_USER_ID, userId)
                 Log.d("ServiceIntent", "Mengirim deviceId: $userId")
             }
@@ -335,56 +369,170 @@ class AnalyzeFragment : Fragment() {
 
         val alertDialog = AlertDialog.Builder(requireContext())
             .setTitle("Sedang Menjalankan Proses")
-            .setMessage("Proses analisis sedang berlangsung, cek notifikasi untuk melihat hasil analisis")
+            .setIcon(R.drawable.ic_kaizen)
+            .setMessage(
+                "Proses analisis sedang berlangsung, anda bisa menunggu sambil meninggalkalkan aplikasi tetapi " +
+                        "jangan menghapusnya dari background. Cek notifikasi untuk melihat hasil analisis"
+            )
             .setCancelable(false) // Tidak bisa ditutup oleh pengguna
             .create()
         alertDialog.show()
 
-        val receiver = object : BroadcastReceiver() {
+//        receiver = object : BroadcastReceiver() {
+//            override fun onReceive(context: Context, intent: Intent) {
+//                val result: Pair<Score, String>? =
+//                    intent.getSerializableExtra("result") as? Pair<Score, String>
+//                alertDialog.dismiss()
+//
+//                if (result != null) {
+//                    val (score, message) = result
+//                    val bundle = Bundle().apply {
+//                        putParcelable("score", score)
+//                        putString("analyze_message", message)
+//                    }
+//                    val pendingIntent = NavDeepLinkBuilder(requireContext())
+//                        .setGraph(R.navigation.mobile_navigation)
+//                        .setDestination(R.id.analyzeResultFragment)
+//                        .setArguments(bundle)
+//                        .createPendingIntent()
+//
+//                    val notificationManager =
+//                        requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+//
+//                    val notification =
+//                        NotificationCompat.Builder(requireContext(), "analysis_channel")
+//                            .setSmallIcon(R.drawable.ic_notifications_black_24dp)
+//                            .setContentTitle("Analisis Selesai")
+//                            .setContentText("Klik untuk melihat hasil analisis")
+//                            .setContentIntent(pendingIntent)
+//                            .setAutoCancel(true)
+//                            .build()
+//
+//                    notificationManager.notify(2, notification)
+//                } else {
+//                    AlertDialog.Builder(requireContext())
+//                        .setTitle("Analisis Gagal")
+//                        .setMessage("Terjadi kesalahan saat menganalisis data. Silakan coba lagi.")
+//                        .setPositiveButton("OK") { dialog, _ ->
+//                            dialog.dismiss()
+//                        }
+//                        .create()
+//                        .show()
+//
+//                    Toast.makeText(requireContext(), "Gagal menganalisis data", Toast.LENGTH_LONG)
+//                        .show()
+//                }
+//                // Unregister receiver setelah tugas selesai
+//                LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(this)
+//                receiver = null
+//            }
+//        }
+
+        receiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
-                val result: Pair<Score, String>? = intent.getSerializableExtra("result") as? Pair<Score, String>
-                alertDialog.dismiss()
+                when (intent.action) {
+                    "ANALYZE_RESULT" -> {
+                        val result: Pair<Score, String>? =
+                            intent.getSerializableExtra("result") as? Pair<Score, String>
+                        alertDialog.dismiss()
 
+                        if (result != null) {
+                            val (score, message) = result
+                            val bundle = Bundle().apply {
+                                putParcelable("score", score)
+                                putString("analyze_message", message)
+                            }
+                            val pendingIntent = NavDeepLinkBuilder(requireContext())
+                                .setGraph(R.navigation.mobile_navigation)
+                                .setDestination(R.id.analyzeResultFragment)
+                                .setArguments(bundle)
+                                .createPendingIntent()
 
-                if (result != null) {
-                    val (score, message) = result
-                    val bundle = Bundle().apply {
-                        putParcelable("score", score)
-                        putString("analyze_message", message)
+                            val notificationManager =
+                                requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+                            val notification =
+                                NotificationCompat.Builder(requireContext(), "analysis_channel")
+                                    .setSmallIcon(R.drawable.ic_notifications_black_24dp)
+                                    .setContentTitle("Analisis Selesai")
+                                    .setContentText("Klik untuk melihat hasil analisis")
+                                    .setContentIntent(pendingIntent)
+                                    .setAutoCancel(true)
+                                    .build()
+
+                            notificationManager.notify(2, notification)
+
+                            // Tampilkan dialog berhasil
+                            AlertDialog.Builder(requireContext())
+                                .setTitle("Analisis Berhasil")
+                                .setIcon(R.drawable.ic_kaizen)
+                                .setMessage("Hasil analisis sudah tersedia. Apakah Anda ingin melihat hasilnya?")
+                                .setPositiveButton("Lihat Hasil") { dialog, _ ->
+                                    dialog.dismiss()
+
+                                    // Navigasi ke AnalyzeResultFragment
+                                    val bundle = Bundle().apply {
+                                        putParcelable("score", score)
+                                        putString("analyze_message", message)
+                                    }
+                                    findNavController().navigate(
+                                        R.id.analyzeResultFragment,
+                                        bundle
+                                    )
+                                }
+                                .create()
+                                .show()
+                        } else {
+                            // Fallback error handling
+                            showFailureDialog()
+                        }
                     }
-                    val pendingIntent = NavDeepLinkBuilder(requireContext())
-                        .setGraph(R.navigation.mobile_navigation)
-                        .setDestination(R.id.analyzeResultFragment)
-                        .setArguments(bundle)
-                        .createPendingIntent()
 
-                    val notificationManager = requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                    "ANALYZE_RESULT_FAILURE" -> {
+                        // Tutup dialog "proses" jika masih ditampilkan
+                        alertDialog.dismiss()
 
-                    val notification = NotificationCompat.Builder(requireContext(), "analysis_channel")
-                        .setSmallIcon(R.drawable.ic_notifications_black_24dp)
-                        .setContentTitle("Analisis Selesai")
-                        .setContentText("Klik untuk melihat hasil analisis")
-                        .setContentIntent(pendingIntent)
-                        .setAutoCancel(true)
-                        .build()
-
-                    notificationManager.notify(2, notification)
-                } else {
-
-                    Toast.makeText(requireContext(), "Gagal menganalisis data", Toast.LENGTH_LONG).show()
+                        // Tampilkan dialog "gagal"
+                        showFailureDialog()
+                    }
                 }
+
+                // Unregister receiver setelah tugas selesai
+                LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(this)
+                receiver = null
             }
         }
 
-        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(receiver, IntentFilter("ANALYZE_RESULT"))
+        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(
+            receiver!!,
+            IntentFilter().apply {
+                addAction("ANALYZE_RESULT")
+                addAction("ANALYZE_RESULT_FAILURE")
+            }
+        )
+
 
         ContextCompat.startForegroundService(requireContext(), serviceIntent)
     }
 
+    private fun showFailureDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Analisis Gagal")
+            .setIcon(R.drawable.ic_kaizen)
+            .setMessage("Terjadi kesalahan saat menganalisis data. Silakan coba lagi.")
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+            .show()
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-//        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(receiver)
+        receiver?.let {
+            LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(it)
+            receiver = null
+        }
     }
 }

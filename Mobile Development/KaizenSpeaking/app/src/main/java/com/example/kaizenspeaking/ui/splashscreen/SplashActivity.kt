@@ -3,26 +3,26 @@ package com.example.kaizenspeaking.ui.splashscreen
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.widget.VideoView
-import androidx.appcompat.app.AppCompatActivity
-import com.example.kaizenspeaking.MainActivity
-import com.example.kaizenspeaking.R
 import android.os.Handler
 import android.os.Looper
 import android.view.WindowManager
+import android.widget.VideoView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import com.example.kaizenspeaking.MainActivity
+import com.example.kaizenspeaking.R
 
 @Suppress("DEPRECATION")
 class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         // Full screen immersive mode
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
-
         setContentView(R.layout.activity_splash)
 
         val videoView = findViewById<VideoView>(R.id.videoView)

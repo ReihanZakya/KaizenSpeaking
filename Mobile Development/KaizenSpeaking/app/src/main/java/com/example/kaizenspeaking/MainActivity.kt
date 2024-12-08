@@ -11,6 +11,7 @@ import android.view.Window
 import android.widget.Button
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -27,12 +28,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
         // Splash screen setup
         installSplashScreen().setKeepOnScreenCondition { show }
         Handler(Looper.getMainLooper()).postDelayed({
             show = false
         }, 2000)
+
+        supportActionBar?.hide()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -50,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         // Check login status and show dialog if not logged in
-        checkLoginStatus()
+//        checkLoginStatus()
     }
 
     private fun checkLoginStatus() {
@@ -75,8 +79,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         buttonClose.setOnClickListener {
-            // TODO: Implement Google Sign-In logic
-            // Use Google Sign-In API to handle authentication
             dialog.dismiss()
         }
 

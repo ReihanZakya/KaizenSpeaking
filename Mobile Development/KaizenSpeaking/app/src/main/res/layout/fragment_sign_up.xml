@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.auth.SignUpFragment"
+    tools:context=".ui.auth.SignUpActivity"
     android:background="@color/red">
 
     <androidx.cardview.widget.CardView
@@ -35,7 +35,8 @@
                 android:layout_height="36dp"
                 android:layout_centerInParent="true"
                 android:elevation="100dp"
-                android:indeterminate="true"/>
+                android:indeterminate="true"
+                android:indeterminateTint="@color/red"/>
 
         </RelativeLayout>
 
@@ -245,9 +246,9 @@
                     android:id="@+id/imageView2"
                     android:layout_width="22dp"
                     android:layout_height="23dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/button2"
+                    app:layout_constraintBottom_toBottomOf="@id/btnSignUpGoogle"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/button2"
+                    app:layout_constraintTop_toTopOf="@id/btnSignUpGoogle"
                     app:srcCompat="@drawable/ic_google" />
 
                 <TextView

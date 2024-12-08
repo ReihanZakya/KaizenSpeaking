@@ -1,7 +1,7 @@
 package com.example.kaizenspeaking.ui.auth.utils
 
-import org.json.JSONObject
 import org.json.JSONException
+import org.json.JSONObject
 
 object SimplifiedMessage {
     fun get(stringMessage: String): HashMap<String, String> {

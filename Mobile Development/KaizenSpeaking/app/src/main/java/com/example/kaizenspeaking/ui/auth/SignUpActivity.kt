@@ -13,7 +13,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.example.kaizenspeaking.MainActivity
@@ -27,7 +26,8 @@ import com.example.kaizenspeaking.ui.auth.view_model.SignUpActivityViewModel
 import com.example.kaizenspeaking.ui.auth.view_model.SignUpActivityViewModelFactory
 
 
-class SignUpActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusChangeListener, View.OnKeyListener, TextWatcher {
+class SignUpActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusChangeListener,
+    View.OnKeyListener, TextWatcher {
     private lateinit var binding: ActivitySignUpBinding
     private lateinit var mViewModel: SignUpActivityViewModel
 
@@ -38,7 +38,10 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
 
         setupListeners()
 
-        mViewModel = ViewModelProvider(this, SignUpActivityViewModelFactory(AuthRepository(APIService.getService()),application)).get(SignUpActivityViewModel::class.java)
+        mViewModel = ViewModelProvider(
+            this,
+            SignUpActivityViewModelFactory(AuthRepository(APIService.getService()), application)
+        ).get(SignUpActivityViewModel::class.java)
         setupObservers()
     }
 
@@ -75,7 +78,7 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
     }
 
     private fun handleGoogleSignUp() {
-        Toast.makeText(this, "Google Sign-Up Coming Soon", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Dalam Pengembangan", Toast.LENGTH_SHORT).show()
     }
 
     private fun navigateToSignIn() {
@@ -100,7 +103,7 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
             val formErrorKeys = arrayOf("name", "email", "password")
             val message = StringBuilder()
 
-            it.map{ entry ->
+            it.map { entry ->
                 if (formErrorKeys.contains(entry.key)) {
                     when (entry.key) {
                         "name" -> {
@@ -109,12 +112,14 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
                                 error = entry.value
                             }
                         }
+
                         "email" -> {
                             binding.etEmailTil.apply {
                                 isErrorEnabled = true
                                 error = entry.value
                             }
                         }
+
                         "password" -> {
                             binding.etPasswordTil.apply {
                                 isErrorEnabled = true
@@ -128,11 +133,10 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
                 }
                 if (message.isNotEmpty()) {
                     AlertDialog.Builder(this)
-                        .setIcon(R.drawable.ic_info)
-                        .setTitle("INFORMATION")
+                        .setIcon(R.drawable.ic_kaizen)
+                        .setTitle("INFORMATION!")
                         .setMessage(message)
-                        .setPositiveButton("OK") { dialog, _ -> dialog!!.dismiss() }
-                        .show()
+                        .setPositiveButton("OK") { dialog, _ -> dialog!!.dismiss() }.show()
                 }
             }
 
@@ -191,7 +195,7 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
             errorMessage = "Password Harus Diisi"
         } else if (value.length < 8) {
             errorMessage = "Password Harus Lebih dari 8 Karakter"
-        }else if (!value.any { it.isUpperCase() }) {
+        } else if (!value.any { it.isUpperCase() }) {
             errorMessage = "Password Harus Mengandung Minimal 1 Huruf Besar"
         }
 
@@ -259,17 +263,19 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
                         validateFullName()
                     }
                 }
+
                 R.id.etEmail -> {
-                    if (hasFocus){
-                        if (binding.etEmailTil.isErrorEnabled){
+                    if (hasFocus) {
+                        if (binding.etEmailTil.isErrorEnabled) {
                             binding.etEmailTil.isErrorEnabled = false
                         }
-                    }else{
-                        if(validateEmail()){
+                    } else {
+                        if (validateEmail()) {
                             ValidateEmailBody(binding.etEmail.text!!.toString())
                         }
                     }
                 }
+
                 R.id.etPassword -> {
                     if (hasFocus) {
                         if (binding.etPasswordTil.isErrorEnabled) {
@@ -286,6 +292,7 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
                         validatePassword()
                     }
                 }
+
                 R.id.etConfirmPassword -> {
                     if (hasFocus) {
                         if (binding.etConfirmPasswordTil.isErrorEnabled) {
@@ -316,7 +323,15 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
 
     private fun onSubmit() {
         if (validate()) {
-           mViewModel.registerUser(RegisterBody(binding.etName.text!!.toString(),binding.etEmail.text!!.toString(),binding.etEmail.text!!.toString(),binding.etPassword.text!!.toString(),"user"))
+            mViewModel.registerUser(
+                RegisterBody(
+                    binding.etName.text!!.toString(),
+                    binding.etEmail.text!!.toString(),
+                    binding.etEmail.text!!.toString(),
+                    binding.etPassword.text!!.toString(),
+                    "user"
+                )
+            )
 
         }
     }
@@ -336,19 +351,28 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        if (validatePassword(shouldUpdateView = false) &&
-            validateConfirmPassword(shouldUpdateView = false) &&
-            validatePasswordAndConfirmPassword(shouldUpdateView = false)) {
+        if (validatePassword(shouldUpdateView = false) && validateConfirmPassword(shouldUpdateView = false) && validatePasswordAndConfirmPassword(
+                shouldUpdateView = false
+            )
+        ) {
             binding.etConfirmPasswordTil.apply {
                 if (isErrorEnabled) isErrorEnabled = false
                 setStartIconDrawable(R.drawable.ic_check)
                 setStartIconTintList(ColorStateList.valueOf(Color.GREEN))
             }
         } else {
-            if (binding.etConfirmPasswordTil.startIconDrawable != null)
-                binding.etConfirmPasswordTil.startIconDrawable = null
+            if (binding.etConfirmPasswordTil.startIconDrawable != null) binding.etConfirmPasswordTil.startIconDrawable =
+                null
         }
     }
 
     override fun afterTextChanged(s: Editable?) {}
+
+    @Suppress("OVERRIDE_DEPRECATION")
+    override fun onBackPressed() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
+        super.onBackPressed()
+    }
 }

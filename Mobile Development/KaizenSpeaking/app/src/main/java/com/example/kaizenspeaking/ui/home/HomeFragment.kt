@@ -8,23 +8,17 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.kaizenspeaking.R
 import com.example.kaizenspeaking.databinding.FragmentHomeBinding
 import com.example.kaizenspeaking.ui.auth.SignInActivity
-import com.example.kaizenspeaking.ui.home_signed.HomeSignedFragment
-import com.example.kaizenspeaking.ui.instructions.OnboardingActivity
-import com.example.kaizenspeaking.utils.UserSession
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+
     //test
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         (requireActivity() as AppCompatActivity).supportActionBar?.hide()
         val homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
@@ -47,7 +41,8 @@ class HomeFragment : Fragment() {
 
         // Set onClickListener for accountName
         binding.accountName.setOnClickListener {
-            navigateToAuthentication() }
+            navigateToAuthentication()
+        }
 
         binding.accountButton.setOnClickListener {
             navigateToAuthentication()
@@ -57,7 +52,7 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-    private fun  navigateToAuthentication() {
+    private fun navigateToAuthentication() {
         val intent = Intent(requireContext(), SignInActivity::class.java)
         startActivity(intent)
     }

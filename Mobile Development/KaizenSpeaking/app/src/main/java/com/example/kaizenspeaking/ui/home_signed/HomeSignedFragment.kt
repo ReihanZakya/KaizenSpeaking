@@ -11,7 +11,10 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -35,6 +38,9 @@ import com.github.mikephil.charting.data.LineDataSet
 import kotlin.getValue
 
 class HomeSignedFragment : Fragment() {
+    private var backPressedTime: Long = 0
+    private val backPressDelay: Long = 2000
+    private var toast: Toast? = null
     private val repository: Repository by lazy {
         Repository.getInstance(ApiConfig.getApiService())
     }
@@ -53,6 +59,7 @@ class HomeSignedFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         (requireActivity() as AppCompatActivity).supportActionBar?.hide()
         homeSignedViewModel = ViewModelProvider(this)[HomeSignedViewModel::class.java]
         _binding = FragmentHomeSignedBinding.inflate(inflater, container, false)
@@ -108,14 +115,19 @@ class HomeSignedFragment : Fragment() {
         updateProgressChartVisibility()
 
         historyViewModel.isLoading.observe(viewLifecycleOwner, { isLoading ->
-            if (isLoading) {
-                binding.loadingLayout.visibility = View.VISIBLE
-                binding.progressChartLayout.visibility = View.INVISIBLE
-            } else {
+            if (!UserSession.isLoggedIn(requireContext())) {
                 binding.loadingLayout.visibility = View.GONE
-                binding.progressChartLayout.visibility = View.VISIBLE
+            } else {
+                if (isLoading) {
+                    binding.loadingLayout.visibility = View.VISIBLE
+                    binding.progressChartLayout.visibility = View.INVISIBLE
+                } else {
+                    binding.loadingLayout.visibility = View.GONE
+                    binding.progressChartLayout.visibility = View.VISIBLE
+                }
             }
         })
+
         historyViewModel.getAllHistory(
             Authenticator.getToken(requireContext()) ?: "",
             Authenticator.getUserId(requireContext()) ?: ""
@@ -133,8 +145,8 @@ class HomeSignedFragment : Fragment() {
                                 val averageEntries =
                                     calculateAverageEntries(entriesA, entriesB, entriesC, entriesD)
                                 val averageDataSet =
-                                    LineDataSet(averageEntries, "Nilai Rata-Rata").apply {
-                                        color = resources.getColor(android.R.color.holo_purple)
+                                    LineDataSet(averageEntries, getString(R.string.simple_value)).apply {
+                                        color = resources.getColor(android.R.color.holo_red_dark)
                                     }
                                 val lineData = LineData(averageDataSet)
                                 setupChart(lineData)
@@ -147,6 +159,27 @@ class HomeSignedFragment : Fragment() {
             }
         }
 
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    val currentTime = System.currentTimeMillis()
+
+                    if (currentTime - backPressedTime < backPressDelay) {
+                        toast?.cancel() // Batalkan toast jika ada
+                        requireActivity().finishAffinity() // Keluar dari aplikasi
+                    } else {
+                        backPressedTime = currentTime
+                        toast = Toast.makeText(
+                            requireContext(),
+                            "Tekan Sekali Lagi untuk Keluar",
+                            Toast.LENGTH_SHORT
+                        )
+                        toast?.show()
+                    }
+                }
+            }
+        )
     }
 
     private fun setupRecyclerView() {
@@ -172,19 +205,19 @@ class HomeSignedFragment : Fragment() {
     private fun observeChartData() {
         historyViewModel.entriesA.observe(viewLifecycleOwner, { entriesA ->
             val dataSetA = LineDataSet(entriesA, "Kejelasan").apply {
-                color = resources.getColor(android.R.color.holo_blue_light)
+                color = resources.getColor(android.R.color.holo_blue_dark)
             }
             historyViewModel.entriesB.observe(viewLifecycleOwner, { entriesB ->
                 val dataSetB = LineDataSet(entriesB, "Diksi").apply {
-                    color = resources.getColor(android.R.color.holo_green_light)
+                    color = resources.getColor(android.R.color.holo_green_dark)
                 }
                 historyViewModel.entriesC.observe(viewLifecycleOwner, { entriesC ->
                     val dataSetC = LineDataSet(entriesC, "Kelancaran").apply {
-                        color = resources.getColor(android.R.color.holo_red_light)
+                        color = resources.getColor(android.R.color.holo_red_dark)
                     }
                     historyViewModel.entriesD.observe(viewLifecycleOwner, { entriesD ->
                         val dataSetD = LineDataSet(entriesD, "Emosi").apply {
-                            color = resources.getColor(android.R.color.holo_orange_light)
+                            color = resources.getColor(android.R.color.holo_orange_dark)
                         }
                         val lineData = LineData(dataSetA, dataSetB, dataSetC, dataSetD)
                         setupChart(lineData)

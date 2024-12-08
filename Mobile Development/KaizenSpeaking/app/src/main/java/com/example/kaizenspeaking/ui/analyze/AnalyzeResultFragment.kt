@@ -1,5 +1,6 @@
 package com.example.kaizenspeaking.ui.analyze
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -18,9 +19,15 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import android.widget.Toast
 import android.widget.Toolbar
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.example.kaizenspeaking.MainActivity
 import com.example.kaizenspeaking.R
 import com.example.kaizenspeaking.ui.analyze.data.response.Score
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 
 
 @Suppress("DEPRECATION")
@@ -46,17 +53,44 @@ class AnalyzeResultFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as AppCompatActivity).supportActionBar?.hide()
+        // Delay hiding the Action Bar after the fragment's view is fully created
+        Handler(Looper.getMainLooper()).post {
+            (activity as AppCompatActivity).supportActionBar?.hide()
+        }
 
-        hideBottomNavigation()
+        // Hide Bottom Navigation after fragment view is created
+        Handler(Looper.getMainLooper()).post {
+            hideBottomNavigation()
+        }
 
         // Toolbar setup
         val toolbar: Toolbar = view.findViewById(R.id.toolbar)
         toolbar.setNavigationOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
+            // Start MainActivity when toolbar is pressed
+            val intent = Intent(requireContext(), MainActivity::class.java)
+            startActivity(intent)
+
+//            // Show Bottom Navigation again
+//            showBottomNavigation()
+
+            // Optionally, finish current activity if you don't want to keep it in the back stack
+            requireActivity().finish()
         }
 
-        hideBottomNavigation()
+        // Handle back button press
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Start MainActivity when back button is pressed
+                val intent = Intent(requireContext(), MainActivity::class.java)
+                startActivity(intent)
+
+//                // Show Bottom Navigation again
+//                showBottomNavigation()
+
+                // Optionally, finish current activity if you don't want to keep it in the back stack
+                requireActivity().finish()
+            }
+        })
 
         val score = arguments?.getParcelable<Score>("score")
         val analyzeMessage = arguments?.getString("analyze_message")
@@ -70,6 +104,36 @@ class AnalyzeResultFragment : Fragment() {
         } else {
             Toast.makeText(requireContext(), "Data tidak ditemukan", Toast.LENGTH_SHORT).show()
         }
+
+        barChart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
+            override fun onValueSelected(e: Entry?, h: Highlight?) {
+                e?.let { entry ->
+                    val (title, description) = when (entry.x.toInt()) {
+                        0 -> getString(R.string.matrix_kejelasan) to getString(R.string.description_matrix_kejelasan)
+                        1 -> getString(R.string.matrix_diksi) to getString(R.string.description_matrix_diksi)
+                        2 -> getString(R.string.matrix_kelancaran) to getString(R.string.description_matrix_kelancaran)
+                        3 -> getString(R.string.matrix_emosi) to getString(R.string.description_matrix_emosi)
+                        else -> "Informasi" to "Deskripsi tidak tersedia"
+                    }
+
+                    // Tampilkan AlertDialog
+                    AlertDialog.Builder(requireContext())
+                        .setTitle(title) // Set judul dialog
+                        .setMessage(
+                            Html.fromHtml(
+                                description,
+                                Html.FROM_HTML_MODE_LEGACY
+                            )
+                        ) // Render HTML pada deskripsi
+                        .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() } // Tombol OK
+                        .show()
+                }
+            }
+
+            override fun onNothingSelected() {
+                // Tidak melakukan apa-apa jika tidak ada yang dipilih
+            }
+        })
 
         // Auto-scroll to "Hasil Analisis" section after 3 seconds
         Handler(Looper.getMainLooper()).postDelayed({
@@ -110,7 +174,7 @@ class AnalyzeResultFragment : Fragment() {
         if (isInList) {
             finalText.append("<ul>${listLines.joinToString("")}</ul>")
         }
-        return "<div style=\"text-align: justify;\">${finalText.toString()}</div>"
+        return "<div style=\"text-align: justify;\">$finalText</div>"
     }
 
     private fun setupBarChart(score: Score?) {

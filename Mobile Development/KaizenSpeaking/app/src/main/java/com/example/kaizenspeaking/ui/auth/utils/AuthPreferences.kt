@@ -10,7 +10,8 @@ object AuthPreferences {
     private const val KEY_USER_ID = "user_id"
 
     fun saveAuthData(context: Context, accessToken: String, userId: String) {
-        val sharedPreferences: SharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences =
+            context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
         editor.putString(KEY_ACCESS_TOKEN, accessToken)
         editor.putString(KEY_USER_ID, userId)
@@ -18,7 +19,8 @@ object AuthPreferences {
     }
 
     fun logAuthData(context: Context) {
-        val sharedPreferences: SharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences =
+            context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         val accessToken: String? = sharedPreferences.getString(KEY_ACCESS_TOKEN, null)
         val userId: String? = sharedPreferences.getString(KEY_USER_ID, null)
         Log.d("AuthPreferences", "Access Token: $accessToken")

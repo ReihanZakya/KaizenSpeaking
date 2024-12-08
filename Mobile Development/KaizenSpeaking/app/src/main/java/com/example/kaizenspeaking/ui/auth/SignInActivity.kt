@@ -9,10 +9,10 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.example.kaizenspeaking.MainActivity
-import com.example.kaizenspeaking.MainActivityLogin
 import com.example.kaizenspeaking.R
 import com.example.kaizenspeaking.databinding.ActivitySignInBinding
 import com.example.kaizenspeaking.ui.auth.data.LoginBody
@@ -32,6 +32,7 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignInBinding.inflate(LayoutInflater.from(this))
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         setContentView(binding.root)
 
         binding.btnGoogle.setOnClickListener(this)
@@ -42,7 +43,6 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
         binding.etEmail.onFocusChangeListener = this
         binding.etPassword.onFocusChangeListener = this
         binding.etPassword.setOnKeyListener(this)
-
 
         mViewModel = ViewModelProvider(
             this,
@@ -59,6 +59,7 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
+
     }
 
     private fun setupObservers() {
@@ -111,29 +112,15 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
         }
     }
 
-    private fun navigateToHomeSignedFragment(user: User) {
-        // Set login session
-        UserSession.setLoggedIn(this, true)
-
-        val intent = Intent(this, MainActivityLogin::class.java)
-        intent.putExtra("USER_NAME", user.full_name)
-        intent.putExtra("EMAIL", user.email)
-        intent.putExtra("id", user.id)
-        intent.putExtra("NICK_NAME", user.name)
-        startActivity(intent)
-        finish()
-    }
-
     private fun navigateToHome() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
     }
 
-
     private fun handleLoginErrors(errorMap: HashMap<String, String>?) {
         errorMap?.let { errors ->
-            val formErrorKeys = arrayOf("email", "password")
+            arrayOf("email", "password")
             val generalErrorMessage = StringBuilder()
 
             errors.forEach { (key, value) ->
@@ -165,8 +152,8 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
 
     private fun showGeneralErrorDialog(message: String) {
         AlertDialog.Builder(this)
-            .setIcon(R.drawable.ic_info)
-            .setTitle("LOGIN ERROR")
+            .setIcon(R.drawable.ic_kaizen)
+            .setTitle("LOGIN ERROR!")
             .setMessage(message)
             .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
             .show()
@@ -226,12 +213,20 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
                     submitForm()
                 }
 
+                R.id.btnGoogle -> {
+                    handleGoogleSignUp()
+                }
+
                 R.id.btnSignUp -> {
                     val intent = Intent(this, SignUpActivity::class.java)
                     startActivity(intent)
                 }
             }
         }
+    }
+
+    private fun handleGoogleSignUp() {
+        Toast.makeText(this, "Dalam Pengembangan", Toast.LENGTH_SHORT).show()
     }
 
     override fun onFocusChange(view: View?, hasFocus: Boolean) {
@@ -285,5 +280,13 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
             submitForm()
         }
         return false
+    }
+
+    @Suppress("OVERRIDE_DEPRECATION")
+    override fun onBackPressed() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
+        super.onBackPressed()
     }
 }

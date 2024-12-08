@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.auth.SignInFragment"
+    tools:context=".ui.auth.SignInActivity"
     android:background="@color/red">
 
     <androidx.cardview.widget.CardView
@@ -35,7 +35,8 @@
             android:layout_height="36dp"
             android:layout_centerInParent="true"
             android:elevation="100dp"
-            android:indeterminate="true"/>
+            android:indeterminate="true"
+            android:indeterminateTint="@color/red"/>
 
     </RelativeLayout>
 

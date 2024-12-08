@@ -95,9 +95,12 @@ class UploadForegroundService : Service() {
                         navDeepLinkIntent
                     )
                     val notificationManager =
-                        getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                        getSystemService(NOTIFICATION_SERVICE) as NotificationManager
                     notificationManager.notify(NOTIFICATION_ID, finishedNotification)
                 } else {
+                    val failureIntent = Intent("ANALYZE_RESULT_FAILURE")
+                    LocalBroadcastManager.getInstance(this@UploadForegroundService).sendBroadcast(failureIntent)
+
                     showFailureNotification()
                 }
             } catch (e: Exception) {
@@ -165,7 +168,7 @@ class UploadForegroundService : Service() {
     private fun createNotificationChannels() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationManager =
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
             val uploadChannel = NotificationChannel(
                 CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_LOW
@@ -198,7 +201,7 @@ class UploadForegroundService : Service() {
             .setAutoCancel(true)
             .build()
 
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(2, failureNotification)
     }
 

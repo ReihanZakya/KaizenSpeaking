@@ -9,13 +9,13 @@ import retrofit2.HttpException
 
 class Repository private constructor(
     private val apiService: ApiService
-){
+) {
     suspend fun getAllHistory(token: String, userId: String): Result<List<DataItem>> {
         return withContext(Dispatchers.IO) {
             try {
                 val token = "Bearer $token"
                 val response = apiService.getHistory(token, userId)
-                if (response.status=="success") {
+                if (response.status == "success") {
                     Result.Success(response.data)
                 } else {
                     Result.Error(response.message)
