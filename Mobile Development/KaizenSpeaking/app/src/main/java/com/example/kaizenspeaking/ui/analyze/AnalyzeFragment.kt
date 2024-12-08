@@ -369,6 +369,7 @@ class AnalyzeFragment : Fragment() {
 
         val alertDialog = AlertDialog.Builder(requireContext())
             .setTitle("Sedang Menjalankan Proses")
+            .setIcon(R.drawable.ic_kaizen)
             .setMessage(
                 "Proses analisis sedang berlangsung, anda bisa menunggu sambil meninggalkalkan aplikasi tetapi " +
                         "jangan menghapusnya dari background. Cek notifikasi untuk melihat hasil analisis"
@@ -464,6 +465,7 @@ class AnalyzeFragment : Fragment() {
                             // Tampilkan dialog berhasil
                             AlertDialog.Builder(requireContext())
                                 .setTitle("Analisis Berhasil")
+                                .setIcon(R.drawable.ic_kaizen)
                                 .setMessage("Hasil analisis sudah tersedia. Apakah Anda ingin melihat hasilnya?")
                                 .setPositiveButton("Lihat Hasil") { dialog, _ ->
                                     dialog.dismiss()
@@ -516,6 +518,7 @@ class AnalyzeFragment : Fragment() {
     private fun showFailureDialog() {
         AlertDialog.Builder(requireContext())
             .setTitle("Analisis Gagal")
+            .setIcon(R.drawable.ic_kaizen)
             .setMessage("Terjadi kesalahan saat menganalisis data. Silakan coba lagi.")
             .setPositiveButton("OK") { dialog, _ ->
                 dialog.dismiss()

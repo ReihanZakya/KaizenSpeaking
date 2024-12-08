@@ -1,5 +1,6 @@
 package com.example.kaizenspeaking.ui.analyze
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -18,8 +19,10 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import android.widget.Toast
 import android.widget.Toolbar
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.example.kaizenspeaking.MainActivity
 import com.example.kaizenspeaking.R
 import com.example.kaizenspeaking.ui.analyze.data.response.Score
 import com.github.mikephil.charting.data.Entry
@@ -63,10 +66,31 @@ class AnalyzeResultFragment : Fragment() {
         // Toolbar setup
         val toolbar: Toolbar = view.findViewById(R.id.toolbar)
         toolbar.setNavigationOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
+            // Start MainActivity when toolbar is pressed
+            val intent = Intent(requireContext(), MainActivity::class.java)
+            startActivity(intent)
+
+//            // Show Bottom Navigation again
+//            showBottomNavigation()
+
+            // Optionally, finish current activity if you don't want to keep it in the back stack
+            requireActivity().finish()
         }
 
-        hideBottomNavigation()
+        // Handle back button press
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Start MainActivity when back button is pressed
+                val intent = Intent(requireContext(), MainActivity::class.java)
+                startActivity(intent)
+
+//                // Show Bottom Navigation again
+//                showBottomNavigation()
+
+                // Optionally, finish current activity if you don't want to keep it in the back stack
+                requireActivity().finish()
+            }
+        })
 
         val score = arguments?.getParcelable<Score>("score")
         val analyzeMessage = arguments?.getString("analyze_message")
