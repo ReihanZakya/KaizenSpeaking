@@ -36,7 +36,8 @@
                 android:layout_height="36dp"
                 android:layout_centerInParent="true"
                 android:elevation="100dp"
-                android:indeterminate="true" />
+                android:indeterminate="true"
+                android:indeterminateTint="?attr/colorPrimary" />
 
         </RelativeLayout>
 
@@ -121,7 +122,7 @@
                 android:ems="10"
                 android:hint="@string/input_email"
                 android:inputType="textEmailAddress"
-                android:textColorHint="@color/black"
+                android:textColorHint="@color/gray"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cardView"
@@ -147,7 +148,7 @@
                 android:ems="10"
                 android:hint="@string/input_password"
                 android:inputType="textPassword"
-                android:textColorHint="@color/black"
+                android:textColorHint="@color/gray"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/etEmailTil"
@@ -158,12 +159,12 @@
                     android:id="@+id/etPassword"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:inputType="text"
                     android:paddingVertical="12dp"
                     android:textColor="@color/black"
                     android:textSize="12sp"
                     tools:layout_editor_absoluteX="26dp"
-                    tools:layout_editor_absoluteY="191dp" />
+                    tools:layout_editor_absoluteY="191dp"
+                    android:inputType="textPassword"/>
             </com.google.android.material.textfield.TextInputLayout>
 
 

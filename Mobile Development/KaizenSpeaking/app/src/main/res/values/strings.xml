@@ -36,12 +36,12 @@
     <string name="text_instruction_3">Siapkan skrip atau poin utama agar pembicaraan terarah.</string>
     <string name="desc_instruction_3">Siapkan skrip atau poin-poin utama sebelum percakapan agar terarah, jelas, dan mudah dianalisis untuk hasil lebih efektif.</string>
     <string name="text_instruction_4">Pastikan anda memiliki waktu yang cukup untuk merekam tanpa gangguan.</string>
-    <string name="desc_instruction_4">Siapkan waktu cukup untuk merekam tanpa interupsi agar hasil analisis suara akurat dan <optimal class=""></optimal></string>
+    <string name="desc_instruction_4">Siapkan waktu cukup untuk merekam tanpa interupsi agar hasil analisis suara akurat dan optimal.</string>
     <string name="text_instruction_5">Posisikan diri dengan rileks dan nyaman</string>
-    <string name="desc_instruction_5">Siapkan skrip atau poin-poin utama sebelum percakapan agar terarah, jelas, dan mudah dianalisis untuk hasil lebih efektif.></string>
+    <string name="desc_instruction_5">Siapkan skrip atau poin-poin utama sebelum percakapan agar terarah, jelas, dan mudah dianalisis untuk hasil lebih efektif.</string>
     <string name="account_name"><![CDATA[Sign In >]]></string>
     <string name="article_title">Artikel</string>
-    <string name="article_description">Ayo baca artikel untuk menambah\nwawasan kamu</string>
+    <string name="article_description">Ayo baca artikel untuk menambah wawasan kamu</string>
     <string name="account">Account</string>
     <string name="searchArticle">Cari Artikel...</string>
     <string name="hallo">Hallo!</string>
@@ -69,6 +69,8 @@
         <item>Retorik Adalah: Seni Berbicara yang Efektif dan Meyakinkan</item>
         <item>Public Speaking: Arti, Metode, Manfaat, Tujuan, dan Cara Meningkatkan Skill-nya</item>
         <item>Pakai Cara Ini Supaya Kamu Pede Ngomong di Depan Umum!</item>
+        <item>Public Speaking itu Mudah</item>
+        <item>Public Speaking: Mengasah Kemampuan Berbicara untuk Membangun Karir Sukses</item>
     </string-array>
     <integer-array name="tempdata_article_image">
         <item>@drawable/tempdata_article_image1</item>
@@ -76,6 +78,8 @@
         <item>@drawable/tempdata_article_image3</item>
         <item>@drawable/tempdata_article_image4</item>
         <item>@drawable/tempdata_article_image5</item>
+        <item>@drawable/tempdata_article_image6</item>
+        <item>@drawable/tempdata_article_image7</item>
     </integer-array>
     <string-array name="tempdata_article_description">
         <item>Halo, sahabat pembelajar! Berbicara di depan umum sering kali dianggap sebagai momok yang menakutkan. Faktanya, sebuah survei oleh National Institute of Mental Health menunjukkan bahwa sekitar 73% orang merasa cemas ketika harus tampil di depan orang banyak. </item>
@@ -83,6 +87,10 @@
         <item>Retorika adalah seni berbicara secara efektif dan meyakinkan untuk mempengaruhi pendengar. Istilah ini berasal dari bahasa Yunani "rhetorike" yang berarti keterampilan berpidato. Dalam pengertian yang lebih luas, retorika mencakup kemampuan menggunakan bahasa lisan maupun tulisan untuk berkomunikasi secara persuasif.</item>
         <item>Sebelum membahas metode dan cara meningkatkannya, pertama-tama kita perlu mengulas definisi dari soft skill tersebut. Melansir laman ThoughtCo, public speaking adalah sebuah seni berpidato, di mana pembicara berkomunikasi dengan audiensnya melalui presentasi lisan.</item>
         <item>Pernahkah kamu mempresentasikan sesuatu di depan kelas? Atau pernahkah kamu berpidato untuk sebuah acara? Nah, itu adalah berbicara di depan umum. Berbicara di depan umum merupakan teknik berbicara yang dibutuhkan oleh pembicara agar bisa menarik semua perhatian audiens.</item>
+        <item>Penggunaan istilah public speaking ini sudah sangat lazim di telinga kita. Bukan istilah yang asing bagi masyarakat. Namun demikian ada beberapa definisi sebagai berikut: Menurut Webster’s Thrid International Dictionary, terdapat dua pengertian mengenai public speaking yakni “The art of process of making speeches in public” dan “ The art of effective oral communication with an audience. Jadi menurut kamus ini public speaking adalah bagian seni dari proses penyampaian pidato didepan publik dan seni ilmu komunikasj lisan secara efektif dengan melibatkan pendengar (audience).</item>
+        <item>
+            Kemampuan public speaking merupakan keterampilan komunikasi yang sangat berharga dan penting dalam kehidupan sehari-hari maupun di berbagai bidang profesional. Seorang yang memiliki kemampuan public speaking yang baik dapat menginspirasi, mempengaruhi, dan menyampaikan pesan dengan jelas kepada audiensnya. Apakah kamu ingin mengetahui lebih lanjut mengenai pentingnya public speaking? Simak artikel ini untuk mendapatkan pemahaman yang lebih mendalam.
+        </item>
     </string-array>
     <string-array name="tempdata_article_url">
         <item>https://www.kompasiana.com/salwaanur8965/671702aac925c424c2134192/cara-mudah-meningkatkan-kepercayaan-diri-saat-berada-di-depan-umum</item>
@@ -90,6 +98,10 @@
         <item>https://www.liputan6.com/feeds/read/5779700/retorik-adalah-seni-berbicara-yang-efektif-dan-meyakinkan</item>
         <item>https://glints.com/id/lowongan/kemampuan-public-speaking/</item>
         <item>https://www.generali.co.id/id/healthyliving/healthy-lifestyle/pakai-cara-ini-supaya-kamu-pede-ngomong-di-depan-umum</item>
+        <item>https://www.djkn.kemenkeu.go.id/kpknl-tangerang1/baca-artikel/14892/Public-Speaking-itu-Mudah.html</item>
+        <item>
+            https://www.lspr.ac.id/tujuan-keuntungan-public-speaking/
+        </item>
     </string-array>
     <!--    data dummy article-->
 

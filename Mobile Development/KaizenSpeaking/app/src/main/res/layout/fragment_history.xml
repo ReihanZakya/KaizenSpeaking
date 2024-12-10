@@ -133,7 +133,7 @@
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="4dp"
                     android:layout_marginBottom="32dp"
                     tools:listitem="@layout/item_training_session" />
 
@@ -153,6 +153,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:indeterminateTint="@android:color/holo_red_dark"/>
+            android:indeterminateTint="?attr/colorPrimary" />
     </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
