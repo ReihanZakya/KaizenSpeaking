@@ -1,32 +1,32 @@
 # Kaizen Speaking 🎤📱
 
-Kaizen Speaking is a mobile application designed to help users improve their communication and public speaking skills. This project was developed as part of the **Bangkit Academy 2024** by Google, GoTo, and Traveloka, a Capstone Project created with support from the partner company, **Kaizen Room**. 🚀
+Kaizen Speaking is a platform powered by AI designed to help individuals enhance their public speaking and communication skills. Many people struggle with speaking confidently because they lack structured, personalized feedback. Kaizen Speaking solves this problem by analyzing recorded speeches and providing detailed feedback on critical aspects like fluency, articulation, intonation, and emotional expression. This feedback empowers users to understand their strengths and weaknesses, making it easier for them to improve. 💬✨
+
+This project uses advanced machine learning models, including **Whisper** for speech-to-text transcription and **LLaMA** for analyzing speech quality. These models have been fine-tuned to work effectively with Indonesian speech, ensuring accurate and meaningful feedback. The app, developed with Kotlin, offers a simple and user-friendly experience, allowing users to view their performance results and track their progress in real-time. 📈📱
+
+The backend is hosted on **Google Cloud**, ensuring that the system is secure, scalable, and capable of processing data efficiently. Kaizen Speaking was created to make speech training more accessible and practical, especially for students and professionals looking to improve their communication skills. 🚀
 
 ---
 
-## Project Description 📖
-
-Kaizen Speaking provides a solution for anyone looking to enhance their speaking abilities, whether for presentations, speeches, or everyday interactions. With an interactive approach, the app integrates innovative features to train users in various aspects of communication. 💬🎙️
-
-### Key Features 🌟
+## Key Features 🌟
 
 1. **Self-Assessment:** 🎧  
-   Users can record their voice to assess clarity, word choice, fluency, and emotion. The app provides feedback based on these recordings.
+   Record your voice and receive personalized feedback on aspects like clarity, fluency, word choice, and emotional expression. The AI analyzes your speech to provide constructive insights.
 
-2. **Article Lessons:** 📚  
-   Articles about various aspects of communication, including speech structure, intonation, and anxiety management.
+2. **Speech Practice:** 🗣️  
+   Select from various topics for speech practice. Kaizen Speaking simulates real-life scenarios to help you practice and improve.
 
-3. **Speech Practice:** 🗣️  
-   Users can select available topics for speech practice. The app simulates real-life scenarios to encourage continuous improvement.
+3. **Article Lessons:** 📚  
+   Learn about speech structure, intonation, managing speaking anxiety, and more through informative articles that guide you toward becoming a better speaker.
 
-4. **Feedback and Progress Tracking:** 📊  
-   Kaizen Speaking offers data-driven progress reports to monitor skill improvements.
+4. **Real-Time Feedback & Progress Tracking:** 📊  
+   Track your progress over time with data-driven insights that show your improvements in fluency, diction, and emotional expression.
 
 ---
 
 ## Video Pitching 🎥
 
-Watch our comprehensive presentation about Kaizen Speaking on YouTube:  
+Watch our comprehensive pitch about Kaizen Speaking on YouTube:  
 [Kaizen Speaking Pitch Video](https://youtu.be/-ebHdQxnhaQ?si=bK2O8sB7shTF_-GZ) 🎬
 
 ---
@@ -40,19 +40,18 @@ Explore Kaizen Speaking's interface:
 
 ## About Bangkit Academy and Kaizen Room 🎓
 
-Bangkit Academy is a digital talent development program supported by Google, GoTo, and Traveloka. This Capstone Project allows participants to work in cross-functional teams, develop real-world solutions, and collaborate with partner companies like Kaizen Room, which specializes in skill development and professional training. 🤝🌍
+Kaizen Speaking is part of the **Bangkit Academy 2024** program, a digital talent development initiative supported by Google, GoTo, and Traveloka. This Capstone Project was developed in collaboration with **Kaizen Room**, a company specializing in skill development and professional training. Together, we aim to empower users with tools to improve their public speaking abilities. 🌍🤝
 
 ---
 
 ## Development Team 👨‍💻👩‍💻
 
-This team consists of students specializing in various fields, including mobile development, machine learning, and cloud computing, with guidance from mentors at Bangkit Academy and Kaizen Room. 💡
+This team consists of students specializing in mobile development, machine learning, and cloud computing, with mentorship from experts at **Bangkit Academy** and **Kaizen Room**.
 
-**ML Team:** [@KimiDandy](https://github.com/KimiDandy) [@Dickyannn](https://github.com/Dickyannn) [@Tutordeck00](https://github.com/Tutordeck00)
-
-**CC Team:** [@MuhammadAhmad31](https://github.com/MuhammadAhmad31)
-
-**MD Team:** [@ReihanZakya](https://github.com/ReihanZakya) [@khrlanamm](https://github.com/khrlanamm) [@MuhammadSyafiqq](https://github.com/MuhammadSyafiqq)
+- **ML Team:** [@KimiDandy](https://github.com/KimiDandy) [@Dickyannn](https://github.com/Dickyannn) [@Tutordeck00](https://github.com/Tutordeck00)
+- **CC Team:** [@MuhammadAhmad31](https://github.com/MuhammadAhmad31)
+- **MD Team:** [@ReihanZakya](https://github.com/ReihanZakya) [@khrlanamm](https://github.com/khrlanamm) [@MuhammadSyafiqq](https://github.com/MuhammadSyafiqq)
+- **Tech Advisor:** [@fariqussalam](https://github.com/fariqussalam)
 
 ---
 
@@ -60,27 +59,28 @@ This team consists of students specializing in various fields, including mobile 
 
 ### Machine Learning 🤖
 
-- Developed two models:
-  1. **Whisper Small:** Used for speech-to-text transcription. Fine-tuned using Mozilla's dataset (8,274 entries), significantly improving accuracy.
-  2. **LLaMA:** Implemented for advanced speech analysis (clarity, diction, intonation, emotion detection) and fine-tuned on 600 entries.
+- **Whisper:** A speech-to-text model used for accurate transcription of spoken words.
+- **LLaMA:** A model fine-tuned to analyze speech quality, including fluency, articulation, intonation, and emotional expression. Both models are trained on Indonesian language data to ensure relevant feedback.
 
 ### Mobile Development 📱
 
-- Built using Kotlin in Android Studio.
-- Technologies: AppCompat, Retrofit, Gson, Glide, Kotlin Coroutines, MPAndroidChart, GaugeChart, and many more.
-- Features: Intuitive onboarding, profile management, speech analysis history, and detailed performance reports.
+- Built using **Kotlin** in **Android Studio**.
+- Features:
+  - **AppCompat**, **Retrofit**, **Gson**, **Glide**, **Kotlin Coroutines**, **MPAndroidChart**, and **GaugeChart** for seamless and intuitive user experience.
+  - Profile management, speech analysis history, and detailed performance reports for users.
 
 ### Cloud Computing ☁️
 
-- Scalable backend infrastructure with Google Cloud.
+- Hosted on **Google Cloud** to ensure scalability and reliability.
 - Services:
-  - **Cloud Storage:** For audio file storage.
-  - **Cloud Run:** Hosting Whisper Small model.
-  - **Compute Engine:** Hosting LLaMA model.
-- Secure database (PostgreSQL on Railway) with robust access controls.
+  - **Cloud Storage** for secure audio file storage.
+  - **Cloud Run** for hosting the **Whisper** model.
+  - **Compute Engine** for hosting the **LLaMA** model.
+  - **PostgreSQL** database on **Railway** for secure and efficient data storage.
 
 ---
 
 ## Contact 📧
 
-For more information about Kaizen Speaking, feel free to reach us via email: [bangkitkaizen@gmail.com](mailto\:bangkitkaizen@gmail.com) 💬
+For more information about Kaizen Speaking, feel free to reach out via email:  
+[bangkitkaizen@gmail.com](mailto:bangkitkaizen@gmail.com) 💬
