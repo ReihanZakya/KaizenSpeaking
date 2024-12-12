@@ -29,26 +29,6 @@ class SignUpActivityViewModel(
     fun getIsUniqueEmail(): LiveData<Boolean> = isUniqueEmail
     fun getUser(): LiveData<User> = user
 
-//        fun validateEmailAddress(body: ValidateEmailBody) {
-//            viewModelScope.launch {
-//                authRepository.validateEmailAddres(body).collect { response ->
-//                    when (response) {
-//                        is RequesStatus.Waiting -> {
-//                            isLoading.value = true
-//                        }
-//                        is RequesStatus.Success -> {
-//                            isLoading.value = false
-//                            isUniqueEmail.value = response.data.isUnique
-//                        }
-//                        is RequesStatus.Error -> {
-//                            isLoading.value = false
-//                            errorMessage.value = response.message
-//                        }
-//                    }
-//                }
-//            }
-//        }
-
     fun registerUser(body: RegisterBody) {
         viewModelScope.launch {
 
