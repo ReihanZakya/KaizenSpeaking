@@ -6,6 +6,7 @@ This project uses advanced machine learning models, including **Whisper** for sp
 
 The backend is hosted on **Google Cloud**, ensuring that the system is secure, scalable, and capable of processing data efficiently. Kaizen Speaking was created to make speech training more accessible and practical, especially for students and professionals looking to improve their communication skills. 🚀
 
+![Footer](https://github.com/ReihanZakya/KaizenSpeaking/blob/master/Mobile%20Development/KaizenSpeaking/app/src/main/res/drawable/footer.png)  
 ---
 
 ## Key Features 🌟
@@ -34,13 +35,20 @@ Watch our comprehensive pitch about Kaizen Speaking on YouTube:
 ## Application Screenshots 📸
 
 Explore Kaizen Speaking's interface:  
-[Screenshots Gallery](https://s.id/KaizenSpeaking) 🖼️
+[Screenshots Gallery]([https://s.id/KaizenSpeaking](https://drive.google.com/drive/folders/1xcbM7grfaMaoJGlgbgFmerO626-8AEW9?usp=sharing)) 🖼️
 
 ---
 
-## About Bangkit Academy and Kaizen Room 🎓
+## Application Release 🚀
 
-Kaizen Speaking is part of the **Bangkit Academy 2024** program, a digital talent development initiative supported by Google, GoTo, and Traveloka. This Capstone Project was developed in collaboration with **Kaizen Room**, a company specializing in skill development and professional training. Together, we aim to empower users with tools to improve their public speaking abilities. 🌍🤝
+The app can be downloaded via the link below and will soon be available on the Google Play Store:  
+[Download Kaizen Speaking](https://s.id/KaizenSpeaking)
+
+---
+
+## About [Bangkit Academy](https://g.co/bangkit) and Kaizen Room 🎓
+
+Kaizen Speaking is part of the **[Bangkit Academy](https://g.co/bangkit) 2024** program, a digital talent development initiative supported by Google, GoTo, and Traveloka. This Capstone Project was developed in collaboration with **Kaizen Room**, a company specializing in skill development and professional training. Together, we aim to empower users with tools to improve their public speaking abilities. 🌍🤝
 
 ---
 
