@@ -90,13 +90,23 @@ def authenticate_user(db: Session, email: str, password: str):
 
     if not utils.verify_password(password, user.hashed_password):
         raise AuthenticationError("Password salah")
+
+    email = user.email if user.email else ""
+
     token_data = {
         "sub": user.username,
         "user_id": str(user.id),
         "role": user.role
     }
     token = create_access_token(data=token_data)
-    return {"access_token": token, "token_type": "Bearer", "userId": user.id}
+
+    return {
+        "access_token": token,
+        "token_type": "Bearer",
+        "userId": user.id,
+        "name": user.full_name,
+        "email": email
+    }
 
 
 def get_user_by_id(db: Session, user_id: str):

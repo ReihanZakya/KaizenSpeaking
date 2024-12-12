@@ -17,6 +17,7 @@ from src.user.models import User
 from src.user.schemas import UserCreate
 from src.user.service import create_user
 import asyncio
+from pydub import AudioSegment
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
@@ -45,7 +46,25 @@ async def speech_to_text_save(
         raise HTTPException(status_code=400, detail=f"File size exceeds {MAX_FILE_SIZE_MB} MB limit.")
     file.file.seek(0)
 
-    temp_file_location = f"temp_audio_{uuid.uuid4()}.wav"
+    try:
+        mp3_path = f"temp_audio_{uuid.uuid4()}.mp3"
+
+        logger.debug("Converting uploaded file to MP3 format.")
+        audio = AudioSegment.from_file(file.file)
+        audio.export(mp3_path, format="mp3")
+
+        with open(mp3_path, "rb") as mp3_file:
+            logger.debug("Uploading MP3 file to GCS.")
+            file_for_upload = UploadFile(filename=mp3_path, file=mp3_file)
+            audio_url = upload_audio_to_gcs(file_for_upload)
+
+        os.remove(mp3_path)
+
+
+    except Exception as e:
+        logger.error(f"Error converting audio: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to convert audio file")
+
     try:
         user = None
 
@@ -71,28 +90,51 @@ async def speech_to_text_save(
 
         logger.debug(f"Using user_id {user.id} for speech upload (device_id: {user.device_id}).")
 
-        logger.debug(f"Uploading file to GCS.")
-        file.file.seek(0)
-        audio_url = upload_audio_to_gcs(file)
         if not audio_url:
             raise HTTPException(status_code=500, detail="Failed to upload audio file to GCS.")
 
         logger.debug("Requesting transcription from speech-to-text API.")
         transcription_payload = {"audio_url": audio_url}
-        async with aiohttp.ClientSession() as session:
-            async with session.post(
-                    "https://speech-to-text-whisper-955631459397.asia-southeast2.run.app/transcribe",
-                    json=transcription_payload,
-                    ssl=False
-            ) as response:
-                if response.status != 200:
-                    raise HTTPException(
-                        status_code=500,
-                        detail=f"Failed to get transcription. Response status: {response.status}."
-                    )
-                transcription_data = await response.json()
 
-        transcription_text = transcription_data.get("transcription", "")
+        try:
+            async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=600)) as session:
+                async with session.post(
+                        "https://kaizen-speech-to-text-gpu-955631459397.asia-southeast1.run.app/transcribe",
+                        # url="http://0.0.0.0:8080/transcribe",
+                        json=transcription_payload,
+                        ssl=False
+                ) as response:
+                    logger.debug(f"Transcription API response status: {response.status}")
+
+                    if response.status != 200:
+                        response_text = await response.text()
+                        logger.error(f"Transcription API error. Status: {response.status}, Response: {response_text}")
+                        raise HTTPException(
+                            status_code=500,
+                            detail=f"Failed to get transcription. Response status: {response.status}. Response: {response_text}"
+                        )
+
+                    transcription_data = await response.json()
+                    logger.debug("Transcription API response received successfully")
+
+            transcription_text = transcription_data.get("transcription", "")
+
+            if not transcription_text:
+                logger.warning("Empty transcription received")
+                raise HTTPException(
+                    status_code=500,
+                    detail="Transcription response is empty."
+                )
+
+        except aiohttp.ClientError as e:
+            logger.error(f"Client error during transcription: {e}")
+            raise HTTPException(status_code=500, detail=f"Network error: {str(e)}")
+        except asyncio.TimeoutError:
+            logger.error("Transcription API request timed out")
+            raise HTTPException(status_code=504, detail="Transcription request timed out")
+        except Exception as e:
+            logger.error(f"Unexpected error during transcription: {e}")
+            raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
 
         if not transcription_text:
             raise HTTPException(status_code=500, detail="Transcription response is empty.")
@@ -154,22 +196,28 @@ Contoh format output yang benar untuk seluruh JSON:
             analyze={"score": score, "analysis_message": analysis_message}
         )
 
-        def combined_stream():
-            yield json.dumps({"score": score}) + "\n"
-            for word in analysis_message.split():
-                yield json.dumps({"word": word}) + "\n"
-                time.sleep(0.1)
+        response_data = []
+        response_data.append({
+            "id": str(history.id),
+            "audio_file_url": history.audio_file_url,
+            "user_id": str(history.user_id),
+            "topic": history.topic,
+            "transcribe": history.transcribe,
+            "score": score,
+            "analysis_message": analysis_message,
+            "created_at": history.created_at.isoformat() if history.created_at else None,
+            "updated_at": history.updated_at.isoformat() if history.updated_at else None,
+        })
 
-        return StreamingResponse(combined_stream(), media_type="text/event-stream")
+        return success_get(data=response_data, message="Transcription successfully saved." )
 
     finally:
-        if os.path.exists(temp_file_location):
-            os.remove(temp_file_location)
-            logger.debug(f"Temporary file {temp_file_location} deleted.")
+        logger.debug(f"Temporary file {mp3_path} deleted.")
 
 
 async def hit_analysis_api(payload: dict, max_retries: int = 3, retry_delay: float = 2.0):
-    url = "http://34.42.79.133:8000/predict/"
+    # url = "http://34.172.58.224:8000/predict/"
+    url = "http://34.56.72.88:8000/predict/"
     headers = {"accept": "application/json", "Content-Type": "application/json"}
 
     for attempt in range(1, max_retries + 1):

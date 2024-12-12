@@ -8,9 +8,8 @@ python-multipart
 psycopg2-binary
 pydantic~=2.9.2
 passlib~=1.7.4
-bcrypt~=4.2.0
+bcrypt~=4.2.1
 starlette~=0.41.2
-bcrypt
 google-cloud-storage==2.9.0
 google-auth==2.23.0
 protobuf~=4.24.4
