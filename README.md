@@ -35,7 +35,7 @@ Watch our comprehensive pitch about Kaizen Speaking on YouTube:
 ## Application Screenshots 📸
 
 Explore Kaizen Speaking's interface:  
-[Screenshots Gallery]([https://s.id/KaizenSpeaking](https://drive.google.com/drive/folders/1xcbM7grfaMaoJGlgbgFmerO626-8AEW9?usp=sharing)) 🖼️
+[Screenshots Gallery](https://drive.google.com/drive/folders/1xcbM7grfaMaoJGlgbgFmerO626-8AEW9?usp=sharing) 🖼️
 
 ---
 
