@@ -30,6 +30,9 @@ The backend is hosted on **Google Cloud**, ensuring that the system is secure, s
 Watch our comprehensive pitch about Kaizen Speaking on YouTube:  
 [Kaizen Speaking Pitch Video](https://youtu.be/-ebHdQxnhaQ?si=bK2O8sB7shTF_-GZ) 🎬
 
+[![Watch the video](https://img.youtube.com/vi/-ebHdQxnhaQ/maxresdefault.jpg)](https://youtu.be/-ebHdQxnhaQ)
+
+### [Kaizen Speaking](https://youtu.be/-ebHdQxnhaQ)
 ---
 
 ## Application Screenshots 📸
