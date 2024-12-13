@@ -18,10 +18,13 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.kaizenspeaking.MainActivity
 import com.example.kaizenspeaking.R
 import com.example.kaizenspeaking.databinding.ActivitySignUpBinding
+import com.example.kaizenspeaking.ui.auth.data.LoginBody
 import com.example.kaizenspeaking.ui.auth.data.RegisterBody
 import com.example.kaizenspeaking.ui.auth.data.ValidateEmailBody
 import com.example.kaizenspeaking.ui.auth.repository.AuthRepository
 import com.example.kaizenspeaking.ui.auth.utils.APIService
+import com.example.kaizenspeaking.ui.auth.view_model.SignInActivityViewModel
+import com.example.kaizenspeaking.ui.auth.view_model.SignInActivityViewModelFactory
 import com.example.kaizenspeaking.ui.auth.view_model.SignUpActivityViewModel
 import com.example.kaizenspeaking.ui.auth.view_model.SignUpActivityViewModelFactory
 
@@ -143,12 +146,44 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCh
 
         }
 
-        mViewModel.getUser().observe(this) {
-            if (it != null) {
-                startActivity(Intent(this, SignInActivity::class.java))
-                finish()
+        mViewModel.getUser().observe(this) { user ->
+            if (user != null) {
+                loginUserAfterSignUp(user.email, binding.etPassword.text.toString())
             }
         }
+    }
+
+    private fun loginUserAfterSignUp(email: String, password: String) {
+        val signInViewModel = ViewModelProvider(
+            this,
+            SignInActivityViewModelFactory(AuthRepository(APIService.getService()), application)
+        ).get(SignInActivityViewModel::class.java)
+
+        signInViewModel.loginUser(LoginBody(email, password), this)
+        signInViewModel.getIsLoading().observe(this) {
+            binding.progressBar.isVisible = it
+        }
+
+        signInViewModel.getErrorMessage().observe(this) {
+            if (it.isNotEmpty()) {
+                showGeneralErrorDialog(it.values.joinToString("\n"))
+            }
+        }
+
+        signInViewModel.getUser().observe(this) { user ->
+            if (user != null) {
+                navigateToHome()
+            }
+        }
+    }
+
+    private fun showGeneralErrorDialog(message: String) {
+        AlertDialog.Builder(this)
+            .setIcon(R.drawable.ic_kaizen)
+            .setTitle("LOGIN ERROR!")
+            .setMessage(message)
+            .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+            .show()
     }
 
     private fun validateFullName(): Boolean {
